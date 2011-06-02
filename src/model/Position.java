@@ -9,7 +9,7 @@ public class Position {
 	private int otherSalary;
 
 	public Position() {
-		this.title = PositionTitle.LEADER;
+		this.title = PositionTitle.DIRECTOR;
 		this.salary = 0;
 		this.otherSalary = 0;
 	}
