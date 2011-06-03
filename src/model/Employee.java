@@ -19,9 +19,6 @@ public class Employee {
 	private List<ForeignLanguageCertificate> languages;
 	private List<ITCertificate> itCertificates;
 
-	public Employee() {
-	}
-
 	public Employee(String fullName, Date birthday, Sex sex,
 			List<String> emails, List<TelephoneNumber> listPhoneNo,
 			IDCard identityCard, String permanentAddress,

@@ -6,9 +6,6 @@ public class ForeignLanguageCertificate {
 	private String name;
 	private Date validityDate;
 
-	public ForeignLanguageCertificate() {
-	}
-
 	public ForeignLanguageCertificate(String name, Date validityDate) {
 		this.name = name;
 		this.validityDate = validityDate;

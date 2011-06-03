@@ -6,9 +6,6 @@ public class ITCertificate {
 	private String name;
 	private Date validityDate;
 
-	public ITCertificate() {
-	}
-
 	public ITCertificate(String name, Date validityDate) {
 		this.name = name;
 		this.validityDate = validityDate;

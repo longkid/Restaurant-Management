@@ -6,9 +6,6 @@ public class Diploma {
 	private String name;
 	private Date validityDate;
 
-	public Diploma() {
-	}
-
 	public Diploma(String name, Date validityDate) {
 		this.name = name;
 		this.validityDate = validityDate;
