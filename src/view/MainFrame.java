@@ -17,23 +17,20 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 
 // 20110512 - LH: I'll add functionality for this frame.
 /*
  * This is the frame which is displayed at the beginning.
- * The user can log in with username: admin and password: 12345.
+ * The user can log in with username: admin and password: 111.
  * After logging in successfully, you can use all functionalities
  * of this application.
  *
  * @author Lam Ho
  */
 public class MainFrame extends JFrame implements ActionListener {
-
-	private static String LOGIN = "Log in";
 
 	private JMenu mnAdministrator = new JMenu("Administrator");
 	private JMenuItem mntmCreateAUser = new JMenuItem("Create a user...");
@@ -46,9 +43,9 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem mntmManageDayoffs = new JMenuItem("Manage Day-offs...");
 	private JMenu mnTimekeeping = new JMenu("Timekeeping");
 	private JMenuItem mntmTimekeeping = new JMenuItem("Timekeeping");
-	private JMenuItem mntmViewReport = new JMenuItem("View Report");
+	private JMenuItem mntmViewTimekeepingReport = new JMenuItem("View Report");
 	private JMenu mnPayroll = new JMenu("Payroll");
-	private JMenuItem mntmViewReport_1 = new JMenuItem("View Report");
+	private JMenuItem mntmViewPayrollReport = new JMenuItem("View Report");
 	private JMenu mnHelp = new JMenu("Help");
 	private JMenuItem mntmHelp = new JMenuItem("Help...");
 	private JMenuItem mntmAboutRestaurant = new JMenuItem("About Restaurant...");
@@ -56,6 +53,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JPasswordField passwordField;
 	private JEditorPane infoPane = new JEditorPane();
 	private JScrollPane scrollPane;
+	private JButton btnLogIn = new JButton("Log in");
 
 	/**
 	 * Launch the application.
@@ -79,15 +77,15 @@ public class MainFrame extends JFrame implements ActionListener {
 	public MainFrame() {
 		setTitle("Dream Restaurant");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 600, 400);
+		setBounds(100, 100, 600, 450);
 		setResizable(false);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
 		mnAdministrator.setEnabled(false);
+		mnAdministrator.setMnemonic('A');
 		menuBar.add(mnAdministrator);
-
 		mnAdministrator.add(mntmCreateAUser);
 		mnAdministrator.addSeparator();
 		mnAdministrator.add(mntmLogIn);
@@ -96,20 +94,26 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnAdministrator.add(mntmExit);
 
 		mnManage.setEnabled(false);
+		mnManage.setMnemonic('M');
 		menuBar.add(mnManage);
 		mnManage.add(mntmManageStaff);
 		mnManage.add(mntmManageWaiters);
 		mnManage.add(mntmManageDayoffs);
 
 		mnTimekeeping.setEnabled(false);
+		mnTimekeeping.setMnemonic('T');
 		menuBar.add(mnTimekeeping);
 		mnTimekeeping.add(mntmTimekeeping);
-		mnTimekeeping.add(mntmViewReport);
+		mnTimekeeping.add(mntmViewTimekeepingReport);
+		mntmViewTimekeepingReport.addActionListener(this);
 
 		mnPayroll.setEnabled(false);
+		mnPayroll.setMnemonic('P');
 		menuBar.add(mnPayroll);
-		mnPayroll.add(mntmViewReport_1);
+		mnPayroll.add(mntmViewPayrollReport);
+		mntmViewPayrollReport.addActionListener(this);
 
+		mnHelp.setMnemonic('H');
 		menuBar.add(mnHelp);
 		mnHelp.add(mntmHelp);
 		mnHelp.addSeparator();
@@ -135,43 +139,47 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		passwordField = new JPasswordField();
 		passwordField.setBounds(120, 98, 114, 19);
-		passwordField.setActionCommand("Log in");
 		passwordField.addActionListener(this);
 		contentPane.add(passwordField);
 
-		JButton btnLogIn = new JButton("Log in");
 		btnLogIn.setBounds(120, 138, 114, 25);
-		btnLogIn.setActionCommand("Log in");
 		btnLogIn.addActionListener(this);
 		contentPane.add(btnLogIn);
-		
+
 		infoPane = createInfoPane();
 		scrollPane = new JScrollPane(infoPane);
-		scrollPane.setSize(getSize());
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setBounds(0, 0, getWidth() - 10, getHeight() - 10);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String cmd = e.getActionCommand();
-		if (LOGIN.equals(cmd)) { // Process the password
-			char[] input = passwordField.getPassword();
-			if (usernameField.getText().equals("admin")
-					&& isPasswordCorrect(input)) {
-				JOptionPane.showMessageDialog(this, "Log in successfully");
-				mnAdministrator.setEnabled(true);
-				mnManage.setEnabled(true);
-				mnTimekeeping.setEnabled(true);
-				mnPayroll.setEnabled(true);
-				mnHelp.setEnabled(true);
-				displayInfoOnMainFrame();
-			} else {
-				JOptionPane.showMessageDialog(this,
-						"Invalid username or password. Try again.",
-						"Error Message", JOptionPane.ERROR_MESSAGE);
-			}
-		}
+		Object source = e.getSource();
 
+		if (source == passwordField || source == btnLogIn) { // Process the
+																// password
+			handleLogIn();
+		} else if (source == mntmViewPayrollReport) {
+			new PayrollFrame();
+		} else if (source == mntmViewTimekeepingReport) {
+			new WorkingDaysReportFrame();
+		}
+	}
+
+	private void handleLogIn() {
+		char[] input = passwordField.getPassword();
+		if (usernameField.getText().equals("admin") && isPasswordCorrect(input)) {
+			JOptionPane.showMessageDialog(this, "Log in successfully");
+			mnAdministrator.setEnabled(true);
+			mnManage.setEnabled(true);
+			mnTimekeeping.setEnabled(true);
+			mnPayroll.setEnabled(true);
+			mnHelp.setEnabled(true);
+			displayInfoOnMainFrame();
+		} else {
+			JOptionPane.showMessageDialog(this,
+					"Invalid username or password. Try again.",
+					"Error Message", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void displayInfoOnMainFrame() {
@@ -183,21 +191,25 @@ public class MainFrame extends JFrame implements ActionListener {
 	}
 
 	private JEditorPane createInfoPane() {
-		JEditorPane editorPane = new JEditorPane("application/rtf", "");
-		try {
-			editorPane.read(new FileInputStream("data/info.rtf"), null);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		JEditorPane editorPane = new JEditorPane();
 		editorPane.setEditable(false);
+		URL infoURL = MainFrame.class.getResource("info.html");
+		if (infoURL != null) {
+			try {
+				editorPane.setPage(infoURL);
+			} catch (IOException e) {
+				System.err.println("Attempted to read a bad URL: " + infoURL);
+			}
+		} else {
+			System.err.println("Couldn't find file: info.html");
+		}
+
 		return editorPane;
 	}
 
 	private boolean isPasswordCorrect(char[] input) {
 		boolean isCorrect = true;
-		char[] correctPassword = { '1', '2', '3', '4', '5' };
+		char[] correctPassword = { '1', '1', '1' };
 
 		if (input.length != correctPassword.length) {
 			isCorrect = false;
@@ -206,6 +218,5 @@ public class MainFrame extends JFrame implements ActionListener {
 		}
 
 		return isCorrect;
-
 	}
 }

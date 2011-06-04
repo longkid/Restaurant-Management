@@ -41,7 +41,6 @@ public class WorkingDaysReportFrame extends JFrame implements ActionListener {
 			public void run() {
 				try {
 					WorkingDaysReportFrame frame = new WorkingDaysReportFrame();
-					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -53,7 +52,7 @@ public class WorkingDaysReportFrame extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public WorkingDaysReportFrame() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
 		setBounds(100, 100, 662, 346);
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -119,7 +118,7 @@ public class WorkingDaysReportFrame extends JFrame implements ActionListener {
 		btnCloseForm.setBounds(337, 250, 127, 25);
 		btnCloseForm.addActionListener(this);
 		contentPane.add(btnCloseForm);
-
+		setVisible(true);
 	}
 
 	@Override
@@ -128,6 +127,5 @@ public class WorkingDaysReportFrame extends JFrame implements ActionListener {
 		if (source == btnCloseForm) {
 			dispose();
 		}
-
 	}
 }

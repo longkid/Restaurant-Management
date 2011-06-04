@@ -39,7 +39,6 @@ public class PayrollFrame extends JFrame implements ActionListener {
 			public void run() {
 				try {
 					PayrollFrame frame = new PayrollFrame();
-					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -52,7 +51,6 @@ public class PayrollFrame extends JFrame implements ActionListener {
 	 */
 	public PayrollFrame() {
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 635, 349);
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -105,6 +103,7 @@ public class PayrollFrame extends JFrame implements ActionListener {
 		ButtonGroup group = new ButtonGroup();
 		group.add(rdbtnViewAllEmployees);
 		group.add(rdbtnViewOneEmployee);
+		setVisible(true);
 	}
 
 	@Override
