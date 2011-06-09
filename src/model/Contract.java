@@ -9,14 +9,14 @@ public class Contract {
 	private Position position;
 	private WorkingTime workingTime;
 	private Date startDate;
-	private int duration;
+	private Duration time;
 
 	public Contract(Position position, WorkingTime workingTime, Date startDate,
-			int duration) {
+			Duration time) {
 		this.position = position;
 		this.workingTime = workingTime;
 		this.startDate = startDate;
-		this.duration = duration;
+		this.time = time;
 	}
 
 }
