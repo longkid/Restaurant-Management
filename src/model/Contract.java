@@ -19,4 +19,36 @@ public class Contract {
 		this.time = time;
 	}
 
+	public Position getPosition() {
+		return position;
+	}
+
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+
+	public WorkingTime getWorkingTime() {
+		return workingTime;
+	}
+
+	public void setWorkingTime(WorkingTime workingTime) {
+		this.workingTime = workingTime;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Duration getTime() {
+		return time;
+	}
+
+	public void setTime(Duration time) {
+		this.time = time;
+	}
+
 }

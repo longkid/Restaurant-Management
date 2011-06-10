@@ -1,5 +1,6 @@
 package model;
 
 public enum Duration {
-	ONE_YEAR, THREE_YEAR, NO_LIMIT
+	TWO_MONTHS, // probation period
+	ONE_YEAR, THREE_YEARS, NO_LIMIT
 }
