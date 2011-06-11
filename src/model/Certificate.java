@@ -2,11 +2,11 @@ package model;
 
 import java.util.Date;
 
-public class ForeignLanguageCertificate {
+public class Certificate {
 	private String name;
 	private Date validityDate;
 
-	public ForeignLanguageCertificate(String name, Date validityDate) {
+	public Certificate(String name, Date validityDate) {
 		this.name = name;
 		this.validityDate = validityDate;
 	}

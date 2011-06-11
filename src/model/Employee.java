@@ -8,36 +8,36 @@ public class Employee {
 	private Date birthday;
 	private Sex sex;
 	private List<String> emails;
-	private List<TelephoneNumber> listPhoneNo;
+	private List<TelephoneNumber> phoneNumbers;
 	private IDCard identityCard;
 	private String permanentAddress;
 	private List<Address> temporaryAddresses;
 	private List<BankAccount> accounts;
 	private List<Contract> contracts;
-	private List<String> educations;
+	private String education;
 	private List<Diploma> diplomas;
-	private List<ForeignLanguageCertificate> languages;
-	private List<ITCertificate> itCertificates;
+	private List<Certificate> languageCertificates;
+	private List<Certificate> itCertificates;
 
 	public Employee(String fullName, Date birthday, Sex sex,
-			List<String> emails, List<TelephoneNumber> listPhoneNo,
+			List<String> emails, List<TelephoneNumber> phoneNumbers,
 			IDCard identityCard, String permanentAddress,
 			List<Address> temporaryAddresses, List<BankAccount> accounts,
-			List<String> educations, List<Diploma> diplomas,
-			List<ForeignLanguageCertificate> languages,
-			List<ITCertificate> itCertificates) {
+			String education, List<Diploma> diplomas,
+			List<Certificate> languageCertificates,
+			List<Certificate> itCertificates) {
 		this.fullName = fullName;
 		this.birthday = birthday;
 		this.sex = sex;
 		this.emails = emails;
-		this.listPhoneNo = listPhoneNo;
+		this.phoneNumbers = phoneNumbers;
 		this.identityCard = identityCard;
 		this.permanentAddress = permanentAddress;
 		this.temporaryAddresses = temporaryAddresses;
 		this.accounts = accounts;
-		this.educations = educations;
+		this.education = education;
 		this.diplomas = diplomas;
-		this.languages = languages;
+		this.languageCertificates = languageCertificates;
 		this.itCertificates = itCertificates;
 	}
 
@@ -65,22 +65,6 @@ public class Employee {
 		this.sex = sex;
 	}
 
-	public List<String> getEmails() {
-		return emails;
-	}
-
-	public void setEmails(List<String> emails) {
-		this.emails = emails;
-	}
-
-	public List<TelephoneNumber> getListPhoneNo() {
-		return listPhoneNo;
-	}
-
-	public void setListPhoneNo(List<TelephoneNumber> listPhoneNo) {
-		this.listPhoneNo = listPhoneNo;
-	}
-
 	public IDCard getIdentityCard() {
 		return identityCard;
 	}
@@ -97,60 +81,83 @@ public class Employee {
 		this.permanentAddress = permanentAddress;
 	}
 
-	public List<Address> getAddresses() {
-		return temporaryAddresses;
+	public String getEducation() {
+		return education;
 	}
 
-	public void setAddresses(List<Address> temporaryAddresses) {
-		this.temporaryAddresses = temporaryAddresses;
+	public void setEducation(String education) {
+		this.education = education;
+	}
+
+	public List<String> getEmails() {
+		return emails;
+	}
+
+	public void addEmail(String email) {
+		emails.add(email);
+	}
+
+	public List<TelephoneNumber> getPhoneNumbers() {
+		return phoneNumbers;
+	}
+
+	public void addPhoneNumber(TelephoneNumber num) {
+		phoneNumbers.add(num);
+	}
+
+	public List<Address> getTemporaryAddresses() {
+		return temporaryAddresses;
+	}
+	
+	public void addTemporaryAddress(Address address) {
+		temporaryAddresses.add(address);
 	}
 
 	public List<BankAccount> getAccounts() {
 		return accounts;
 	}
-
-	public void setAccounts(List<BankAccount> accounts) {
-		this.accounts = accounts;
+	
+	public void addAccount(BankAccount acc) {
+		accounts.add(acc);
 	}
 
 	public List<Contract> getContracts() {
 		return contracts;
 	}
-
-	public void setContracts(List<Contract> contracts) {
-		this.contracts = contracts;
+	
+	public void addContract(Contract contract) {
+		contracts.add(contract);
 	}
-
-	public List<String> getEducations() {
-		return educations;
+	
+	public void updateContract(int index, Contract newContract) {
+		contracts.set(index, newContract);
 	}
-
-	public void setEducations(List<String> educations) {
-		this.educations = educations;
+	
+	public void deleteContract(int index) {
+		contracts.remove(index);
 	}
 
 	public List<Diploma> getDiplomas() {
 		return diplomas;
 	}
-
-	public void setDiplomas(List<Diploma> diplomas) {
-		this.diplomas = diplomas;
+	
+	public void addDiploma(Diploma diploma) {
+		diplomas.add(diploma);
+	}
+	
+	public List<Certificate> getLanguageCertificates() {
+		return languageCertificates;
+	}
+	
+	public void addLanguageCertificate(Certificate certificate) {
+		languageCertificates.add(certificate);
 	}
 
-	public List<ForeignLanguageCertificate> getLanguages() {
-		return languages;
-	}
-
-	public void setLanguages(List<ForeignLanguageCertificate> languages) {
-		this.languages = languages;
-	}
-
-	public List<ITCertificate> getItCertificates() {
+	public List<Certificate> getItCertificates() {
 		return itCertificates;
 	}
-
-	public void setItCertificates(List<ITCertificate> itCertificates) {
-		this.itCertificates = itCertificates;
+	
+	public void addItCertificate(Certificate certificate) {
+		itCertificates.add(certificate);
 	}
-
 }
