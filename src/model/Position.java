@@ -1,9 +1,15 @@
 package model;
 
+import java.io.Serializable;
+
 /*
  * @author Tu Thi Xuan Hien
  */
-public class Position {
+public class Position implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static final int ACCOUNTANT_SALARY = 300;
 	public static final int HEAD_ACCOUNTANT_SALARY = 500;
 	public static final int CASHIER_SALARY = 200;
