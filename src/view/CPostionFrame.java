@@ -36,15 +36,16 @@ import model.ProcessFile;
 public class CPostionFrame extends JFrame{
 	private JComboBox cboTitle;
 	private JTextField txtPostionTitle,txtSalary,txtOtherSalary;
-	private JButton btnAdd,btnUpdate,btnDelete;
+	private JButton btnAdd,btnUpdate,btnDelete,btnSave;
 	private JTable tblDetail;
 	private DefaultTableModel tblModel;
 	private PositionList m_PostionList;
+	private Position m_CurrentPostion=null;
 	public CPostionFrame(String strTitle)
 	{
 		super(strTitle);
 		createUI();
-		setSize(500, 500);
+		setSize(600, 550);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		m_PostionList=new PositionList();
@@ -93,7 +94,7 @@ public class CPostionFrame extends JFrame{
 		txtSalary=new JTextField(15);
 		pnSalary.add(lblSalary);
 		pnSalary.add(txtSalary);
-		txtSalary.setEditable(false);
+		//txtSalary.setEditable(false);
 		pnInputInformation.add(pnSalary);
 		
 		
@@ -118,6 +119,11 @@ public class CPostionFrame extends JFrame{
 		//create Icon for Button
 		ImageIcon iconAdd=new ImageIcon("images/add.png");
 		btnAdd.setIcon(iconAdd);
+		
+		btnSave=new JButton("Save");
+		ImageIcon iconSave=new ImageIcon("images/Save.png");
+		btnSave.setIcon(iconSave);
+		
 		btnUpdate=new JButton("Update");
 		ImageIcon iconEdit=new ImageIcon("images/modify.png");
 		btnUpdate.setIcon(iconEdit);
@@ -127,6 +133,7 @@ public class CPostionFrame extends JFrame{
 		btnDelete .setIcon(iconDelete);
 		
 		pnButton.add(btnAdd);
+		pnButton.add(btnSave);
 		pnButton.add(btnUpdate);
 		pnButton.add(btnDelete);
 		TitledBorder borderButtons=new TitledBorder(BorderFactory.createLineBorder(Color.RED), "Choose Action:");
@@ -160,11 +167,26 @@ public class CPostionFrame extends JFrame{
 		btnUpdate.addActionListener(new CMyProcessButtonEvent());
 		btnDelete.addActionListener(new CMyProcessButtonEvent());
 		cboTitle.addActionListener(new CMyProcessButtonEvent());
+		btnSave.addActionListener(new CMyProcessButtonEvent());
 		tblDetail.addMouseListener(new CMyProcessMouseEvent());
 		
 		btnAdd.setMnemonic('A');
 		btnUpdate.setMnemonic('E');
 		btnDelete.setMnemonic('D');
+		btnSave.setMnemonic('S');
+		
+		
+		LockTheTextBox(true);
+		btnAdd.setEnabled(true);
+		btnUpdate.setEnabled(false);
+		btnDelete.setEnabled(false);
+		btnSave.setEnabled(false);
+	}
+	private void LockTheTextBox(boolean b)
+	{
+		txtSalary.setEditable(!b);
+		txtOtherSalary.setEditable(!b);
+		cboTitle.setEnabled(!b);
 	}
 	private void addPostionTitleForCombobox()
 	{
@@ -266,42 +288,7 @@ public class CPostionFrame extends JFrame{
 		}
 		return posTitle;
 	}
-	private void doAdd()
-	{
-		//JOptionPane.showMessageDialog(this, "Click Add");
-		if(m_PostionList==null)
-			m_PostionList=new PositionList();
-		int nSalary=Integer.parseInt(txtSalary.getText());
-		int nOtherSalary=Integer.parseInt(txtOtherSalary.getText());
-		
-		int nIndex=cboTitle.getSelectedIndex();
-		
-		PositionTitle posTitle=getPostionTitle(nIndex);
-		
-		//posTitle.
-		Position aPostion=new Position(posTitle,nSalary, nOtherSalary);
-		boolean bcheckExist=m_PostionList.checkExist(aPostion);
-		if(bcheckExist)
-		{
-			JOptionPane.showMessageDialog(null, "Duplicate Postion Title");
-			return;
-		}
-		m_PostionList.add(aPostion);
-		Vector<String>vec=new Vector<String>();
-		vec.add(cboTitle.getSelectedItem().toString());
-		vec.add(txtSalary.getText());
-		vec.add(txtOtherSalary.getText());
-		
-		tblModel.addRow(vec);
-		cboTitle.requestFocus();
-		boolean bResult=ProcessFile.WriteData(m_PostionList, ProcessFile.FILENAME);
-		if(bResult)
-		{
-			JOptionPane.showMessageDialog(null, "Save success");
-		}
-		else
-			JOptionPane.showMessageDialog(null, "Save Failed");
-	}
+	
 	private void loadDataFromFile()
 	{
 		m_PostionList=null;
@@ -326,28 +313,117 @@ public class CPostionFrame extends JFrame{
 		}
 		
 	}
+	private void doAdd()
+	{
+		if(btnAdd.getText().equalsIgnoreCase("Add"))
+		{
+			btnAdd.setText("Cancel");
+			btnUpdate.setEnabled(false);
+			btnSave.setEnabled(true);
+			btnDelete.setEnabled(false);
+			LockTheTextBox(false);
+			tblDetail.setEnabled(false);
+			txtSalary.setText("");
+			txtOtherSalary.setText("");
+		}
+		else
+		{
+			btnAdd.setText("Add");
+			btnUpdate.setEnabled(false);
+			btnSave.setEnabled(false);
+			btnDelete.setEnabled(false);
+			LockTheTextBox(true);
+			tblDetail.setEnabled(true);
+			if(m_CurrentPostion!=null)
+			{
+				txtSalary.setText(m_CurrentPostion.getSalary()+"");
+				txtOtherSalary.setText(m_CurrentPostion.getOtherSalary()+"");
+				cboTitle.setSelectedIndex(m_CurrentPostion.getTitle().ordinal());
+			}
+		}
+		
+	}
 	private void doUpdate()
 	{
-		int nRow=tblDetail.getSelectedRow();
+		if(btnUpdate.getText().equalsIgnoreCase("Update"))
+		{
+			btnUpdate.setText("Cancel");
+			
+			btnAdd.setEnabled(false);
+			btnUpdate.setEnabled(true);
+			btnSave.setEnabled(true);
+			btnDelete.setEnabled(false);
+			LockTheTextBox(false);
+		}
+		else
+		{
+			btnUpdate.setText("Update");
+			
+			btnAdd.setEnabled(true);
+			btnUpdate.setEnabled(true);
+			btnSave.setEnabled(false);
+			btnDelete.setEnabled(true);
+			LockTheTextBox(true);
+			
+			if(m_CurrentPostion!=null)
+			{
+				txtSalary.setText(m_CurrentPostion.getSalary()+"");
+				txtOtherSalary.setText(m_CurrentPostion.getOtherSalary()+"");
+				cboTitle.setSelectedIndex(m_CurrentPostion.getTitle().ordinal());
+			}
+		}
+		/*int nRow=tblDetail.getSelectedRow();
 				
 		Position aPostion=m_PostionList.get(nRow);
+		int nSalary=Integer.parseInt( txtSalary.getText());
+		aPostion.setSalary(nSalary);
 		
 		int nOtherSalary=Integer.parseInt( txtOtherSalary.getText());
 		aPostion.setOtherSalary(nOtherSalary);
-		m_PostionList.update(nRow, aPostion);
 		
+		m_PostionList.update(nRow, aPostion);
+		boolean bResult=ProcessFile.WriteData(m_PostionList, ProcessFile.FILENAME);
+		if(!bResult)
+		{
+			JOptionPane.showMessageDialog(null, "Save success");
+		}
 		loadDataOnTable();
+		*/
 	}
 	private void doDelete()
 	{
 		int nRow=tblDetail.getSelectedRow();
-		m_PostionList.removeAt(nRow);
+		if(nRow>=0)
+		{
+			int ret=JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this item?","Delete Item",JOptionPane.YES_NO_OPTION);
+			if(ret==JOptionPane.YES_OPTION)
+			{
+				m_PostionList.removeAt(nRow);
+				
+				loadDataOnTable();
+			}
+		}
+	}
+	private void doSelectedOnTable()
+	{
 		
-		loadDataOnTable();
+		int nRow=tblDetail.getSelectedRow();
+		if(nRow>=0 && !btnAdd.getText().equalsIgnoreCase("Cancel"))
+		{
+			btnUpdate.setEnabled(true);
+			btnDelete.setEnabled(true);
+			Position aPostion=m_PostionList.get(nRow);
+			m_CurrentPostion=aPostion;
+			txtSalary.setText(aPostion.getSalary()+"");
+			txtOtherSalary.setText(aPostion.getOtherSalary()+"");
+			cboTitle.setSelectedIndex(aPostion.getTitle().ordinal());
+		}
 	}
 	private void doGetSalary()
 	{
+		
 		int nIndex=cboTitle.getSelectedIndex();
+		
 		int nSalary=Position.ACCOUNTANT_SALARY;
 		switch(nIndex)
 		{
@@ -382,7 +458,90 @@ public class CPostionFrame extends JFrame{
 			nSalary=Position.HEAD_SERVER_SALARY;
 			break;
 		}
+		/*int nRow=tblDetail.getSelectedRow();
+		if(nRow>=0)
+		{
+			Position aPostion=m_PostionList.get(nRow);
+			int nSalary2=nSalary;
+			if(aPostion.getTitle().ordinal()!=nIndex)
+			{
+				nSalary2=aPostion.getSalary();
+			}
+			if(aPostion.getSalary()!=nSalary)
+			{
+				nSalary=aPostion.getSalary();
+			}
+			
+		}*/
 		txtSalary.setText(nSalary+"");
+	}
+	private void doSave()
+	{
+		if(btnAdd.isEnabled())
+		{
+			//We save Position title here
+			if(m_PostionList==null)
+				m_PostionList=new PositionList();
+			int nSalary=Integer.parseInt(txtSalary.getText());
+			int nOtherSalary=Integer.parseInt(txtOtherSalary.getText());
+			
+			int nIndex=cboTitle.getSelectedIndex();
+			
+			PositionTitle posTitle=getPostionTitle(nIndex);
+			
+			//posTitle.
+			Position aPostion=new Position(posTitle,nSalary, nOtherSalary);
+			boolean bcheckExist=m_PostionList.checkExist(aPostion);
+			if(bcheckExist)
+			{
+				JOptionPane.showMessageDialog(null, "Duplicate Postion Title");
+				return;
+			}
+			m_PostionList.add(aPostion);
+			Vector<String>vec=new Vector<String>();
+			vec.add(cboTitle.getSelectedItem().toString());
+			vec.add(txtSalary.getText());
+			vec.add(txtOtherSalary.getText());
+			
+			tblModel.addRow(vec);
+			cboTitle.requestFocus();
+			boolean bResult=ProcessFile.WriteData(m_PostionList, ProcessFile.FILENAME);
+			if(bResult)
+			{
+				JOptionPane.showMessageDialog(null, "Save success");
+			}
+			else
+				JOptionPane.showMessageDialog(null, "Save Failed");
+			
+			btnAdd.setText("Add");
+			btnSave.setEnabled(false);
+			LockTheTextBox(true);
+			tblDetail.setEnabled(true);
+		}
+		else
+		{
+			//We update Position title here
+			int nRow=tblDetail.getSelectedRow();
+			
+			Position aPostion=m_PostionList.get(nRow);
+			int nSalary=Integer.parseInt( txtSalary.getText());
+			aPostion.setSalary(nSalary);
+			
+			int nOtherSalary=Integer.parseInt( txtOtherSalary.getText());
+			aPostion.setOtherSalary(nOtherSalary);
+			
+			m_PostionList.update(nRow, aPostion);
+			boolean bResult=ProcessFile.WriteData(m_PostionList, ProcessFile.FILENAME);
+			if(!bResult)
+			{
+				JOptionPane.showMessageDialog(null, "Update success");
+			}
+			loadDataOnTable();
+			btnUpdate.setText("Update");
+			btnSave.setEnabled(false);
+			btnAdd.setEnabled(true);
+			LockTheTextBox(true);
+		}
 	}
 	private class CMyProcessButtonEvent implements ActionListener
 	{
@@ -407,18 +566,14 @@ public class CPostionFrame extends JFrame{
 			{
 				doGetSalary();
 			}
+			else if(myObj.equals(btnSave))
+			{
+				doSave();
+			}
 		}
 		
 	}
-	private void doSelectedOnTable()
-	{
-		int nRow=tblDetail.getSelectedRow();
-		
-		Position aPostion=m_PostionList.get(nRow);
-		txtSalary.setText(aPostion.getSalary()+"");
-		txtOtherSalary.setText(aPostion.getOtherSalary()+"");
-		cboTitle.setSelectedIndex(aPostion.getTitle().ordinal());
-	}
+	
 	
 	private class CMyProcessMouseEvent implements MouseListener
 	{
