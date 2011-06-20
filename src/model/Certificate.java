@@ -6,6 +6,10 @@ public class Certificate {
 	private String name;
 	private Date validityDate;
 
+	public Certificate() {
+		
+	}
+
 	public Certificate(String name, Date validityDate) {
 		this.name = name;
 		this.validityDate = validityDate;

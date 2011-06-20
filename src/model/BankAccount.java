@@ -7,6 +7,10 @@ public class BankAccount {
 	private String bankName;
 	private Date validityDate;
 
+	public BankAccount() {
+		
+	}
+
 	public BankAccount(String accountNo, String bankName, Date validityDate) {
 		this.accountNo = accountNo;
 		this.bankName = bankName;

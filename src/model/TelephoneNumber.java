@@ -6,6 +6,10 @@ public class TelephoneNumber {
 	private String phoneNumber;
 	private Date validityDate;
 
+	public TelephoneNumber() {
+		
+	}
+
 	public TelephoneNumber(String phoneNumber, Date validityDate) {
 		this.phoneNumber = phoneNumber;
 		this.validityDate = validityDate;

@@ -7,6 +7,10 @@ public class IDCard {
 	private Date issuedDate;
 	private String issuedPlace;
 
+	public IDCard() {
+		
+	}
+
 	public IDCard(String cardNum, Date issuedDate, String issuedPlace) {
 		this.cardNum = cardNum;
 		this.issuedDate = issuedDate;

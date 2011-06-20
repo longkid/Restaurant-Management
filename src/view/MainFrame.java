@@ -32,6 +32,7 @@ import java.util.Arrays;
  */
 public class MainFrame extends JFrame implements ActionListener {
 
+	private static final long serialVersionUID = 1L;
 	private JMenu mnAdministrator = new JMenu("Administrator");
 	private JMenuItem mntmCreateAUser = new JMenuItem("Create a user...");
 	private JMenuItem mntmLogIn = new JMenuItem("Log in");

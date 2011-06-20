@@ -6,6 +6,10 @@ public class Address {
 	private String name;
 	private Date validityDate;
 
+	public Address() {
+		
+	}
+
 	public Address(String name, Date validityDate) {
 		this.name = name;
 		this.validityDate = validityDate;

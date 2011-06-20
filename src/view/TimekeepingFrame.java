@@ -3,7 +3,10 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -19,11 +22,19 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 
+import model.Employee;
+import model.Staff;
+
 /*
+ * This frame is used to record the present time of employee.
+ * This recorded time will be used for calculating the salary of
+ * all employees.
+ *
  * @author Lam Ho
  */
 public class TimekeepingFrame extends JFrame {
 	
+	private static final long serialVersionUID = 1L;
 	private JTextField fullNameField = new JTextField();
 	private JTextField birthDayField = new JTextField();
 	private JTextField positionField = new JTextField();
@@ -33,7 +44,6 @@ public class TimekeepingFrame extends JFrame {
 	private JComboBox workingTimeList = new JComboBox();
 	private DefaultTableModel tblModelEmployee = new DefaultTableModel();
 	private JTable tblEmployeeList = new JTable(tblModelEmployee);
-	private Calendar time = Calendar.getInstance();
 
 	/**
 	 * Launch the application.
@@ -42,7 +52,7 @@ public class TimekeepingFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TimekeepingFrame frame = new TimekeepingFrame();
+					new TimekeepingFrame();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -133,6 +143,8 @@ public class TimekeepingFrame extends JFrame {
 		tblModelEmployee.addColumn("Full name");
 		tblModelEmployee.addColumn("Position");
 		tblModelEmployee.addColumn("Recorded time");
+		loadEmployeesList();
+		tblEmployeeList.addMouseListener(new MyMouseListener());
 		JScrollPane scrollPane = new JScrollPane(tblEmployeeList);
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 		TitledBorder tb1 = new TitledBorder(BorderFactory.createLineBorder(Color.red), "List of employee");
@@ -141,6 +153,7 @@ public class TimekeepingFrame extends JFrame {
 	}
 
 	private void updateDateField() {
+		Calendar time = Calendar.getInstance();
 		int year = time.get(Calendar.YEAR);
 		int month = time.get(Calendar.MONTH) + 1;
 		int day = time.get(Calendar.DAY_OF_MONTH);
@@ -149,5 +162,40 @@ public class TimekeepingFrame extends JFrame {
 		String dd = (day < 10) ? ("0" + String.valueOf(day)) : String.valueOf(day);
 		String date = yyyy + "-" + mm + "-" + dd;
 		dateField.setText(date);
+	}
+	
+	/*
+	 * 20110618 - LH: At this time, I just load all employees and don't
+	 * care about the working time. Later on, I'll load the employees
+	 * who work in some working time.
+	 */
+	private void loadEmployeesList() {
+		Staff staff = Staff.getInstance();
+		List<Employee> employees = staff.getEmployees();
+		tblModelEmployee.setRowCount(0);
+		if (employees != null) {
+			for (Employee emp : employees) {
+				tblModelEmployee.addRow(emp.getVector());
+			}
+		}
+		showPersonalInfo(employees.get(0));
+	}
+	
+	private void showPersonalInfo(Employee employee) {
+		fullNameField.setText(employee.getFullName());
+		birthDayField.setText(Staff.dateFormat.format(employee.getBirthday()));
+		// 20110618 - LH: I'm waiting for the answer email of Prof.
+		//positionField.setText(null)
+		addressField.setText(employee.getPermanentAddress());
+		phoneNumberField.setText(employee.getLatestPhoneNumber().getPhoneNumber());
+	}
+	
+	private class MyMouseListener extends MouseAdapter {
+		public void mouseClicked(MouseEvent arg0) {
+			int row = tblEmployeeList.getSelectedRow();
+			List<Employee> employees = Staff.getInstance().getEmployees();
+			Employee employee = employees.get(row);
+			showPersonalInfo(employee);
+		}
 	}
 }
