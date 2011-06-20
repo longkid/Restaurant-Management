@@ -1,5 +1,9 @@
 package model;
 
+/*Author: Le Duy Phong
+ * This class is used for managing all employees in the restaurant.
+ * There should be only one instance of this class in the application.
+ */
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -9,11 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-
-/*
- * This class is used for managing all employees in the restaurant.
- * There should be only one instance of this class in the application.
- */
 public class Staff {
 	private static Staff singleton;
 	public static SimpleDateFormat dateFormat = new SimpleDateFormat(

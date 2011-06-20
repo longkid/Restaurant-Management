@@ -1,5 +1,9 @@
 package model;
+/**
+ * Author: Le Duy Phong
 
+ * Purpose of this class: this class is used to save information about employee.
+ */
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

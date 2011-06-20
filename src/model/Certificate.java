@@ -1,5 +1,9 @@
 package model;
+/**
+ * Author: Le Duy Phong
 
+ * Purpose of this class: this class is used to save information about certificate(English or IT) of employee.
+ */
 import java.util.Date;
 
 public class Certificate {
