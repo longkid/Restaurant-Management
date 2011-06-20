@@ -1,9 +1,11 @@
 package view;
 /**
  * Author: Le Duy Phong
+
  * Purpose of this class: this class is used to create form for adding or modifying employees.
  */
 import java.awt.EventQueue;
+
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,16 +18,15 @@ import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-
 import model.Address;
 import model.BankAccount;
+import model.Certificate;
 import model.Contract;
 import model.Diploma;
-import model.ForeignLanguageCertificate;
+import model.Employee;
 import model.IDCard;
-import model.ITCertificate;
-import model.ManageStaffInHotel;
 import model.Sex;
+import model.Staff;
 import model.TelephoneNumber;
 
 import java.awt.event.ActionListener;
@@ -37,7 +38,7 @@ import java.util.Date;
 import java.util.List;
 
 public class EmployeeFrame extends JFrame {
-	private  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+	private  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
 	private JPanel contentPane;
 	private JTextField fullNameTextField;
 	private JTextField birthdayTextField;
@@ -53,13 +54,13 @@ public class EmployeeFrame extends JFrame {
 	private JTextField nameOfBankTextField;
 	private JTextField diplomaTextField;
 	private List<String> emails = new ArrayList<String>();
-	private List<TelephoneNumber> listPhoneNo = new ArrayList<TelephoneNumber>();
+	private List<TelephoneNumber> phoneNumbers = new ArrayList<TelephoneNumber>();
 	private List<Address> addresses = new ArrayList<Address>();
 	private List<BankAccount> accounts = new ArrayList<BankAccount>();
 	private List<String> educations = new ArrayList<String>();
 	private List< Diploma> diplomas = new ArrayList< Diploma>();
-	private List<ForeignLanguageCertificate> languages = new ArrayList<ForeignLanguageCertificate>();
-	private List<ITCertificate> itCertificates = new ArrayList<ITCertificate>();
+	private List<Certificate> languages = new ArrayList<Certificate>();
+	private List<Certificate> itCertificates = new ArrayList<Certificate>();
 
 	/**
 	 * Launch the application.
@@ -211,7 +212,7 @@ public class EmployeeFrame extends JFrame {
 		lblEducation.setBounds(12, 253, 70, 15);
 		contentPane.add(lblEducation);
 		
-		JComboBox educationComboBox = new JComboBox();
+		final JComboBox educationComboBox = new JComboBox();
 		educationComboBox.setModel(new DefaultComboBoxModel(new String[] {"<5/12", "5/12", "6/12", "7/12", "8/12", "9/12", "10/12", "11/12", "12/12"}));
 		educationComboBox.setBounds(152, 255, 190, 19);
 		contentPane.add(educationComboBox);
@@ -251,23 +252,21 @@ public class EmployeeFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				 	emails.add(emailAddressTextField.getText());
-			        listPhoneNo.add(new TelephoneNumber(cellPhoneNumberTextField.getText(), new Date()));
+			        phoneNumbers.add(new TelephoneNumber(cellPhoneNumberTextField.getText(), new Date()));
 			        addresses.add(new  Address(currentAddressTextField.getText(), new Date()));
 			        accounts.add(new BankAccount(accountNoTextField.getText(), nameOfBankTextField.getText(), new Date()));
 
 			        diplomas.add(new Diploma(diplomaTextField.getText(), new Date()));
 			        try {
-			        	System.out.println(sexradioMale.isSelected());
 			        	if(sexradioMale.isSelected()){
-						ManageStaffInHotel.getInstance().addEmployee(fullNameTextField.getText(),sdf.parse(birthdayTextField.getText()),Sex.MALE, emails,listPhoneNo, new IDCard(NoIdentityCardTextField.getText(),sdf.parse( issueDateText.getText()),issuePlaceTextField.getText()), permanentAddressTexField.getText(), addresses, accounts,  educations,diplomas, languages, itCertificates);
+						Staff.getInstance().addEmployee(new Employee(fullNameTextField.getText(), dateFormat.parse(birthdayTextField.getText()), Sex.MALE, emails, phoneNumbers, new IDCard(NoIdentityCardTextField.getText(),dateFormat.parse( issueDateText.getText()),issuePlaceTextField.getText()), permanentAddressTexField.getText(), addresses, accounts, educationComboBox.getSelectedItem().toString(), diplomas, languages, itCertificates));
 						
 			        	}
 			        	if(sexradioFemale.isSelected()){
-							ManageStaffInHotel.getInstance().addEmployee(fullNameTextField.getText(),sdf.parse(birthdayTextField.getText()),Sex.FEMALE, emails,listPhoneNo, new IDCard(NoIdentityCardTextField.getText(),sdf.parse( issueDateText.getText()),issuePlaceTextField.getText()), permanentAddressTexField.getText(), addresses, accounts,  educations,diplomas, languages, itCertificates);
+			        		Staff.getInstance().addEmployee(new Employee(fullNameTextField.getText(), dateFormat.parse(birthdayTextField.getText()), Sex.FEMALE, emails, phoneNumbers, new IDCard(NoIdentityCardTextField.getText(),dateFormat.parse( issueDateText.getText()),issuePlaceTextField.getText()), permanentAddressTexField.getText(), addresses, accounts, educationComboBox.getSelectedItem().toString(), diplomas, languages, itCertificates));
 							
 			        	}
 						lbResult.setText("Save successfully!");
-						System.out.println(ManageStaffInHotel.getInstance().getListEmployees().size());
 					} catch (ParseException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
