@@ -220,4 +220,9 @@ public class Staff {
 
 		return null;
 	}
+
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
+	}
+	
 }

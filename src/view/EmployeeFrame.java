@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.List;
 
 public class EmployeeFrame extends JFrame {
+	public static EmployeeFrame singleton = new EmployeeFrame();
 	private  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
 	private JPanel contentPane;
 	private JTextField fullNameTextField;
@@ -277,5 +278,13 @@ public class EmployeeFrame extends JFrame {
 		contentPane.add(btnSave);
 		
 		
+	}
+	private boolean isUpdate = false;
+	public void updateEmployee(Employee employee) {
+		this.fullNameTextField.setText(employee.getFullName());
+		this.birthdayTextField.setText(employee.getBirthday().toString());
+		isUpdate = true;
+		this.setVisible(true);
+
 	}
 }
