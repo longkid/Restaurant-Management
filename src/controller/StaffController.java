@@ -17,7 +17,7 @@ import view.StaffFrame;
 public class StaffController {
 	public static StaffController singleton = new StaffController();
 	private StaffFrame view;
-
+//this function is used to open StaffFrame for managing staff
 	public void visible(){
 		this.view=new StaffFrame();
 		this.initView();
@@ -35,18 +35,18 @@ public class StaffController {
 		}
 		return objects;
 	}
-
+//init view and fill data to table
 	private void initView() {
 
 		this.view.getTable_1().setModel(
-				new DefaultTableModel(fill(), new String[] { "New column",
-						"New column", "New column" }));
+				new DefaultTableModel(fill(), new String[] { "Full name",
+						"Birthday", "No identity card" }));
 	}
 
 	public void refresh() {
 		this.view.getTable_1().setModel(
-				new DefaultTableModel(fill(), new String[] { "New column",
-						"New column", "New column" }));
+				new DefaultTableModel(fill(), new String[] { "Full name",
+						"Birthday", "No identity card" }));
 	}
 
 	public void update() {
