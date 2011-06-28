@@ -5,6 +5,8 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +28,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 import model.Position;
 import model.PositionList;
@@ -34,9 +35,14 @@ import model.PositionTitle;
 import model.ProcessFile;
 
 public class CPostionFrame extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JComboBox cboTitle;
+
+	private JButton btnAdd,btnUpdate,btnDelete,btnSave,btnExit;
 	private JTextField txtPostionTitle,txtSalary,txtOtherSalary;
-	private JButton btnAdd,btnUpdate,btnDelete,btnSave;
 	private JTable tblDetail;
 	private DefaultTableModel tblModel;
 	private PositionList m_PostionList;
@@ -45,7 +51,8 @@ public class CPostionFrame extends JFrame{
 	{
 		super(strTitle);
 		createUI();
-		setSize(600, 550);
+		setSize(600, 560);
+
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		m_PostionList=new PositionList();
@@ -61,6 +68,7 @@ public class CPostionFrame extends JFrame{
 		con.add(pnGeneralBorder);
 		pnGeneralBorder.add(pnGeneral);
 		pnGeneral.setLayout(new BorderLayout());
+		
 		//create title: Postion Information
 		JPanel pnTitle=new JPanel();
 		JLabel lblTitle=new JLabel("Postion Information");
@@ -146,7 +154,7 @@ public class CPostionFrame extends JFrame{
 		//create Table
 		JPanel pnTable=new JPanel();
 		pnTable.setLayout(new BorderLayout());
-		pnInformation.add(pnTable,BorderLayout.SOUTH);
+		pnInformation.add(pnTable);
 		//must be DefaultTableModel
 		tblModel=new DefaultTableModel();
 		//Add Column for TableModel
@@ -157,17 +165,26 @@ public class CPostionFrame extends JFrame{
 		tblDetail=new JTable(tblModel);
 		//must be JScrollPane to see information in JTable
 		JScrollPane sc=new JScrollPane(tblDetail);
+		sc.setPreferredSize(new Dimension(500, 200));
 		//diaplay JScrollPane on interface
 		pnTable.add(sc,BorderLayout.CENTER);
 		TitledBorder borderTable=new TitledBorder(BorderFactory.createLineBorder(Color.RED), "Postion List:");
 		pnTable.setBorder(borderTable);
-		
+		btnExit=new JButton("Exit");
+		JPanel pnSouth=new JPanel();
+		pnSouth.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		ImageIcon iconExit=new ImageIcon("images/close.png");
+		btnExit.setIcon(iconExit);
+		pnSouth.add(btnExit);
+		pnGeneral.add(pnSouth,BorderLayout.SOUTH);
 		//assign Event into BUtton
 		btnAdd.addActionListener(new CMyProcessButtonEvent());
 		btnUpdate.addActionListener(new CMyProcessButtonEvent());
 		btnDelete.addActionListener(new CMyProcessButtonEvent());
 		cboTitle.addActionListener(new CMyProcessButtonEvent());
 		btnSave.addActionListener(new CMyProcessButtonEvent());
+
+		btnExit.addActionListener(new CMyProcessButtonEvent());
 		tblDetail.addMouseListener(new CMyProcessMouseEvent());
 		
 		btnAdd.setMnemonic('A');
@@ -292,7 +309,7 @@ public class CPostionFrame extends JFrame{
 	private void loadDataFromFile()
 	{
 		m_PostionList=null;
-		m_PostionList=ProcessFile.ReadData(ProcessFile.FILENAME);
+		m_PostionList=(PositionList) ProcessFile.ReadData(ProcessFile.FILENAME_POSITION);
 		if(m_PostionList==null)
 			m_PostionList=new PositionList();
 		//call method read FILE to take the information for m_PostionList
@@ -372,6 +389,20 @@ public class CPostionFrame extends JFrame{
 				cboTitle.setSelectedIndex(m_CurrentPostion.getTitle().ordinal());
 			}
 		}
+	}
+	private void doDelete()
+	{
+		int nRow=tblDetail.getSelectedRow();
+		if(nRow>=0)
+		{
+			int ret=JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this item?","Delete Item",JOptionPane.YES_NO_OPTION);
+			if(ret==JOptionPane.YES_OPTION)
+			{
+				m_PostionList.removeAt(nRow);
+				
+				loadDataOnTable();
+			}
+		}
 		/*int nRow=tblDetail.getSelectedRow();
 				
 		Position aPostion=m_PostionList.get(nRow);
@@ -389,19 +420,29 @@ public class CPostionFrame extends JFrame{
 		}
 		loadDataOnTable();
 		*/
-	}
-	private void doDelete()
+	}/*
+	private void doSelectedOnTable()
 	{
+		
 		int nRow=tblDetail.getSelectedRow();
-		if(nRow>=0)
+
+		if(nRow>=0 && !btnAdd.getText().equalsIgnoreCase("Cancel"))
 		{
-			int ret=JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this item?","Delete Item",JOptionPane.YES_NO_OPTION);
-			if(ret==JOptionPane.YES_OPTION)
-			{
-				m_PostionList.removeAt(nRow);
-				
-				loadDataOnTable();
-			}
+			btnUpdate.setEnabled(true);
+			btnDelete.setEnabled(true);
+			Position aPostion=m_PostionList.get(nRow);
+			m_CurrentPostion=aPostion;
+			txtSalary.setText(aPostion.getSalary()+"");
+			txtOtherSalary.setText(aPostion.getOtherSalary()+"");
+			cboTitle.setSelectedIndex(aPostion.getTitle().ordinal());
+		}
+	}*/
+	private void doExit()
+	{
+		
+		if(JOptionPane.showConfirmDialog(this, "Are you sure you want to close this fuction", "Close Position Title", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
+		{
+			System.exit(0);
 		}
 	}
 	private void doSelectedOnTable()
@@ -505,7 +546,7 @@ public class CPostionFrame extends JFrame{
 			
 			tblModel.addRow(vec);
 			cboTitle.requestFocus();
-			boolean bResult=ProcessFile.WriteData(m_PostionList, ProcessFile.FILENAME);
+			boolean bResult=ProcessFile.WriteData(m_PostionList, ProcessFile.FILENAME_POSITION);
 			if(bResult)
 			{
 				JOptionPane.showMessageDialog(null, "Save success");
@@ -531,7 +572,8 @@ public class CPostionFrame extends JFrame{
 			aPostion.setOtherSalary(nOtherSalary);
 			
 			m_PostionList.update(nRow, aPostion);
-			boolean bResult=ProcessFile.WriteData(m_PostionList, ProcessFile.FILENAME);
+			boolean bResult=ProcessFile.WriteData(m_PostionList, ProcessFile.FILENAME_POSITION);
+			
 			if(!bResult)
 			{
 				JOptionPane.showMessageDialog(null, "Update success");
@@ -569,6 +611,10 @@ public class CPostionFrame extends JFrame{
 			else if(myObj.equals(btnSave))
 			{
 				doSave();
+			}
+			else if(myObj.equals(btnExit))
+			{
+				doExit();
 			}
 		}
 		
@@ -619,7 +665,7 @@ public class CPostionFrame extends JFrame{
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		CPostionFrame myUI=new CPostionFrame("PositionFrame");
+		new CPostionFrame("PositionFrame");
 	}
 
 }

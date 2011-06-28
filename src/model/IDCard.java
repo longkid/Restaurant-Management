@@ -1,8 +1,13 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class IDCard {
+public class IDCard implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String cardNum;
 	private Date issuedDate;
 	private String issuedPlace;

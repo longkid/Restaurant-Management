@@ -2,14 +2,24 @@ package model;
 /**
  * Author: Le Duy Phong
 
+<<<<<<< HEAD
+import java.io.Serializable;
+=======
  * Purpose of this class: this class is used to save information about employee.
  */
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
+@SuppressWarnings("deprecation")
+public class Employee  implements Serializable
+{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-public class Employee {
 	private String fullName;
 	private Date birthday;
 	private Sex sex;
@@ -17,17 +27,32 @@ public class Employee {
 	private List<TelephoneNumber> phoneNumbers = new ArrayList<TelephoneNumber>();
 	private IDCard identityCard;
 	private String permanentAddress;
-	private List<Address> temporaryAddresses = new ArrayList<Address>();
-	private List<BankAccount> accounts = new ArrayList<BankAccount>();
-	private List<Contract> contracts = new ArrayList<Contract>();
+	private List<Address> temporaryAddresses;
+	private List<BankAccount> accounts;
+	private List<Contract> contracts;
+	private Contract currentContract;
 	private String education;
-	private List<Diploma> diplomas = new ArrayList<Diploma>();
-	private List<Certificate> languageCertificates = new ArrayList<Certificate>();
-	private List<Certificate> itCertificates = new ArrayList<Certificate>();
-
-	public Employee() {
+	private List<Diploma> diplomas;
+	private List<Certificate> languageCertificates;
+	private List<Certificate> itCertificates;
+	public Employee()
+	{
+		this.fullName = "";
+		this.birthday = new Date();
+		this.sex = Sex.MALE;
+		this.emails = new ArrayList<String>();
+		this.phoneNumbers = new ArrayList<TelephoneNumber>();
+		this.identityCard = new IDCard();
+		this.permanentAddress = "";
+		this.temporaryAddresses = new ArrayList<Address>();
+		this.accounts = new ArrayList<BankAccount>();
+		this.education = "";
+		this.diplomas = new ArrayList<Diploma>();
+		this.languageCertificates = new ArrayList<Certificate>();
+		this.itCertificates = new ArrayList<Certificate>();
+		this.currentContract=new Contract();
 	}
-
+	
 	public Employee(String fullName, Date birthday, Sex sex,
 			List<String> emails, List<TelephoneNumber> phoneNumbers,
 			IDCard identityCard, String permanentAddress,
@@ -201,16 +226,29 @@ public class Employee {
 	public void addItCertificate(Certificate certificate) {
 		itCertificates.add(certificate);
 	}
-
-	public Vector<String> getVector() {
-		Vector<String> vec = new Vector<String>();
-		vec.add(fullName);
-		vec.add(null); // 20110618 - LH: I'll replace null by PositionTitle
-		vec.add(null);
-
+	/*
+	 * @author Tu Thi Xuan Hien
+	 */
+	public Vector<String>getVector()
+	{
+		Vector<String>vec=new Vector<String>();
+		vec.add(this.fullName);
+		vec.add(this.birthday.getDay()+"/" +this.birthday.getMonth()+"/"+this.birthday.getYear());
+		if(this.sex==Sex.FEMALE)
+			vec.add("Female");
+		else
+			vec.add("Male");
 		return vec;
 	}
-	
+	public void setCurrentContract(Contract con)
+	{
+		this.currentContract=con;
+	}
+	public Contract getCurrentContract()
+	{
+		return this.currentContract;
+	}
+		
 	public String getLatestEmail() {
 		return getLastElement(emails);
 	}

@@ -29,7 +29,11 @@ public class Position implements Serializable{
 	private PositionTitle title;
 	private int salary; // unit: US Dollar
 	private int otherSalary; // unit: US Dollar
-
+	public Position() {
+		this.title = PositionTitle.ACCOUNTANT;
+		this.salary = ACCOUNTANT_SALARY;
+		this.otherSalary = 0;
+	}
 	public Position(PositionTitle title, int salary, int otherSalary) {
 		this.title = title;
 		this.salary = salary;

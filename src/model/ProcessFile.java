@@ -10,16 +10,17 @@ import java.io.ObjectOutputStream;
 
 public class ProcessFile 
 {
-	@SuppressWarnings("unchecked")
-	public static String FILENAME="postiondata.dat";
-	public static PositionList ReadData(String strPath)
+	public static String FILENAME_POSITION="postiondata.dat";
+	public static String FILENAME_EMPLOYEE="employeedata.dat";
+	public static String FILENAME_CONSTRACT="constractdata.dat";
+	public static Object ReadData(String strPath)
 	{
-		PositionList listPostion=null;
+		Object obj=null;
 		try
 		{
 			FileInputStream file=new FileInputStream(strPath);
 			ObjectInputStream instream=new ObjectInputStream(file);
-			listPostion =(PositionList)instream.readObject();
+			obj =instream.readObject();
 			instream.close();
 		}
 		catch(IOException ex)
@@ -30,16 +31,16 @@ public class ProcessFile
 		{
 			ex.printStackTrace();
 		}
-		return listPostion;
+		return obj;
 	}
-	public static boolean WriteData(PositionList listPostion,String strPath)
+	public static boolean WriteData(Object obj,String strPath)
 	{
 		boolean bResult=false;
 		try
 		{
 			FileOutputStream file=new FileOutputStream(strPath);
 			ObjectOutputStream outstream=new ObjectOutputStream(file);
-			outstream.writeObject(listPostion);
+			outstream.writeObject(obj);
 			outstream.close();
 			bResult=true;
 		}

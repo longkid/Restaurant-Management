@@ -47,6 +47,8 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem mntmManageDayoffs = new JMenuItem("Manage Day-offs...");
 	private JMenu mnTimekeeping = new JMenu("Timekeeping");
 	private JMenuItem mntmTimekeeping = new JMenuItem("Timekeeping");
+	
+	private JMenuItem mnTimekeepingContractManagement=new JMenuItem("Contract Management");
 	private JMenuItem mntmViewTimekeepingReport = new JMenuItem("View Report");
 	private JMenu mnPayroll = new JMenu("Payroll");
 	private JMenuItem mntmViewPayrollReport = new JMenuItem("View Report");
@@ -114,8 +116,11 @@ public class MainFrame extends JFrame implements ActionListener {
 		menuBar.add(mnTimekeeping);
 		mnTimekeeping.add(mntmTimekeeping);
 		mnTimekeeping.add(mntmViewTimekeepingReport);
+		mnTimekeeping.addSeparator();
+		mnTimekeeping.add(mnTimekeepingContractManagement);
 		mntmViewTimekeepingReport.addActionListener(this);
-
+		mnTimekeepingContractManagement.addActionListener(this);
+		
 		mnPayroll.setEnabled(false);
 		mnPayroll.setMnemonic('P');
 		menuBar.add(mnPayroll);
@@ -167,10 +172,15 @@ public class MainFrame extends JFrame implements ActionListener {
 		if (source == passwordField || source == btnLogIn) { // Process the
 																// password
 			handleLogIn();
-		} else if (source == mntmViewPayrollReport) {
+		} /*else if (source == mntmViewPayrollReport) {
 			new PayrollFrame();
-		} else if (source == mntmViewTimekeepingReport) {
+		} */else if (source == mntmViewTimekeepingReport) {
 			new WorkingDaysReportFrame();
+		}
+		else if(source.equals(mnTimekeepingContractManagement))
+		{
+			CTimeKeepingBookFrame ui=new CTimeKeepingBookFrame("Contract Management");
+			ui.doShow();
 		}
 	}
 
