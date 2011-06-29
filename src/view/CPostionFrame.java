@@ -219,8 +219,7 @@ public class CPostionFrame extends JFrame{
 		cboTitle.addItem("Dishwasher");
 		cboTitle.addItem("Runner");
 		cboTitle.addItem("Server");
-		cboTitle.addItem("Head Server");
-		
+		cboTitle.addItem("Head Server");	
 		
 	}
 	private String getPostionTitleString(PositionTitle aPostionTitle)
@@ -403,40 +402,8 @@ public class CPostionFrame extends JFrame{
 				loadDataOnTable();
 			}
 		}
-		/*int nRow=tblDetail.getSelectedRow();
-				
-		Position aPostion=m_PostionList.get(nRow);
-		int nSalary=Integer.parseInt( txtSalary.getText());
-		aPostion.setSalary(nSalary);
-		
-		int nOtherSalary=Integer.parseInt( txtOtherSalary.getText());
-		aPostion.setOtherSalary(nOtherSalary);
-		
-		m_PostionList.update(nRow, aPostion);
-		boolean bResult=ProcessFile.WriteData(m_PostionList, ProcessFile.FILENAME);
-		if(!bResult)
-		{
-			JOptionPane.showMessageDialog(null, "Save success");
-		}
-		loadDataOnTable();
-		*/
-	}/*
-	private void doSelectedOnTable()
-	{
-		
-		int nRow=tblDetail.getSelectedRow();
-
-		if(nRow>=0 && !btnAdd.getText().equalsIgnoreCase("Cancel"))
-		{
-			btnUpdate.setEnabled(true);
-			btnDelete.setEnabled(true);
-			Position aPostion=m_PostionList.get(nRow);
-			m_CurrentPostion=aPostion;
-			txtSalary.setText(aPostion.getSalary()+"");
-			txtOtherSalary.setText(aPostion.getOtherSalary()+"");
-			cboTitle.setSelectedIndex(aPostion.getTitle().ordinal());
-		}
-	}*/
+	
+	}
 	private void doExit()
 	{
 		
@@ -499,21 +466,7 @@ public class CPostionFrame extends JFrame{
 			nSalary=Position.HEAD_SERVER_SALARY;
 			break;
 		}
-		/*int nRow=tblDetail.getSelectedRow();
-		if(nRow>=0)
-		{
-			Position aPostion=m_PostionList.get(nRow);
-			int nSalary2=nSalary;
-			if(aPostion.getTitle().ordinal()!=nIndex)
-			{
-				nSalary2=aPostion.getSalary();
-			}
-			if(aPostion.getSalary()!=nSalary)
-			{
-				nSalary=aPostion.getSalary();
-			}
-			
-		}*/
+		
 		txtSalary.setText(nSalary+"");
 	}
 	private void doSave()
@@ -619,7 +572,6 @@ public class CPostionFrame extends JFrame{
 		}
 		
 	}
-	
 	
 	private class CMyProcessMouseEvent implements MouseListener
 	{

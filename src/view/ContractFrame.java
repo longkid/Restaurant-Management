@@ -1,4 +1,7 @@
 package view;
+/*
+ * @author Tu Thi Xuan Hien
+ */
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -30,50 +34,42 @@ import javax.swing.table.DefaultTableModel;
 
 
 
+import model.Contract;
 import model.Employee;
 import model.Position;
 import model.PositionList;
+import model.PositionTitle;
+import model.ProcessFile;
 
 public class ContractFrame extends JFrame {
 	private JComboBox cboTitle;
-	private JButton btnAdd,btnUpdate,btnDelete,btnSave,btnExit;
-	private JTextField txtPostionTitle,txtSalary,txtContractDate, txtCurrencyofContract ;	
-	private JTable tblDetail;
-	private DefaultTableModel tblModel;
+	private JButton btnAdd,btnSave,btnExit;
+	private JTextField txtPostionTitle,txtSalary,txtStartDateContract, txtExpireDateofContract ;	
 	private PositionList m_PostionList;
+	private PositionTitle m_PositionTitle;
 	private Position m_CurrentPostion=null;
 	private Employee m_currentEmployee=null;
-	public ContractFrame(String strTitle){
+	private Contract m_contract=null;
+	
+	public ContractFrame(String strTitle){//constructor
 		super(strTitle);
 		createUI();
-		//setSize(650, 600);
-		//setVisible(true);
-		//setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		m_PostionList=new PositionList();
-		//setLocationRelativeTo(null);
-		loadDataFromFile();
-		//loadDataOnTable();
-		
+		//loadDataFromFile();		
 	}
-	public ContractFrame(String strTitle,Employee employee){
+	public ContractFrame(String strTitle,Employee employee){//constructor
 		super(strTitle);
 		m_currentEmployee=employee;
 		createUI();
-		//setSize(650, 600);
-		//setVisible(true);
-		//setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		m_PostionList=new PositionList();
-		//setLocationRelativeTo(null);
-		loadDataFromFile();
-		//JOptionPane.showMessageDialog(null, "You choosen: "+m_currentEmployee.getFullName());
-		//loadDataOnTable();
-		
+		//loadDataFromFile();
+			
 	}
 
-	private void loadDataFromFile() {
+	/*private void loadDataFromFile() {
 		// TODO Auto-generated method stub
 		
-	}
+	}*/
 
 	private void createUI() {
 		JPanel pnGeneral=new JPanel();
@@ -87,6 +83,7 @@ public class ContractFrame extends JFrame {
 		JPanel pnTitle=new JPanel();
 		JLabel lblTitle=new JLabel("New Contract:");
 		JLabel lblEmployeeName=new JLabel(m_currentEmployee.getFullName());
+		
 		lblEmployeeName.setForeground(Color.RED);
 		lblTitle.setForeground(Color.BLUE);
 		Font font=new Font("Arial", Font.BOLD, 20);
@@ -103,7 +100,7 @@ public class ContractFrame extends JFrame {
 		pnInputInformation.setLayout(new BoxLayout(pnInputInformation, BoxLayout.Y_AXIS));
 		pnInformation.add(pnInputInformation);
 		
-		//create Postion Title - dung Combobox 
+		//create Postion Title - use Combobox 
 		JPanel pnPositionTitle=new JPanel();
 		JLabel lblPostionTitle=new JLabel("Postion Title:", JLabel.RIGHT);
 		cboTitle=new JComboBox();
@@ -111,7 +108,6 @@ public class ContractFrame extends JFrame {
 		//Call method add PostionTitle in Combobox
 		addPostionTitleForCombobox();
 		
-		//txtPostionTitle=new JTextField(15);
 		pnPositionTitle.add(lblPostionTitle);
 		pnPositionTitle.add(cboTitle); //display combobox on form
 		pnGeneral.add(pnInformation,BorderLayout.CENTER);
@@ -122,23 +118,22 @@ public class ContractFrame extends JFrame {
 		JLabel lblSalary=new JLabel("Salary:", JLabel.RIGHT);
 		txtSalary=new JTextField(15);
 		pnSalary.add(lblSalary);
-		pnSalary.add(txtSalary);
-		//txtSalary.setEditable(false);
+		pnSalary.add(txtSalary);		
 		pnInputInformation.add(pnSalary);
 		
 		
 		JPanel pnContractDate=new JPanel();
 		JLabel lblContractDate=new JLabel("Start Date Contract:", JLabel.RIGHT);
-		txtContractDate=new JTextField(15);
+		txtStartDateContract=new JTextField(15);
 		pnContractDate.add(lblContractDate);
-		pnContractDate.add(txtContractDate);
+		pnContractDate.add(txtStartDateContract);
 		pnInputInformation.add(pnContractDate);
 		
 		JPanel pnCurrencyofContract=new JPanel();
 		JLabel lblCurrencyofContract=new JLabel("Expire Date of Contract:");
-		txtCurrencyofContract=new JTextField(15);
+		txtExpireDateofContract=new JTextField(15);
 		pnCurrencyofContract.add(lblCurrencyofContract);
-		pnCurrencyofContract.add(txtCurrencyofContract);
+		pnCurrencyofContract.add(txtExpireDateofContract);
 		pnInputInformation.add(pnCurrencyofContract);
 		
 		
@@ -163,77 +158,44 @@ public class ContractFrame extends JFrame {
 		btnSave=new JButton("Save");
 		ImageIcon iconSave=new ImageIcon("images/Save.png");
 		btnSave.setIcon(iconSave);
-		
-		btnUpdate=new JButton("Update");
-		ImageIcon iconEdit=new ImageIcon("images/modify.png");
-		btnUpdate.setIcon(iconEdit);
-		btnDelete=new JButton("Delete");
-		
-		ImageIcon iconDelete=new ImageIcon("images/trash.png");
-		btnDelete .setIcon(iconDelete);
+	
+	
+		btnExit=new JButton("Exit");
+		ImageIcon iconExit=new ImageIcon("images/close.png");
+		btnExit.setIcon(iconExit);
 		
 		pnButton.add(btnAdd);
 		pnButton.add(btnSave);
-		pnButton.add(btnUpdate);
-		pnButton.add(btnDelete);
+		pnButton.add(btnExit);
+		
 		TitledBorder borderButtons=new TitledBorder(BorderFactory.createLineBorder(Color.RED), "Choose Action:");
 		pnButton.setBorder(borderButtons);			
 		pnInformation.add(pnButton);
-		
-		//create Table
-		JPanel pnTable=new JPanel();
-		pnTable.setLayout(new BorderLayout());
-		//pnInformation.add(pnTable);
-		//must be DefaultTableModel
-		tblModel=new DefaultTableModel();
-		
-		//Add Column for TableModel
-		tblModel.addColumn("Postion Title");
-		tblModel.addColumn("Salary");
-		tblModel.addColumn("Contract date");
-		tblModel.addColumn("Current of Contract");
-		//sau do dua vao Jtable
-		tblDetail=new JTable(tblModel);
-		
-		//must be JScrollPane to see information in JTable
-		JScrollPane sc=new JScrollPane(tblDetail);
-		sc.setPreferredSize(new Dimension(530, 200));
-		
-		//diaplay JScrollPane on interface
-		pnTable.add(sc,BorderLayout.CENTER);
-		TitledBorder borderTable=new TitledBorder(BorderFactory.createLineBorder(Color.RED), "Postion List:");
-		pnTable.setBorder(borderTable);
-		btnExit=new JButton("Exit");
-		JPanel pnSouth=new JPanel();
-		pnSouth.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		ImageIcon iconExit=new ImageIcon("images/close.png");
-		btnExit.setIcon(iconExit);
-		pnSouth.add(btnExit);
-		pnGeneral.add(pnSouth,BorderLayout.SOUTH);
-		
+				
 		//assign Event into BUtton
 		btnAdd.addActionListener(new CMyProcessButtonEvent());
-		btnUpdate.addActionListener(new CMyProcessButtonEvent());
-		btnDelete.addActionListener(new CMyProcessButtonEvent());
 		cboTitle.addActionListener(new CMyProcessButtonEvent());
 		btnSave.addActionListener(new CMyProcessButtonEvent());
-
 		btnExit.addActionListener(new CMyProcessButtonEvent());
-		//tblDetail.addMouseListener(new CMyProcessMouseEvent());
 		
 		btnAdd.setMnemonic('A');
-		btnUpdate.setMnemonic('E');
-		btnDelete.setMnemonic('D');
 		btnSave.setMnemonic('S');
+		btnExit.setMnemonic('E');
 		
 		
-	//	LockTheTextBox(true);
+		LockTheTextBox(true);
 		btnAdd.setEnabled(true);
-		btnUpdate.setEnabled(false);
-		btnDelete.setEnabled(false);
+		btnExit.setEnabled(true);
 		btnSave.setEnabled(false);
 		
 		
+	}
+	private void LockTheTextBox(boolean b)
+	{
+		txtSalary.setEditable(!b);
+		txtStartDateContract.setEditable(!b);
+		txtExpireDateofContract.setEditable(!b);
+		cboTitle.setEnabled(!b);
 	}
 
 	private void addPostionTitleForCombobox() {
@@ -252,6 +214,7 @@ public class ContractFrame extends JFrame {
 		cboTitle.addItem("Head Server");
 		
 	}
+	
 	private class CMyProcessButtonEvent implements ActionListener
 	{
 
@@ -263,14 +226,7 @@ public class ContractFrame extends JFrame {
 			{
 				doAdd();	
 			}
-			else if(myObj.equals(btnUpdate))
-			{
-				doUpdate();
-			}
-			else if(myObj.equals(btnDelete))
-			{
-				doDelete();
-			}
+			
 			else if(myObj.equals(cboTitle))
 			{
 				doGetSalary();
@@ -291,56 +247,163 @@ public class ContractFrame extends JFrame {
 		}
 
 		private void doSave() {
-			// TODO Auto-generated method stub
+			if(btnAdd.isEnabled())
+			{
+				//We save Contract here
+				if(m_currentEmployee.getContracts()==null){					
+					m_contract =new Contract();
+					m_currentEmployee.addContract(m_contract);					
+				}
+				int nSalary=Integer.parseInt(txtSalary.getText());
+				int nIndex=cboTitle.getSelectedIndex();
+				m_PositionTitle=getPostionTitle(nIndex);
+				
+			//	m_contract.getStartDate())=;
+				boolean bResult=ProcessFile.WriteData(m_PostionList, ProcessFile.FILENAME_POSITION);
+				if(bResult)
+				{
+					JOptionPane.showMessageDialog(null, "Save success");
+				}
+				else
+					JOptionPane.showMessageDialog(null, "Save Failed");
+				
+				btnAdd.setText("Add");
+				btnSave.setEnabled(false);
+				LockTheTextBox(true);
+				//tblDetail.setEnabled(true);
+			}
+			else
+			{
+			
+				int nSalary=Integer.parseInt( txtSalary.getText());
+				boolean bResult=ProcessFile.WriteData(m_PostionList, ProcessFile.FILENAME_POSITION);
+				
+				if(!bResult)
+				{
+					JOptionPane.showMessageDialog(null, "Save success");
+				}
+				
+				
+				btnSave.setEnabled(false);
+				btnAdd.setEnabled(true);
+				LockTheTextBox(true);
+			}
 			
 		}
+		private PositionTitle getPostionTitle(int nIndex)
+		{
+			PositionTitle posTitle=PositionTitle.ACCOUNTANT;
+			switch(nIndex)
+			{
+			case 0:
+				posTitle=PositionTitle.ACCOUNTANT;
+				break;
+			case 1:
+				posTitle=PositionTitle.HEAD_ACCOUNTANT;
+				break;
+			case 2:
+				posTitle=PositionTitle.CASHIER;
+				break;
+			case 3:
+				posTitle=PositionTitle.DIRECTOR;
+				break;
+			case 4:
+				posTitle=PositionTitle.CHEF;
+				break;
+			case 5:
+				posTitle=PositionTitle.EXECUTIVE_CHEF;
+				break;
+			case 6:
+				posTitle=PositionTitle.BUSBOY ;
+				break;
+			case 7:
+				posTitle=PositionTitle.DISHWASHER;
+				break;
+			case 8:
+				posTitle=PositionTitle.RUNNER;
+				break;
+			case 9:
+				posTitle=PositionTitle.SERVER;
+				break;
+			case 10:
+				posTitle=PositionTitle.HEAD_SERVER;
+				break;
+			}
+			return posTitle;
+		}
+		
 
 		private void doGetSalary() {
-			// TODO Auto-generated method stub
+			int nIndex=cboTitle.getSelectedIndex();
+			
+			int nSalary=Position.ACCOUNTANT_SALARY;
+			switch(nIndex)
+			{
+			case 0:
+				nSalary=Position.ACCOUNTANT_SALARY;
+				break;
+			case 1:
+				nSalary=Position.HEAD_ACCOUNTANT_SALARY;
+				break;
+			case 2:
+				nSalary=Position.CASHIER_SALARY;
+				break;
+			case 3:
+				nSalary=Position.DIRECTOR_SALARY;
+				break;
+			case 4:
+				nSalary=Position.CHEF_SALARY;
+				break;
+			case 5:
+				nSalary=Position.EXECUTIVE_CHEF_SALARY;
+				break;
+			case 6:
+				nSalary=Position.BUSBOY_SALARY ;
+				break;
+			case 7:
+				nSalary=Position.RUNNER_SALARY;
+				break;
+			case 8:
+				nSalary=Position.SERVER_SALARY;
+				break;
+			case 9:
+				nSalary=Position.HEAD_SERVER_SALARY;
+				break;
+			}
+			
+			txtSalary.setText(nSalary+"");
 			
 		}
+		
 
-		private void doDelete() {
-			// TODO Auto-generated method stub
-			
-		}
-
-		private void doUpdate() {
-			// TODO Auto-generated method stub
-			
-		}
 		private void LockTheTextBox(boolean b)
 		{
 			txtSalary.setEditable(!b);
-			txtContractDate.setEditable(!b);
-			txtCurrencyofContract.setEditable(!b);
+			txtStartDateContract.setEditable(!b);
+			txtExpireDateofContract.setEditable(!b);
 			cboTitle.setEnabled(!b);
 		}
 
 		private void doAdd() {
 			if(btnAdd.getText().equalsIgnoreCase("Add"))
 			{
-				btnAdd.setText("Cancel");
-				btnUpdate.setEnabled(false);
+				btnAdd.setText("Cancel");				
 				btnSave.setEnabled(true);
-				btnDelete.setEnabled(false);
 				LockTheTextBox(false);
-				tblDetail.setEnabled(false);
+			//	tblDetail.setEnabled(false);
 				txtSalary.setText("");
-				txtContractDate.setText("");
+				txtStartDateContract.setText("");
 			}
 			else
 			{
-				btnAdd.setText("Add");
-				btnUpdate.setEnabled(false);
-				btnSave.setEnabled(false);
-				btnDelete.setEnabled(false);
+				btnAdd.setText("Add");				
+				btnSave.setEnabled(false);				
 				LockTheTextBox(true);
-				tblDetail.setEnabled(true);
+				//tblDetail.setEnabled(true);
 				if(m_CurrentPostion!=null)
 				{
 					txtSalary.setText(m_CurrentPostion.getSalary()+"");
-					txtCurrencyofContract.setText(m_CurrentPostion.getOtherSalary()+"");
+					//txtExpireDateofContract.setText(m_CurrentPostion.getOtherSalary()+"");
 					cboTitle.setSelectedIndex(m_CurrentPostion.getTitle().ordinal());
 				}
 			}
@@ -348,8 +411,9 @@ public class ContractFrame extends JFrame {
 		}
 		
 	}
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
 		new ContractFrame("ContractFrame");
 	}
 

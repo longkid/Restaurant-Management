@@ -291,6 +291,11 @@ public class CTimeKeepingBookFrame extends JFrame{
 		cboMonth.addActionListener(new CButtonEvent());
 		cboYear.addActionListener(new CButtonEvent());
 		btnSaveTimeKeeping.addActionListener(new CButtonEvent());
+		
+		int month=Integer.parseInt(cboMonth.getSelectedItem().toString());
+		int year=Integer.parseInt(cboYear.getSelectedItem().toString());
+		m_nMonthSelected=month;
+		m_nYearSelected=year;
 	}
 	private boolean isLeapYear(int year)
 	{
@@ -339,7 +344,12 @@ public class CTimeKeepingBookFrame extends JFrame{
 			cframe.setVisible(true);
 			break;
 		case EDITCONTRACT:
-			JOptionPane.showMessageDialog(null,"Edit contract");
+			//JOptionPane.showMessageDialog(null,"Edit contract");
+			CEditContractFrame editConFr=new CEditContractFrame("");
+			editConFr.setSize(550,350);
+			editConFr.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+			editConFr.setLocationRelativeTo(null);
+			editConFr.setVisible(true);
 			break;
 		case DELETECONTRACT:
 			JOptionPane.showMessageDialog(null,"Delete this contract");

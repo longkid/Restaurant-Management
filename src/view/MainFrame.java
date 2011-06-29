@@ -174,9 +174,9 @@ public class MainFrame extends JFrame implements ActionListener {
 			handleLogIn();
 		} /*else if (source == mntmViewPayrollReport) {
 			new PayrollFrame();
-		} */else if (source == mntmViewTimekeepingReport) {
+		} else if (source == mntmViewTimekeepingReport) {
 			new WorkingDaysReportFrame();
-		}
+		}*/
 		else if(source.equals(mnTimekeepingContractManagement))
 		{
 			CTimeKeepingBookFrame ui=new CTimeKeepingBookFrame("Contract Management");
