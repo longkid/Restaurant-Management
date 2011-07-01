@@ -409,7 +409,8 @@ public class CPostionFrame extends JFrame{
 		
 		if(JOptionPane.showConfirmDialog(this, "Are you sure you want to close this fuction", "Close Position Title", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
 		{
-			System.exit(0);
+			//System.exit(0);
+			dispose();
 		}
 	}
 	private void doSelectedOnTable()

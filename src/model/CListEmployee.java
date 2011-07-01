@@ -42,4 +42,19 @@ public class CListEmployee  implements Serializable
 	{
 		m_listEmployee.set(n, employee);
 	}
+	
+	public CListEmployee searchData(String strName)
+	{
+		CListEmployee listEmployee=new CListEmployee();
+		
+		for(int i=0;i<this.size();i++)
+		{
+			Employee employee=this.get(i);
+			if(employee.getFullName().indexOf(strName)!=-1)
+			{
+				listEmployee.add(employee);
+			}
+		}
+		return listEmployee;
+	}
 }

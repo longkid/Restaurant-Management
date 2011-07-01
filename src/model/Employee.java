@@ -51,6 +51,7 @@ public class Employee  implements Serializable
 		this.languageCertificates = new ArrayList<Certificate>();
 		this.itCertificates = new ArrayList<Certificate>();
 		this.currentContract=new Contract();
+		this.contracts=new ArrayList<Contract>();
 	}
 	
 	public Employee(String fullName, Date birthday, Sex sex,
@@ -73,6 +74,7 @@ public class Employee  implements Serializable
 		this.diplomas = diplomas;
 		this.languageCertificates = languageCertificates;
 		this.itCertificates = itCertificates;
+		this.contracts=new ArrayList<Contract>();
 	}
 
 	public String getFullName() {

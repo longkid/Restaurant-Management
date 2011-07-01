@@ -72,5 +72,4 @@ public class Contract  implements Serializable{
 	{
 		return this.m_TimeKeeping;
 	}
-
 }

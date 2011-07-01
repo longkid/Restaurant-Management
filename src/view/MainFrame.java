@@ -41,17 +41,20 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem mntmLogIn = new JMenuItem("Log in");
 	private JMenuItem mntmSignOut = new JMenuItem("Sign out");
 	private JMenuItem mntmExit = new JMenuItem("Exit");
+	
 	private JMenu mnManage = new JMenu("Manage");
 	private JMenuItem mntmManageStaff = new JMenuItem("Manage Staff...");
 	private JMenuItem mntmManageWaiters = new JMenuItem("Manage Waiters...");
 	private JMenuItem mntmManageDayoffs = new JMenuItem("Manage Day-offs...");
-	private JMenu mnTimekeeping = new JMenu("Timekeeping");
-	private JMenuItem mntmTimekeeping = new JMenuItem("Timekeeping");
 	
+	private JMenu mnTimekeeping = new JMenu("Timekeeping");
+	private JMenuItem mntmTimekeeping = new JMenuItem("Timekeeping");	
 	private JMenuItem mnTimekeepingContractManagement=new JMenuItem("Contract Management");
 	private JMenuItem mntmViewTimekeepingReport = new JMenuItem("View Report");
-	private JMenu mnPayroll = new JMenu("Payroll");
-	private JMenuItem mntmViewPayrollReport = new JMenuItem("View Report");
+	
+	private JMenu mnPosition = new JMenu("Position");
+	private JMenuItem mnPositionManagement = new JMenuItem("Position Management");
+	
 	private JMenu mnHelp = new JMenu("Help");
 	private JMenuItem mntmHelp = new JMenuItem("Help...");
 	private JMenuItem mntmAboutRestaurant = new JMenuItem("About Restaurant...");
@@ -121,12 +124,12 @@ public class MainFrame extends JFrame implements ActionListener {
 		mntmViewTimekeepingReport.addActionListener(this);
 		mnTimekeepingContractManagement.addActionListener(this);
 		
-		mnPayroll.setEnabled(false);
-		mnPayroll.setMnemonic('P');
-		menuBar.add(mnPayroll);
-		mnPayroll.add(mntmViewPayrollReport);
-		mntmViewPayrollReport.addActionListener(this);
-
+		mnPosition.setEnabled(false);
+		mnPosition.setMnemonic('P');
+		menuBar.add(mnPosition);
+		mnPosition.add(mnPositionManagement);
+		mnPositionManagement.addActionListener(this);		
+		
 		mnHelp.setMnemonic('H');
 		menuBar.add(mnHelp);
 		mnHelp.add(mntmHelp);
@@ -172,11 +175,11 @@ public class MainFrame extends JFrame implements ActionListener {
 		if (source == passwordField || source == btnLogIn) { // Process the
 																// password
 			handleLogIn();
-		} /*else if (source == mntmViewPayrollReport) {
-			new PayrollFrame();
-		} else if (source == mntmViewTimekeepingReport) {
-			new WorkingDaysReportFrame();
-		}*/
+		} 
+		else if (source.equals(mnPositionManagement)){
+			new CPostionFrame("Position Management");
+			
+		}
 		else if(source.equals(mnTimekeepingContractManagement))
 		{
 			CTimeKeepingBookFrame ui=new CTimeKeepingBookFrame("Contract Management");
@@ -191,7 +194,7 @@ public class MainFrame extends JFrame implements ActionListener {
 			mnAdministrator.setEnabled(true);
 			mnManage.setEnabled(true);
 			mnTimekeeping.setEnabled(true);
-			mnPayroll.setEnabled(true);
+			mnPosition.setEnabled(true);
 			mnHelp.setEnabled(true);
 			displayInfoOnMainFrame();
 		} else {
