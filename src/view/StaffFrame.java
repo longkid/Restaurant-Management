@@ -21,11 +21,8 @@ import java.awt.event.ActionEvent;
 
 public class StaffFrame extends JFrame {
 	private JPanel contentPane;
-	//private JTable table;
 	private JTable table_1;
 	private JButton btnUpdate;
-
-	
 
 	/**
 	 * Create the frame.
@@ -37,11 +34,6 @@ public class StaffFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
-//		table = new JTable();
-//		table.setBounds(55, 111, 1, 1);
-//		contentPane.add(table);
-
 		setTable_1(new JTable());
 		
 		getTable_1().setBounds(12, 12, 487, 323);

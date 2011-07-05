@@ -6,6 +6,7 @@ package controller;
  */
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import model.Employee;
@@ -23,15 +24,17 @@ public class StaffController {
 		this.initView();
 		this.view.setVisible(true);
 	}
-	
+//this function get employee from employees	and fill into table
 	private Object[][] fill() {
 		List<Employee> employees = Staff.getInstance().getEmployees();
-		Object[][] objects = new Object[employees.size()][3];
-
-		for (int i = 0; i < employees.size(); i++) {
-			objects[i][0] = employees.get(i).getFullName();
-			objects[i][1] = employees.get(i).getBirthday();
-			objects[i][2] = employees.get(i).getIdentityCard().getCardNum();
+		Object[][] objects = new Object[employees.size()+1][3];
+		objects[0][0] = "Full name";
+		objects[0][1] = "Birthday";
+		objects[0][2] ="No identity card";
+		for (int i = 1; i <= employees.size(); i++) {
+			objects[i][0] = employees.get(i-1).getFullName();
+			objects[i][1] = employees.get(i-1).getBirthday();
+			objects[i][2] = employees.get(i-1).getIdentityCard().getCardNum();
 		}
 		return objects;
 	}
@@ -51,11 +54,15 @@ public class StaffController {
 
 	public void update() {
 		int index = this.view.getTable_1().getSelectedRow();
-		Employee employee = Staff.getInstance().getEmployees()
-				.get(index);
-		EmployeeFrame.singleton.updateEmployee(employee);
+		index--;
+		if(index<0){return;}
+		EmployeeController.singleton.displayEmployee(index);
 	}
+	//this function is used to open a form for input data when user add new employee
 	public void create(){
-		EmployeeFrame.singleton.setVisible(true);
+		EmployeeController.singleton.setIndex(0);
+		EmployeeController.singleton.setUpdate(false);		
+		EmployeeController.singleton.setVisible(true);
+		
 	}
 }
