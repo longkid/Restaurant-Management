@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Education {
+public class Education  implements Serializable{
 	private String name;
 	private Date validityDate;
 

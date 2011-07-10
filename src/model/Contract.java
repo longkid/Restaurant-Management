@@ -72,4 +72,20 @@ public class Contract  implements Serializable{
 	{
 		return this.m_TimeKeeping;
 	}
+	private String parseNodeTitle()
+	{
+		int day=this.getStartDate().getDate();
+		int month=this.getStartDate().getMonth();
+		int year=this.getStartDate().getYear();
+		 if(year-1900<0)
+			 year=year+1900;
+		String strNode="("+this.getPosition().getTitle().toString()+")-"+day+"/"+month+"/"+(year);
+		
+		return strNode;
+	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return parseNodeTitle();
+	}
 }

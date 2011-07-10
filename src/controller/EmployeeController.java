@@ -7,6 +7,7 @@ package controller;
  * Purpose of this class: this class control the process between EmployeeFrame and some concern class in model
  */
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,10 +17,12 @@ import javax.swing.JOptionPane;
 
 import model.Address;
 import model.BankAccount;
+import model.CListEmployee;
 import model.Certificate;
 import model.Diploma;
 import model.Employee;
 import model.IDCard;
+import model.ProcessFile;
 import model.Sex;
 import model.Staff;
 import model.TelephoneNumber;
@@ -27,7 +30,7 @@ import view.EmployeeFrame;
 
 public class EmployeeController {
 	public static EmployeeController singleton = new EmployeeController();
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private EmployeeFrame view;
 	private List<String> emails = new ArrayList<String>();
 	private List<TelephoneNumber> phoneNumbers = new ArrayList<TelephoneNumber>();
@@ -37,12 +40,16 @@ public class EmployeeController {
 	private List<Diploma> diplomas = new ArrayList<Diploma>();
 	private List<Certificate> languages = new ArrayList<Certificate>();
 	private List<Certificate> itCertificates = new ArrayList<Certificate>();
+	private CListEmployee m_ListEmployee=null;
 	private boolean isUpdate = false;
 	private int index = 0;
 
 	public EmployeeController() {
 		this.view = new EmployeeFrame();
-
+		m_ListEmployee=(CListEmployee)ProcessFile.ReadData(ProcessFile.FILENAME_EMPLOYEE);
+		if(m_ListEmployee==null)
+			m_ListEmployee=new CListEmployee();
+		
 	}
 //this function use to set visible for employeeFrame.
 	public void setVisible(boolean b) {
@@ -70,16 +77,18 @@ public class EmployeeController {
 			Sex sex = null;
 			Date birthday = null;
 			Date issueDate = null;
+			ParsePosition pp=new ParsePosition(0);
 				if (this.view.getSexradioMale().isSelected()) {
 					sex = Sex.MALE;
 				} else {
 					sex = Sex.FEMALE;
 				}
 				try {
-					birthday = dateFormat.parse(this.view.getBirthdayTextField().getText());
-					issueDate=dateFormat.parse(this.view.getIssueDateText().getText());
-					Staff.getInstance().addEmployee(
-							new Employee(
+					birthday = dateFormat.parse(this.view.getBirthdayTextField().getText(),pp);
+					issueDate=dateFormat.parse(this.view.getIssueDateText().getText(),pp);
+					
+					
+					m_ListEmployee.add(new Employee(
 									this.view.getFullNameTextField().getText(),
 									birthday,
 									sex, emails, phoneNumbers, new IDCard(
@@ -92,13 +101,21 @@ public class EmployeeController {
 									this.view.getEducationComboBox()
 											.getSelectedIndex()+"",
 									diplomas, languages, itCertificates));
-
 				// lbResult.setText("Save successfully!");
-				JOptionPane.showMessageDialog(this.view, "Save successfully!",
-						"Save successfully!", JOptionPane.INFORMATION_MESSAGE);
-				singleton.setVisible(false);
-				StaffController.singleton.refresh();
-				} catch (ParseException e) {
+				boolean bRet=ProcessFile.WriteData(m_ListEmployee, ProcessFile.FILENAME_EMPLOYEE);
+				if(bRet==true)
+				{
+					JOptionPane.showMessageDialog(this.view, "Save successfully!",
+							"Save successfully!", JOptionPane.INFORMATION_MESSAGE);
+					singleton.setVisible(false);
+					StaffController.singleton.refresh();	
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(this.view, "Save Failed!",
+							"Save Failed!", JOptionPane.ERROR_MESSAGE);
+				}
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(this.view, "You must input date follow the format yyyy-mm-dd, please!");
 					e.printStackTrace();
@@ -133,10 +150,16 @@ public class EmployeeController {
 				e.printStackTrace();
 			}
             employee.getItCertificates().add(new Certificate(this.view.getCertificateOfITcombobox().getSelectedIndex()+"",new Date()));
-			Staff.getInstance().updateEmployee(index, employee);
+			m_ListEmployee.set(index, employee);
+            //Staff.getInstance().updateEmployee(index, employee);
+			
 			singleton.setVisible(false);
 			StaffController.singleton.refresh();
-			JOptionPane.showMessageDialog(this.view, "Update successful");
+			boolean bRet=ProcessFile.WriteData(m_ListEmployee, ProcessFile.FILENAME_EMPLOYEE);
+			if(bRet==true)
+				JOptionPane.showMessageDialog(this.view, "Update successful");
+			else
+				JOptionPane.showMessageDialog(this.view, "Update Failed");
 		}
 		this.view.getFullNameTextField().setText("");
 		

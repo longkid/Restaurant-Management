@@ -50,8 +50,8 @@ public class Employee  implements Serializable
 		this.diplomas = new ArrayList<Diploma>();
 		this.languageCertificates = new ArrayList<Certificate>();
 		this.itCertificates = new ArrayList<Certificate>();
-		this.currentContract=new Contract();
-		this.contracts=new ArrayList<Contract>();
+		this.currentContract=null;
+		this.contracts=null;
 	}
 	
 	public Employee(String fullName, Date birthday, Sex sex,
@@ -74,7 +74,7 @@ public class Employee  implements Serializable
 		this.diplomas = diplomas;
 		this.languageCertificates = languageCertificates;
 		this.itCertificates = itCertificates;
-		this.contracts=new ArrayList<Contract>();
+		this.contracts=null;
 	}
 
 	public String getFullName() {
@@ -240,6 +240,10 @@ public class Employee  implements Serializable
 			vec.add("Female");
 		else
 			vec.add("Male");
+		String strNote="";
+		if(currentContract==null)
+			strNote="No";
+		vec.add(strNote);
 		return vec;
 	}
 	public void setCurrentContract(Contract con)

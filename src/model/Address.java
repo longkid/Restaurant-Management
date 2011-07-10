@@ -4,9 +4,10 @@ package model;
 
  * Purpose of this class: this class is used to save adress of employee.
  */
+import java.io.Serializable;
 import java.util.Date;
 
-public class Address {
+public class Address implements Serializable{
 	private String name;
 	private Date validityDate;
 

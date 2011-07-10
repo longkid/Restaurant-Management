@@ -6,35 +6,23 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Vector;
+import java.util.Calendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
-
-
-
-
 
 import model.CListEmployee;
 import model.Contract;
@@ -45,7 +33,7 @@ import model.PositionList;
 import model.PositionTitle;
 import model.ProcessFile;
 
-public class ContractFrame extends JFrame {
+public class ContractFrame extends JDialog {
 	private JComboBox cboTitle,cboDuration;
 	private JButton btnAdd,btnSave,btnExit;
 	private JTextField txtPostionTitle,txtSalary,txtOtherSalary, txtExpireDateofContract ;
@@ -59,36 +47,32 @@ public class ContractFrame extends JFrame {
 	private Contract m_contract=null;
 	private String m_strCaption="";
 	public ContractFrame(String strTitle){//constructor
-		super(strTitle);
-		createUI();
+		setTitle(strTitle);
 		m_PostionList=new PositionList();
+		createUI();
 		//loadDataFromFile();		
 	}
 	public ContractFrame(String strTitle,String strCaption,Employee employee){//constructor
 		setTitle(strTitle);
 		m_strCaption=strCaption;
 		m_currentEmployee=employee;
-		createUI();
 		m_PostionList=new PositionList();
+		createUI();
 		
 		//loadDataFromFile();
 			
 	}
 	public ContractFrame(String strTitle,String strCaption,Employee employee, CListEmployee listEmployee){//constructor
-		super(strTitle);
+		setTitle(strTitle);
 		m_strCaption=strCaption;
 		m_currentEmployee=employee;
-		createUI();
 		m_PostionList=new PositionList();
+		createUI();
 		m_listEmployee=listEmployee;
 		//loadDataFromFile();
 			
 	}
-	/*private void loadDataFromFile() {
-		// TODO Auto-generated method stub
-		
-	}*/
-
+	
 	private void createUI() {
 		JPanel pnGeneral=new JPanel();
 		JPanel pnGeneralBorder=new JPanel();
@@ -245,7 +229,7 @@ public class ContractFrame extends JFrame {
 		cboDuration.setSelectedIndex(con.getTime().ordinal());
 		cboTitle.setSelectedIndex(con.getPosition().getTitle().ordinal());
 		
-		txtStartDateContractDay.setText(con.getStartDate().getDay()+"");
+		txtStartDateContractDay.setText(con.getStartDate().getDate()+"");
 		txtStartDateContractMonth.setText(con.getStartDate().getMonth()+"");
 		if(con.getStartDate().getYear()-1900<0)
 			txtStartDateContractYear.setText(con.getStartDate().getYear()+1900+"");
@@ -256,17 +240,14 @@ public class ContractFrame extends JFrame {
 	private void addPostionTitleForCombobox() {
 		if(cboTitle==null)
 			cboTitle=new JComboBox();
-		cboTitle.addItem("Accountant");
-		cboTitle.addItem("Head Accountant");
-		cboTitle.addItem("Cashier");
-		cboTitle.addItem("Director");
-		cboTitle.addItem("Chef");
-		cboTitle.addItem("Executive Chef");
-		cboTitle.addItem("Busboy");
-		cboTitle.addItem("Dishwasher");
-		cboTitle.addItem("Runner");
-		cboTitle.addItem("Server");
-		cboTitle.addItem("Head Server");
+		m_PostionList=(PositionList)ProcessFile.ReadData(ProcessFile.FILENAME_POSITION);
+		if(m_PostionList!=null)
+		{
+			for(int i=0;i<m_PostionList.Count();i++)
+			{
+				cboTitle.addItem(Position.getPostionTitleString(m_PostionList.get(i).getTitle()));
+			}
+		}
 		
 	}
 	private void addDurationForCombobox()
@@ -277,26 +258,6 @@ public class ContractFrame extends JFrame {
 		cboDuration.addItem("One Year");
 		cboDuration.addItem("Three Years");
 		cboDuration.addItem("No Limit");
-	}
-	private String getDurationString(Duration aDuration)
-	{
-		String strResult="";
-		switch(aDuration)
-		{
-		case TWO_MONTHS:
-			strResult="Two Months";
-			break;
-		case ONE_YEAR:
-			strResult="One Year";
-			break;
-		case THREE_YEARS:
-			strResult="Three Years";
-			break;
-		case NO_LIMIT:
-			strResult="No Limit";
-			break;
-		}
-		return strResult;
 	}
 	private Duration getDuration(int nIndex)
 	{
@@ -320,21 +281,21 @@ public class ContractFrame extends JFrame {
 	}
 	private Contract createContract()
 	{
-		m_contract =new Contract();
-		
+		m_contract =new Contract();		
 		int nSalary=Integer.parseInt(txtSalary.getText());					
 		int nOtherSalary=Integer.parseInt(txtOtherSalary.getText());
 		int nIndex=cboTitle.getSelectedIndex();
-		m_PositionTitle=getPostionTitle(nIndex);
 		
-		
+		m_PositionTitle=m_PostionList.get(nIndex).getTitle();		
 		Position pos=new Position(m_PositionTitle, nSalary, nOtherSalary);
 		
 		m_contract.setPosition(pos);
 		int day=Integer.parseInt(txtStartDateContractDay.getText());
 		int month=Integer.parseInt(txtStartDateContractMonth.getText());
 		int year=Integer.parseInt(txtStartDateContractYear .getText());
-		m_contract.setStartDate(new Date(year,month,day ));
+		Calendar cal=Calendar.getInstance();
+		cal.set(year, month, day);
+		m_contract.setStartDate(cal.getTime());
 		m_contract.setTime(getDuration(cboDuration.getSelectedIndex()));
 		
 		return m_contract;
@@ -375,91 +336,13 @@ public class ContractFrame extends JFrame {
 			m_bIsSave=true;
 
 		}
-		
 	}
-	private PositionTitle getPostionTitle(int nIndex)
-	{
-		PositionTitle posTitle=PositionTitle.ACCOUNTANT;
-		switch(nIndex)
-		{
-		case 0:
-			posTitle=PositionTitle.ACCOUNTANT;
-			break;
-		case 1:
-			posTitle=PositionTitle.HEAD_ACCOUNTANT;
-			break;
-		case 2:
-			posTitle=PositionTitle.CASHIER;
-			break;
-		case 3:
-			posTitle=PositionTitle.DIRECTOR;
-			break;
-		case 4:
-			posTitle=PositionTitle.CHEF;
-			break;
-		case 5:
-			posTitle=PositionTitle.EXECUTIVE_CHEF;
-			break;
-		case 6:
-			posTitle=PositionTitle.BUSBOY ;
-			break;
-		case 7:
-			posTitle=PositionTitle.DISHWASHER;
-			break;
-		case 8:
-			posTitle=PositionTitle.RUNNER;
-			break;
-		case 9:
-			posTitle=PositionTitle.SERVER;
-			break;
-		case 10:
-			posTitle=PositionTitle.HEAD_SERVER;
-			break;
-		}
-		return posTitle;
-	}
-	
 
 	private void doGetSalary() {
 		int nIndex=cboTitle.getSelectedIndex();
-		
 		int nSalary=Position.ACCOUNTANT_SALARY;
-		switch(nIndex)
-		{
-		case 0:
-			nSalary=Position.ACCOUNTANT_SALARY;
-			break;
-		case 1:
-			nSalary=Position.HEAD_ACCOUNTANT_SALARY;
-			break;
-		case 2:
-			nSalary=Position.CASHIER_SALARY;
-			break;
-		case 3:
-			nSalary=Position.DIRECTOR_SALARY;
-			break;
-		case 4:
-			nSalary=Position.CHEF_SALARY;
-			break;
-		case 5:
-			nSalary=Position.EXECUTIVE_CHEF_SALARY;
-			break;
-		case 6:
-			nSalary=Position.BUSBOY_SALARY ;
-			break;
-		case 7:
-			nSalary=Position.RUNNER_SALARY;
-			break;
-		case 8:
-			nSalary=Position.SERVER_SALARY;
-			break;
-		case 9:
-			nSalary=Position.HEAD_SERVER_SALARY;
-			break;
-		}
-		
-		txtSalary.setText(nSalary+"");
-		
+		nSalary=m_PostionList.get(nIndex).getSalary();
+		txtSalary.setText(nSalary+"");		
 	}
 	
 	private void doClear() 
@@ -500,9 +383,7 @@ public class ContractFrame extends JFrame {
 		private void doExit() {
 			// TODO Auto-generated method stub
 			dispose();
-		}
-
-		
+		}		
 		
 	}
 	

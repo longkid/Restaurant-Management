@@ -4,9 +4,10 @@ package model;
 
  * Purpose of this class: this class is used to save bank account of employee.
  */
+import java.io.Serializable;
 import java.util.Date;
 
-public class BankAccount {
+public class BankAccount implements Serializable {
 	private String accountNo;
 	private String bankName;
 	private Date validityDate;

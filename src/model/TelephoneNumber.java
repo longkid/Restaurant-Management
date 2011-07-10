@@ -4,9 +4,10 @@ package model;
 
  * Purpose of this class: this class is used to save  telephone number of employee.
  */
+import java.io.Serializable;
 import java.util.Date;
 
-public class TelephoneNumber {
+public class TelephoneNumber  implements Serializable{
 	private String phoneNumber;
 	private Date validityDate;
 
