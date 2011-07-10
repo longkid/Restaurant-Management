@@ -1,6 +1,8 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
 
 
 import javax.swing.JFrame;
@@ -12,6 +14,7 @@ import javax.swing.JMenu;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -20,6 +23,9 @@ import controller.StaffController;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -60,7 +66,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem mntmAboutRestaurant = new JMenuItem("About Restaurant...");
 	private JTextField usernameField;
 	private JPasswordField passwordField;
-	private JEditorPane infoPane = new JEditorPane();
+	private JTextArea infoArea = new JTextArea();
 	private JScrollPane scrollPane;
 	private JButton btnLogIn = new JButton("Log in");
 
@@ -86,13 +92,11 @@ public class MainFrame extends JFrame implements ActionListener {
 	public MainFrame() {
 		setTitle("Dream Restaurant");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 600, 450);
-		setResizable(false);
+		setBounds(100, 100, 700, 500);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
-		mnAdministrator.setEnabled(false);
 		mnAdministrator.setMnemonic('A');
 		menuBar.add(mnAdministrator);
 		mnAdministrator.add(mntmCreateAUser);
@@ -102,7 +106,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnAdministrator.addSeparator();
 		mnAdministrator.add(mntmExit);
 
-		mnManage.setEnabled(false);
 		mnManage.setMnemonic('M');
 		menuBar.add(mnManage);
 		mnManage.add(mntmManageStaff);
@@ -114,7 +117,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnManage.add(mntmManageWaiters);
 		mnManage.add(mntmManageDayoffs);
 
-		mnTimekeeping.setEnabled(false);
 		mnTimekeeping.setMnemonic('T');
 		menuBar.add(mnTimekeeping);
 		mnTimekeeping.add(mntmTimekeeping);
@@ -124,7 +126,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		mntmViewTimekeepingReport.addActionListener(this);
 		mnTimekeepingContractManagement.addActionListener(this);
 		
-		mnPosition.setEnabled(false);
 		mnPosition.setMnemonic('P');
 		menuBar.add(mnPosition);
 		mnPosition.add(mnPositionManagement);
@@ -137,11 +138,11 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnHelp.add(mntmAboutRestaurant);
 
 		JPanel contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
 
-		JLabel lblUsername = new JLabel("Username");
+		/*JLabel lblUsername = new JLabel("Username");
 		lblUsername.setBounds(12, 60, 90, 15);
 		contentPane.add(lblUsername);
 
@@ -172,29 +173,38 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnTimekeeping.setEnabled(true);
 		mnPosition.setEnabled(true);
 		mnHelp.setEnabled(true);
-		displayInfoOnMainFrame();
+		displayInfoOnMainFrame();*/
+		infoArea.setEditable(false);
+		infoArea.setLineWrap(true);
+		infoArea.setWrapStyleWord(true);
+		infoArea.setFont(new Font("Serif", Font.BOLD, 14));
+        JScrollPane areaScrollPane = new JScrollPane(infoArea);
+        areaScrollPane.setVerticalScrollBarPolicy(
+                        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        areaScrollPane.setPreferredSize(this.getPreferredSize());
+        showInfo();
+		contentPane.add(areaScrollPane, BorderLayout.CENTER);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 
-		if (source == passwordField || source == btnLogIn) { // Process the
+		/*if (source == passwordField || source == btnLogIn) { // Process the
 																// password
 			handleLogIn();
 		} 
-		else if (source.equals(mnPositionManagement)){
+		else */
+		if (source.equals(mnPositionManagement)) {
 			new CPostionFrame("Position Management");
 			
-		}
-		else if(source.equals(mnTimekeepingContractManagement))
-		{
-			CTimeKeepingBookFrame ui=new CTimeKeepingBookFrame("Contract Management");
+		} else if(source.equals(mnTimekeepingContractManagement)) {
+			CTimeKeepingBookFrame ui = new CTimeKeepingBookFrame("Contract Management");
 			ui.doShow();
 		}
 	}
 
-	private void handleLogIn() {
+	/*private void handleLogIn() {
 		char[] input = passwordField.getPassword();
 		if (usernameField.getText().equals("admin") && isPasswordCorrect(input)) {
 			JOptionPane.showMessageDialog(this, "Log in successfully");
@@ -209,34 +219,30 @@ public class MainFrame extends JFrame implements ActionListener {
 					"Invalid username or password. Try again.",
 					"Error Message", JOptionPane.ERROR_MESSAGE);
 		}
-	}
+	}*/
 
-	private void displayInfoOnMainFrame() {
-		JPanel contentPane = new JPanel();
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		contentPane.add(scrollPane);
-		validate();
-	}
-
-	private JEditorPane createInfoPane() {
-		JEditorPane editorPane = new JEditorPane();
-		editorPane.setEditable(false);
-		URL infoURL = MainFrame.class.getResource("info.html");
-		if (infoURL != null) {
-			try {
-				editorPane.setPage(infoURL);
-			} catch (IOException e) {
-				System.err.println("Attempted to read a bad URL: " + infoURL);
+	private void showInfo() {
+		try {
+			FileReader file = new FileReader("data/info.txt");
+			BufferedReader buff = new BufferedReader(file);
+			boolean eof = false;
+			
+			while (!eof) {
+				String line = buff.readLine();
+				if (line != null) {
+					infoArea.append("\n" + line);
+				} else {
+					eof = true;
+				}
 			}
-		} else {
-			System.err.println("Couldn't find file: info.html");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-
-		return editorPane;
 	}
 
-	private boolean isPasswordCorrect(char[] input) {
+	/*private boolean isPasswordCorrect(char[] input) {
 		boolean isCorrect = true;
 		char[] correctPassword = { '1', '1', '1' };
 
@@ -247,5 +253,5 @@ public class MainFrame extends JFrame implements ActionListener {
 		}
 
 		return isCorrect;
-	}
+	}*/
 }
