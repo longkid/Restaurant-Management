@@ -102,4 +102,45 @@ public class Position implements Serializable{
 			return null;
 		}
 	}
+	public static String getPostionTitleString(PositionTitle aPostionTitle)
+	{
+		String strResult="";
+		switch(aPostionTitle)
+		{
+		case ACCOUNTANT:
+			strResult="Accountant";
+			break;
+		case HEAD_ACCOUNTANT:
+			strResult="Head Accountant";
+			break;
+		case CASHIER:
+			strResult="Cashier";
+			break;
+		case DIRECTOR:
+			strResult="Director";
+			break;
+		case CHEF:
+			strResult="Chef";
+			break;
+		case EXECUTIVE_CHEF:
+			strResult="Executive Chef";
+			break;
+		case BUSBOY:
+			strResult="Busboy";
+			break;
+		case DISHWASHER:
+			strResult="Dishwasher";
+			break;
+		case RUNNER:
+			strResult="Runner";
+			break;
+		case SERVER:
+			strResult="Server";
+			break;
+		case HEAD_SERVER:
+			strResult="Head Server";
+			break;
+		}
+		return strResult;
+	}
 }

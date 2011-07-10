@@ -4,9 +4,10 @@ package model;
 
  * Purpose of this class: this class is used to save information about certificate(English or IT) of employee.
  */
+import java.io.Serializable;
 import java.util.Date;
 
-public class Certificate {
+public class Certificate implements Serializable{
 	private String name;
 	private Date validityDate;
 

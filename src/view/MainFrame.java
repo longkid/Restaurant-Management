@@ -166,6 +166,13 @@ public class MainFrame extends JFrame implements ActionListener {
 		infoPane = createInfoPane();
 		scrollPane = new JScrollPane(infoPane);
 		scrollPane.setBounds(0, 0, getWidth() - 10, getHeight() - 10);
+		
+		mnAdministrator.setEnabled(true);
+		mnManage.setEnabled(true);
+		mnTimekeeping.setEnabled(true);
+		mnPosition.setEnabled(true);
+		mnHelp.setEnabled(true);
+		displayInfoOnMainFrame();
 	}
 
 	@Override

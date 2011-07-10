@@ -322,7 +322,7 @@ public class CPostionFrame extends JFrame{
 		{
 			Position aPostion=m_PostionList.get(i);
 			Vector<String>vec=new Vector<String>();
-			vec.add(getPostionTitleString(aPostion.getTitle()));
+			vec.add(Position.getPostionTitleString(aPostion.getTitle()));
 			vec.add(aPostion.getSalary()+"");
 			vec.add(aPostion.getOtherSalary()+"");
 			tblModel.addRow(vec);

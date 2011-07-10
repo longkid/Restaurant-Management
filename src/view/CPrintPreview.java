@@ -120,9 +120,9 @@ public class CPrintPreview   extends JFrame
 		strContent+="<div style=\"background:#FC9D36\"></div>";
 		strContent+="<form id=\"form1\" name=\"form1\" method=\"post\" action=\"\">";
 		strContent+="Month: ";
-		strContent+="<font color=\"red\" style=\"font-weight:bold;\">1</font>";
+		strContent+="<font color=\"red\" style=\"font-weight:bold;\">"+m_nMonthSelected+"</font>";
 		strContent+=" Year: ";
-		strContent+="<font color=\"red\"  style=\"font-weight:bold;\">2011</font>";
+		strContent+="<font color=\"red\"  style=\"font-weight:bold;\">"+m_nYearSelected+"</font>";
 		strContent+="</form></center>";
 		strContent+="<table width=\"100%\" border=\"1\" cellpadding=\"0\" cellspacing=\"0\">";
 		strContent+="<tr>";
@@ -139,6 +139,8 @@ public class CPrintPreview   extends JFrame
 			for(int i=0;i<m_listEmployee.size();i++)
 			{
 				Employee emp=m_listEmployee.get(i);
+				if(emp.getCurrentContract()==null)
+					continue;
 				strContent+="<tr>";
 				strContent+="<td>&nbsp;"+emp.getFullName()+"</td>";
 				strContent+="<td>&nbsp;"+getPostionTitleString(emp.getCurrentContract().getPosition().getTitle())+"</td>";
@@ -153,6 +155,8 @@ public class CPrintPreview   extends JFrame
 				strContent+="<td>&nbsp;"+nWorkday+"</td>";
 				int nSalary=0;
 				nSalary=(emp.getCurrentContract().getPosition().getSalary()/30)*nWorkday+emp.getCurrentContract().getPosition().getOtherSalary();
+				if(nWorkday==0)
+					nSalary=0;
 				strContent+="<td>&nbsp;"+nSalary+"</td>";
 				strContent+="</tr>";
 				nSumSalary=nSumSalary+nSalary;

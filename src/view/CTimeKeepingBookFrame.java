@@ -4,6 +4,7 @@ package view;
  */
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -44,6 +45,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.MouseInputListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -225,7 +227,22 @@ public class CTimeKeepingBookFrame extends JFrame{
 		tblModelEmployee.addColumn("Full Name");
 		tblModelEmployee.addColumn("Birthday");
 		tblModelEmployee.addColumn("Sex");
+		tblModelEmployee.addColumn("Had contract?");
 		tblEmployee=new JTable(tblModelEmployee);
+		tblEmployee.getColumn("Had contract?").setCellRenderer(
+				new DefaultTableCellRenderer()
+				{
+					private static final long serialVersionUID = 1L;
+
+					public Component getTableCellRendererComponent(JTable table, Object value,
+						      boolean isSelected, boolean hasFocus, int row, int column) {
+							this.setForeground(Color.RED);
+						  return super.getTableCellRendererComponent(table, value, isSelected,
+						        hasFocus, row, column);
+						  }
+				}
+			);
+		
 		TitledBorder borderTable=new TitledBorder(BorderFactory.createLineBorder(Color.RED), "Employee List");
 		JPanel pnEmployeeTable=new JPanel();
 		pnEmployeeTable.setLayout(new BorderLayout());
@@ -251,13 +268,6 @@ public class CTimeKeepingBookFrame extends JFrame{
 		TitledBorder borderContract=new TitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Contract History");
 		pnTreeDetail.setBorder(borderContract);
 		pnTree.add(pnTreeDetail,BorderLayout.SOUTH);
-		//createContextMenu();
-		myPopup=new PopupMenu("test");
-		MenuItem mnitema=new MenuItem("a"); 
-		MenuItem mnitemb=new MenuItem("b");
-		myPopup.add(mnitema);
-		myPopup.add(mnitemb);
-		tblEmployee.add(myPopup);
 		tblEmployee.addMouseListener(new CProcessMouseEvent());
 		cboMonth.addActionListener(new CButtonEvent());
 		cboYear.addActionListener(new CButtonEvent());
@@ -268,6 +278,33 @@ public class CTimeKeepingBookFrame extends JFrame{
 		int year=Integer.parseInt(cboYear.getSelectedItem().toString());
 		m_nMonthSelected=month;
 		m_nYearSelected=year;
+		enableControlForContract();
+		if(m_currentEmployee!=null)
+		{
+			doProcessMonthSelection();
+			doGetListContractForEmployee(m_currentEmployee);
+			tblEmployee.changeSelection(0, 0, false, false);
+			if(m_currentEmployee.getContracts()!=null)
+				myTree.expandRow(2);
+		}
+	}
+	private void enableControlForContract()
+	{
+		boolean bEnable=true;
+		if(m_currentContract==null)
+		{
+			bEnable=false;
+		}
+		btnModifyContract.setEnabled(bEnable);
+		btnCalcPayroll.setEnabled(bEnable);
+		btnTrash.setEnabled(bEnable);
+		cboMonth.setEnabled(bEnable);
+		cboYear.setEnabled(bEnable);
+		btnSaveTimeKeeping.setEnabled(bEnable);
+		pnTable.setEnabled(bEnable);
+		tblTimeKeeping.setVisible(bEnable);
+		if(!bEnable)
+			tblModelTimeKeeping.setColumnCount(0);
 	}
 	private void loadDataIntoTable(CListEmployee listEmployee)
 	{
@@ -329,18 +366,66 @@ public class CTimeKeepingBookFrame extends JFrame{
 			ContractFrame cframe=new ContractFrame("New contract","New contract:",m_currentEmployee,m_listEmployee);
 			cframe.setSize(550, 350);
 			cframe.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-			cframe.setLocationRelativeTo(null);
+			cframe.setLocationRelativeTo(null);			
+			cframe.setModal(true);
 			cframe.setVisible(true);
+			if(cframe.m_bIsSave)
+			{
+				processMouseClickOnEmployeeTable();
+				int nRow=tblEmployee.getSelectedRow();
+				loadDataIntoTable(m_listEmployee);
+				tblEmployee.changeSelection(nRow, 0, false, false);
+			}
 			break;
 		case EDITCONTRACT:
 			ContractFrame cframeEdit=new ContractFrame("Edit contract","Edit contract:",m_currentEmployee,m_listEmployee);
 			cframeEdit.setSize(550,350);
 			cframeEdit.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 			cframeEdit.setLocationRelativeTo(null);
+			cframeEdit.setModal(true);
 			cframeEdit.setVisible(true);
+			if(cframeEdit.m_bIsSave)
+			{
+				processMouseClickOnEmployeeTable();
+			}
 			break;
 		case DELETECONTRACT:
-			JOptionPane.showMessageDialog(null,"Delete this contract");
+			//JOptionPane.showMessageDialog(null,"Delete this contract");
+			DefaultMutableTreeNode node= (DefaultMutableTreeNode )myTree.getLastSelectedPathComponent();
+			if(node==null)
+			{
+				JOptionPane.showMessageDialog(null, "please choose contract to delete");
+				return;
+			}
+			Object obj= node.getUserObject();
+			if(obj instanceof Contract)
+			{
+				Object[] options = { "Yes", "No"};
+				ImageIcon icon=new ImageIcon("images/trash.png");
+				int ret=JOptionPane.showOptionDialog(null, "Are you sure you want to delete ["+obj.toString()+"]?", "Delete Contract",
+
+				            JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+
+				            icon, options, options[0]);
+				if(ret!=0)
+					return;
+				if(m_currentEmployee!=null)
+				{
+					ArrayList<Contract> listContracts=(ArrayList<Contract>) m_currentEmployee.getContracts();
+					if(listContracts.contains(obj))
+					{
+						listContracts.remove(obj);
+					}
+					else
+					{
+						m_currentEmployee.setContracts(null);
+					}
+					m_currentEmployee.setContracts(listContracts);
+					ProcessFile.WriteData(m_listEmployee, ProcessFile.FILENAME_EMPLOYEE);
+				}
+				processMouseClickOnEmployeeTable();
+			}
+			
 			break;
 		case CALCPAYROLL:
 			calcPayroll();
@@ -382,7 +467,10 @@ public class CTimeKeepingBookFrame extends JFrame{
 	{
 		DefaultMutableTreeNode node= (DefaultMutableTreeNode )myTree.getLastSelectedPathComponent();
 		Object obj= node.getUserObject();
-		JOptionPane.showMessageDialog(null, obj.toString());
+		if(obj instanceof Contract)
+		{
+			JOptionPane.showMessageDialog(null, obj.toString());	
+		}
 	}
 	public void doShow()
 	{
@@ -539,22 +627,19 @@ public class CTimeKeepingBookFrame extends JFrame{
 		int row=tblEmployee.getSelectedRow();
 		m_currentEmployee=m_listEmployee.get(row);
 		m_currentContract=m_currentEmployee.getCurrentContract();
-		if(m_currentContract==null)
-			m_currentContract=new Contract();
-		doProcessMonthSelection();
-		
-		doGetListContractForEmployee(m_currentEmployee);
-	}
-	private String parseNodeTitle(Contract con)
-	{
-		int day=con.getStartDate().getDay();
-		int month=con.getStartDate().getMonth();
-		int year=con.getStartDate().getYear();
-		 if(year-1900<0)
-			 year=year+1900;
-		String strNode="("+con.getPosition().getTitle().toString()+")-"+day+"/"+month+"/"+(year);
-		
-		return strNode;
+		if(m_currentContract!=null)
+		{
+			doProcessMonthSelection();
+			doGetListContractForEmployee(m_currentEmployee);
+			if(m_currentEmployee.getContracts()!=null)
+				myTree.expandRow(2);
+		}
+		else
+		{
+			root.removeAllChildren();
+			myTree.updateUI();
+		}
+		enableControlForContract();
 	}
 	private void doGetListContractForEmployee(Employee currentEmployee)
 	{
@@ -565,8 +650,7 @@ public class CTimeKeepingBookFrame extends JFrame{
 		if(currentContract!=null)
 		{
 			//Add Current Contract here
-			String strNode=parseNodeTitle(currentContract);
-			DefaultMutableTreeNode currentNodeContract=new DefaultMutableTreeNode("Current-"+strNode);
+			DefaultMutableTreeNode currentNodeContract=new DefaultMutableTreeNode(currentContract);
 			root.add(currentNodeContract);
 		}
 		if(listContracts!=null)
@@ -576,8 +660,7 @@ public class CTimeKeepingBookFrame extends JFrame{
 			root.add(oldNodeContract);
 			for(Contract con: listContracts)
 			{
-				String strNode=parseNodeTitle(con);
-				DefaultMutableTreeNode oldNodeContractSub=new DefaultMutableTreeNode("Old-"+strNode);
+				DefaultMutableTreeNode oldNodeContractSub=new DefaultMutableTreeNode(con);
 				oldNodeContract.add(oldNodeContractSub);
 			}
 		}
@@ -632,11 +715,7 @@ public class CTimeKeepingBookFrame extends JFrame{
 					JOptionPane.showMessageDialog(null, "Save Data success!");
 				}
 			}
-		}
-		
-		
-		
-		
+		}				
 	}
 	private class CProcessMouseEvent implements MouseListener, MouseMotionListener, MouseInputListener
 	{
@@ -700,7 +779,6 @@ public class CTimeKeepingBookFrame extends JFrame{
 	}
 	private class CButtonEvent implements ActionListener
 	{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
@@ -772,9 +850,7 @@ public class CTimeKeepingBookFrame extends JFrame{
 		}
 		
 	}
-		/**
-	 * @param args
-	 */
+		
 	public static void main(String[] args) 
 	{
 		// TODO Auto-generated method stub

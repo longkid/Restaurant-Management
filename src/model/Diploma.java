@@ -4,9 +4,10 @@ package model;
 
  * Purpose of this class: this class is used to save information about diploma of employee.
  */
+import java.io.Serializable;
 import java.util.Date;
 
-public class Diploma {
+public class Diploma  implements Serializable{
 	private String name;
 	private Date validityDate;
 
