@@ -284,6 +284,6 @@ public class Employee  implements Serializable
 	}
 	
 	public static <E> E getLastElement(List<E> l) {
-		return l.get(l.size() - 1);
+		return (l.isEmpty() ? null : l.get(l.size() - 1));
 	}
 }
