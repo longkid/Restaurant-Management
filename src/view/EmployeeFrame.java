@@ -82,7 +82,7 @@ e.printStackTrace();
 * Create the frame.
 */
 public EmployeeFrame() {
-setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 setBounds(100, 100, 694, 427);
 contentPane = new JPanel();
 contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -117,6 +117,7 @@ lblSex.setBounds(12, 76, 70, 15);
 contentPane.add(lblSex);
 
 sexradioMale = new JRadioButton("Male");
+sexradioMale.setSelected(true);
 buttonGroup.add(sexradioMale);
 sexradioMale.setBounds(152, 72, 70, 23);
 contentPane.add(sexradioMale);
@@ -213,9 +214,7 @@ lblEducation.setBounds(12, 253, 70, 15);
 contentPane.add(lblEducation);
 
 educationComboBox = new JComboBox();
-educationComboBox.setModel(new DefaultComboBoxModel(new String[] {
-"<5/12", "5/12", "6/12", "7/12", "8/12", "9/12", "10/12",
-"11/12", "12/12" }));
+educationComboBox.setModel(new DefaultComboBoxModel(new String[] {"<5/12", "5/12", "6/12", "7/12", "8/12", "9/12", "10/12", "11/12", "12/12"}));
 educationComboBox.setBounds(152, 255, 190, 19);
 contentPane.add(educationComboBox);
 
@@ -233,8 +232,7 @@ lblForeignLanguage.setBounds(12, 282, 129, 15);
 contentPane.add(lblForeignLanguage);
 
 foreignLanguageCombobox = new JComboBox();
-foreignLanguageCombobox.setModel(new DefaultComboBoxModel(new String[] {
-"level A", "level B", "level C" }));
+foreignLanguageCombobox.setModel(new DefaultComboBoxModel(new String[] {"", "level A", "level B", "level C"}));
 foreignLanguageCombobox.setBounds(152, 286, 190, 19);
 contentPane.add(foreignLanguageCombobox);
 
@@ -243,8 +241,7 @@ lblCertificateOfIt.setBounds(360, 282, 113, 15);
 contentPane.add(lblCertificateOfIt);
 
 certificateOfITcombobox = new JComboBox();
-certificateOfITcombobox.setModel(new DefaultComboBoxModel(new String[] {
-"level A", "level B", "level C" }));
+certificateOfITcombobox.setModel(new DefaultComboBoxModel(new String[] {"", "level A", "level B", "level C"}));
 certificateOfITcombobox.setBounds(478, 286, 202, 19);
 contentPane.add(certificateOfITcombobox);
 final JLabel lbResult = new JLabel("");
@@ -336,5 +333,4 @@ return certificateOfITcombobox;
 public JComboBox getForeignLanguageCombobox() {
 return foreignLanguageCombobox;
 }
-
 }

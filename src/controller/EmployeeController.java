@@ -7,7 +7,6 @@ package controller;
  * Purpose of this class: this class control the process between EmployeeFrame and some concern class in model
  */
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +28,7 @@ import view.EmployeeFrame;
 
 public class EmployeeController {
 	public static EmployeeController singleton = new EmployeeController();
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
 	private EmployeeFrame view;
 	private List<String> emails = new ArrayList<String>();
 	private List<TelephoneNumber> phoneNumbers = new ArrayList<TelephoneNumber>();
@@ -44,10 +43,7 @@ public class EmployeeController {
 
 	public EmployeeController() {
 		this.view = new EmployeeFrame();
-		//m_ListEmployee=(CListEmployee)ProcessFile.ReadData(ProcessFile.FILENAME_EMPLOYEE);
-		//if(m_ListEmployee==null)
-			//m_ListEmployee=new CListEmployee();
-		
+
 	}
 //this function use to set visible for employeeFrame.
 	public void setVisible(boolean b) {
@@ -75,18 +71,16 @@ public class EmployeeController {
 			Sex sex = null;
 			Date birthday = null;
 			Date issueDate = null;
-			ParsePosition pp=new ParsePosition(0);
 				if (this.view.getSexradioMale().isSelected()) {
 					sex = Sex.MALE;
 				} else {
 					sex = Sex.FEMALE;
 				}
 				try {
-					birthday = dateFormat.parse(this.view.getBirthdayTextField().getText(),pp);
-					issueDate=dateFormat.parse(this.view.getIssueDateText().getText(),pp);
-					
-					
-					/*m_ListEmployee.add(new Employee(
+					birthday = dateFormat.parse(this.view.getBirthdayTextField().getText());
+					issueDate=dateFormat.parse(this.view.getIssueDateText().getText());
+					Staff.getInstance().addEmployee(
+							new Employee(
 									this.view.getFullNameTextField().getText(),
 									birthday,
 									sex, emails, phoneNumbers, new IDCard(
@@ -98,23 +92,15 @@ public class EmployeeController {
 											.getText(), addresses, accounts,
 									this.view.getEducationComboBox()
 											.getSelectedIndex()+"",
-									diplomas, languages, itCertificates));*/
+									diplomas, languages, itCertificates));
+
 				// lbResult.setText("Save successfully!");
-				//boolean bRet=ProcessFile.WriteData(m_ListEmployee, ProcessFile.FILENAME_EMPLOYEE);
-					boolean bRet=true;
-				if(bRet==true)
-				{
-					JOptionPane.showMessageDialog(this.view, "Save successfully!",
-							"Save successfully!", JOptionPane.INFORMATION_MESSAGE);
-					singleton.setVisible(false);
-					StaffController.singleton.refresh();	
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(this.view, "Save Failed!",
-							"Save Failed!", JOptionPane.ERROR_MESSAGE);
-				}
-				} catch (Exception e) {
+				JOptionPane.showMessageDialog(this.view, "Save successfully!",
+						"Save successfully!", JOptionPane.INFORMATION_MESSAGE);
+				singleton.setVisible(false);
+				StaffController.singleton.refresh();
+				ProcessFile.WriteData(Staff.getInstance().getEmployees(), ProcessFile.FILENAME_EMPLOYEE);
+				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(this.view, "You must input date follow the format yyyy-mm-dd, please!");
 					e.printStackTrace();
@@ -149,17 +135,11 @@ public class EmployeeController {
 				e.printStackTrace();
 			}
             employee.getItCertificates().add(new Certificate(this.view.getCertificateOfITcombobox().getSelectedIndex()+"",new Date()));
-			//m_ListEmployee.set(index, employee);
-            //Staff.getInstance().updateEmployee(index, employee);
-			
+			Staff.getInstance().updateEmployee(index, employee);
+			ProcessFile.WriteData(Staff.getInstance().getEmployees(), ProcessFile.FILENAME_EMPLOYEE);
 			singleton.setVisible(false);
 			StaffController.singleton.refresh();
-			//boolean bRet=ProcessFile.WriteData(m_ListEmployee, ProcessFile.FILENAME_EMPLOYEE);
-			boolean bRet=true;
-			if(bRet==true)
-				JOptionPane.showMessageDialog(this.view, "Update successful");
-			else
-				JOptionPane.showMessageDialog(this.view, "Update Failed");
+			JOptionPane.showMessageDialog(this.view, "Update successful");
 		}
 		this.view.getFullNameTextField().setText("");
 		
@@ -169,18 +149,15 @@ public class EmployeeController {
 	public void displayEmployee(int index) {
 		Employee employee = Staff.getInstance().getEmployees().get(index);
 		this.view.getFullNameTextField().setText(employee.getFullName());
-		this.view.getBirthdayTextField().setText(
-				(employee.getBirthday().getYear()+1900) + "-"
-						+ (employee.getBirthday().getMonth()+1) + "-"
-						+ employee.getBirthday().getDate());
+		this.view.getBirthdayTextField().setText(Staff.getInstance().dateFormat.format(employee.getBirthday()));
+				
 		this.view.getCellPhoneNumberTextField().setText(employee.getPhoneNumbers().get(employee.getPhoneNumbers().size()-1).getPhoneNumber());
 		this.view.getCertificateOfITcombobox().setSelectedIndex(Integer.parseInt(employee.getItCertificates().get(employee.getItCertificates().size()-1).getName()));
 		this.view.getDiplomaTextField().setText(employee.getDiplomas().get(employee.getDiplomas().size()-1).getName());
 		this.view.getEducationComboBox().setSelectedIndex(Integer.parseInt(employee.getEducation()));
 		this.view.getEmailAddressTextField().setText(employee.getEmails().get(employee.getEmails().size()-1));
 		this.view.getForeignLanguageCombobox().setSelectedIndex(Integer.parseInt(employee.getLanguageCertificates().get(employee.getLanguageCertificates().size()-1).getName()));
-		this.view.getIssueDateText().setText((employee.getIdentityCard().getIssuedDate().getYear()+1900)+"-"+(employee.getIdentityCard().getIssuedDate().getMonth()+1)+"-"
-				+employee.getIdentityCard().getIssuedDate().getDate());
+		this.view.getIssueDateText().setText(Staff.getInstance().dateFormat.format(employee.getIdentityCard().getIssuedDate()));
 		this.view.getIssuePlaceTextField().setText(employee.getIdentityCard().getIssuedPlace());
 		this.view.getNoIdentityCardTextField().setText(employee.getIdentityCard().getCardNum());
 		this.view.getNameOfBankTextField().setText((employee.getAccounts().get(employee.getAccounts().size()-1).getBankName()));

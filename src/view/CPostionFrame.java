@@ -37,7 +37,7 @@ public class CPostionFrame extends JFrame{
 	{
 		super(strTitle);
 		createUI();
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 	private void createUI()
 	{

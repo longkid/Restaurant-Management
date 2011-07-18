@@ -56,6 +56,15 @@ public class StaffFrame extends JFrame {
 		});
 		btnUpdate.setBounds(132, 345, 97, 25);
 		contentPane.add(btnUpdate);
+		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				StaffController.singleton.delete();
+			}
+		});
+		btnDelete.setBounds(239, 345, 117, 25);
+		contentPane.add(btnDelete);
 	}
 
 	public void setTable_1(JTable table_1) {
