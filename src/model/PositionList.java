@@ -13,10 +13,23 @@ public class PositionList implements Serializable
 	 */
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Position> m_PositionList;
+	/* *******************************************************************************
+	 * Description: Default Constructor
+	 * *******************************************************************************/
 	public PositionList()
 	{
 		m_PositionList=new ArrayList<Position>();
 	}
+	/* *******************************************************************************
+	 * Description: 
+	 * 		this method is used to check the existing of the position in the list
+	 * 		if exist then return true, else return false
+	 * Parameters:
+	 * 		Position aPostion - position
+	 * Exception:
+	 * 		error if m_PositionList is not allocated with the memory
+	 * return type: boolean
+	 * *******************************************************************************/
 	public boolean checkExist(Position aPostion)
 	{
 		for(Position postion : m_PositionList)
@@ -42,7 +55,7 @@ public class PositionList implements Serializable
 	{
 		m_PositionList.remove(nIndex);
 	}
-	public int Count()
+	public int size()
 	{
 		return m_PositionList.size();
 	}

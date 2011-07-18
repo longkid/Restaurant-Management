@@ -4,9 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -14,7 +11,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -22,9 +18,6 @@ import javax.swing.border.TitledBorder;
 
 public class CLoginFrame extends JFrame{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JTextField txtUserName;
 	private JPasswordField txtPassword;
@@ -98,61 +91,25 @@ public class CLoginFrame extends JFrame{
 		txtPassword.setBackground(Color.LIGHT_GRAY);
 		
 		txtUserName.requestFocus();
-		
-		btnLogin.addActionListener(new CMyButtonEvent());
-		txtUserName.addActionListener(new CMyButtonEvent());
-		txtPassword.addActionListener(new CMyButtonEvent());
-		btnShutdown.addActionListener(new CMyButtonEvent());
 	}
-	@SuppressWarnings("deprecation")
-	private void doProcessLogin()
+	public JButton getButtonLogin()
 	{
-		String strUserName=txtUserName.getText();
-		String strPwd=txtPassword.getText();
-		
-		if(strUserName.equals("a") && strPwd.equals("a"))
-		{
-			dispose();
-			MainFrame frame = new MainFrame();
-			frame.setVisible(true);
-		}
-		else
-		{
-			JOptionPane.showMessageDialog(null, "");
-		}
+		return btnLogin;
 	}
-	private class CMyButtonEvent implements ActionListener
+	public JButton getButtonShutdown()
 	{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			Object o=arg0.getSource();
-			if(o.equals(btnShutdown))
-			{
-				dispose();
-			}
-			else if(o.equals(btnLogin) || o.equals(txtUserName) || o.equals(txtPassword) )
-			{
-				
-				doProcessLogin();
-			}
-		}
-		
+		return btnShutdown;
 	}
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) 
+	public JTextField getTextFieldUserName()
 	{
-		// TODO Auto-generated method stub
-		CLoginFrame login=new CLoginFrame("Login Restaurant Management");
-		login.setSize(450, 300);
-		login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		login.setLocationRelativeTo(null);
-		login.setResizable(false);
-		
-		login.setVisible(true);
+		return txtUserName;
 	}
-
+	public JPasswordField getPasswordField()
+	{
+		return txtPassword;
+	}
+	public JCheckBox getCheckBoxRememberPassword()
+	{
+		return chkRememberPassword;
+	}
 }

@@ -8,12 +8,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -21,7 +15,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -29,36 +22,22 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import model.Position;
-import model.PositionList;
-import model.PositionTitle;
-import model.ProcessFile;
-
 public class CPostionFrame extends JFrame{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JComboBox cboTitle;
-
 	private JButton btnAdd,btnUpdate,btnDelete,btnSave,btnExit;
-	private JTextField txtPostionTitle,txtSalary,txtOtherSalary;
+	
+	private JTextField txtSalary,txtOtherSalary;
 	private JTable tblDetail;
 	private DefaultTableModel tblModel;
-	private PositionList m_PostionList;
-	private Position m_CurrentPostion=null;
 	public CPostionFrame(String strTitle)
 	{
 		super(strTitle);
 		createUI();
-		setSize(600, 560);
-
-		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		m_PostionList=new PositionList();
-		setLocationRelativeTo(null);
-		loadDataFromFile();
-		loadDataOnTable();
 	}
 	private void createUI()
 	{
@@ -177,33 +156,11 @@ public class CPostionFrame extends JFrame{
 		btnExit.setIcon(iconExit);
 		pnSouth.add(btnExit);
 		pnGeneral.add(pnSouth,BorderLayout.SOUTH);
-		//assign Event into BUtton
-		btnAdd.addActionListener(new CMyProcessButtonEvent());
-		btnUpdate.addActionListener(new CMyProcessButtonEvent());
-		btnDelete.addActionListener(new CMyProcessButtonEvent());
-		cboTitle.addActionListener(new CMyProcessButtonEvent());
-		btnSave.addActionListener(new CMyProcessButtonEvent());
-
-		btnExit.addActionListener(new CMyProcessButtonEvent());
-		tblDetail.addMouseListener(new CMyProcessMouseEvent());
 		
 		btnAdd.setMnemonic('A');
 		btnUpdate.setMnemonic('E');
 		btnDelete.setMnemonic('D');
 		btnSave.setMnemonic('S');
-		
-		
-		LockTheTextBox(true);
-		btnAdd.setEnabled(true);
-		btnUpdate.setEnabled(false);
-		btnDelete.setEnabled(false);
-		btnSave.setEnabled(false);
-	}
-	private void LockTheTextBox(boolean b)
-	{
-		txtSalary.setEditable(!b);
-		txtOtherSalary.setEditable(!b);
-		cboTitle.setEnabled(!b);
 	}
 	private void addPostionTitleForCombobox()
 	{
@@ -222,403 +179,44 @@ public class CPostionFrame extends JFrame{
 		cboTitle.addItem("Head Server");	
 		
 	}
-	private String getPostionTitleString(PositionTitle aPostionTitle)
+	public JButton getButtonAdd()
 	{
-		String strResult="";
-		switch(aPostionTitle)
-		{
-		case ACCOUNTANT:
-			strResult="Accountant";
-			break;
-		case HEAD_ACCOUNTANT:
-			strResult="Head Accountant";
-			break;
-		case CASHIER:
-			strResult="Cashier";
-			break;
-		case DIRECTOR:
-			strResult="Director";
-			break;
-		case CHEF:
-			strResult="Chef";
-			break;
-		case EXECUTIVE_CHEF:
-			strResult="Executive Chef";
-			break;
-		case BUSBOY:
-			strResult="Busboy";
-			break;
-		case DISHWASHER:
-			strResult="Dishwasher";
-			break;
-		case RUNNER:
-			strResult="Runner";
-			break;
-		case SERVER:
-			strResult="Server";
-			break;
-		case HEAD_SERVER:
-			strResult="Head Server";
-			break;
-		}
-		return strResult;
+		return btnAdd;
 	}
-	private PositionTitle getPostionTitle(int nIndex)
+	public JButton getButtonUpdate()
 	{
-		PositionTitle posTitle=PositionTitle.ACCOUNTANT;
-		switch(nIndex)
-		{
-		case 0:
-			posTitle=PositionTitle.ACCOUNTANT;
-			break;
-		case 1:
-			posTitle=PositionTitle.HEAD_ACCOUNTANT;
-			break;
-		case 2:
-			posTitle=PositionTitle.CASHIER;
-			break;
-		case 3:
-			posTitle=PositionTitle.DIRECTOR;
-			break;
-		case 4:
-			posTitle=PositionTitle.CHEF;
-			break;
-		case 5:
-			posTitle=PositionTitle.EXECUTIVE_CHEF;
-			break;
-		case 6:
-			posTitle=PositionTitle.BUSBOY ;
-			break;
-		case 7:
-			posTitle=PositionTitle.DISHWASHER;
-			break;
-		case 8:
-			posTitle=PositionTitle.RUNNER;
-			break;
-		case 9:
-			posTitle=PositionTitle.SERVER;
-			break;
-		case 10:
-			posTitle=PositionTitle.HEAD_SERVER;
-			break;
-		}
-		return posTitle;
+		return btnUpdate;
 	}
-	
-	private void loadDataFromFile()
+	public JButton getButtonDelete()
 	{
-		m_PostionList=null;
-		m_PostionList=(PositionList) ProcessFile.ReadData(ProcessFile.FILENAME_POSITION);
-		if(m_PostionList==null)
-			m_PostionList=new PositionList();
-		//call method read FILE to take the information for m_PostionList
+		return btnDelete;
 	}
-	private void loadDataOnTable()
+	public JButton getButtonSave()
 	{
-		if(m_PostionList==null)
-			return;
-		tblModel.setRowCount(0);//remove all row in the table
-		for(int i=0;i<m_PostionList.Count();i++)
-		{
-			Position aPostion=m_PostionList.get(i);
-			Vector<String>vec=new Vector<String>();
-			vec.add(Position.getPostionTitleString(aPostion.getTitle()));
-			vec.add(aPostion.getSalary()+"");
-			vec.add(aPostion.getOtherSalary()+"");
-			tblModel.addRow(vec);
-		}
-		
+		return btnSave;
 	}
-	private void doAdd()
+	public JButton getButtonExit()
 	{
-		if(btnAdd.getText().equalsIgnoreCase("Add"))
-		{
-			btnAdd.setText("Cancel");
-			btnUpdate.setEnabled(false);
-			btnSave.setEnabled(true);
-			btnDelete.setEnabled(false);
-			LockTheTextBox(false);
-			tblDetail.setEnabled(false);
-			txtSalary.setText("");
-			txtOtherSalary.setText("");
-		}
-		else
-		{
-			btnAdd.setText("Add");
-			btnUpdate.setEnabled(false);
-			btnSave.setEnabled(false);
-			btnDelete.setEnabled(false);
-			LockTheTextBox(true);
-			tblDetail.setEnabled(true);
-			if(m_CurrentPostion!=null)
-			{
-				txtSalary.setText(m_CurrentPostion.getSalary()+"");
-				txtOtherSalary.setText(m_CurrentPostion.getOtherSalary()+"");
-				cboTitle.setSelectedIndex(m_CurrentPostion.getTitle().ordinal());
-			}
-		}
-		
+		return btnExit;
 	}
-	private void doUpdate()
+	public JComboBox getComboBoxTitle()
 	{
-		if(btnUpdate.getText().equalsIgnoreCase("Update"))
-		{
-			btnUpdate.setText("Cancel");
-			
-			btnAdd.setEnabled(false);
-			btnUpdate.setEnabled(true);
-			btnSave.setEnabled(true);
-			btnDelete.setEnabled(false);
-			LockTheTextBox(false);
-		}
-		else
-		{
-			btnUpdate.setText("Update");
-			
-			btnAdd.setEnabled(true);
-			btnUpdate.setEnabled(true);
-			btnSave.setEnabled(false);
-			btnDelete.setEnabled(true);
-			LockTheTextBox(true);
-			
-			if(m_CurrentPostion!=null)
-			{
-				txtSalary.setText(m_CurrentPostion.getSalary()+"");
-				txtOtherSalary.setText(m_CurrentPostion.getOtherSalary()+"");
-				cboTitle.setSelectedIndex(m_CurrentPostion.getTitle().ordinal());
-			}
-		}
+		return cboTitle;
 	}
-	private void doDelete()
+	public JTable getDetailTable()
 	{
-		int nRow=tblDetail.getSelectedRow();
-		if(nRow>=0)
-		{
-			int ret=JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this item?","Delete Item",JOptionPane.YES_NO_OPTION);
-			if(ret==JOptionPane.YES_OPTION)
-			{
-				m_PostionList.removeAt(nRow);
-				
-				loadDataOnTable();
-			}
-		}
-	
+		return tblDetail;
 	}
-	private void doExit()
+	public DefaultTableModel getTableModel()
 	{
-		
-		if(JOptionPane.showConfirmDialog(this, "Are you sure you want to close this fuction", "Close Position Title", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
-		{
-			//System.exit(0);
-			dispose();
-		}
+		return tblModel;
 	}
-	private void doSelectedOnTable()
+	public JTextField getTextFieldSalary()
 	{
-		
-		int nRow=tblDetail.getSelectedRow();
-		if(nRow>=0 && !btnAdd.getText().equalsIgnoreCase("Cancel"))
-		{
-			btnUpdate.setEnabled(true);
-			btnDelete.setEnabled(true);
-			Position aPostion=m_PostionList.get(nRow);
-			m_CurrentPostion=aPostion;
-			txtSalary.setText(aPostion.getSalary()+"");
-			txtOtherSalary.setText(aPostion.getOtherSalary()+"");
-			cboTitle.setSelectedIndex(aPostion.getTitle().ordinal());
-		}
+		return txtSalary;
 	}
-	private void doGetSalary()
+	public JTextField getTextFieldOtherSalary()
 	{
-		
-		int nIndex=cboTitle.getSelectedIndex();
-		
-		int nSalary=Position.ACCOUNTANT_SALARY;
-		switch(nIndex)
-		{
-		case 0:
-			nSalary=Position.ACCOUNTANT_SALARY;
-			break;
-		case 1:
-			nSalary=Position.HEAD_ACCOUNTANT_SALARY;
-			break;
-		case 2:
-			nSalary=Position.CASHIER_SALARY;
-			break;
-		case 3:
-			nSalary=Position.DIRECTOR_SALARY;
-			break;
-		case 4:
-			nSalary=Position.CHEF_SALARY;
-			break;
-		case 5:
-			nSalary=Position.EXECUTIVE_CHEF_SALARY;
-			break;
-		case 6:
-			nSalary=Position.BUSBOY_SALARY ;
-			break;
-		case 7:
-			nSalary=Position.RUNNER_SALARY;
-			break;
-		case 8:
-			nSalary=Position.SERVER_SALARY;
-			break;
-		case 9:
-			nSalary=Position.HEAD_SERVER_SALARY;
-			break;
-		}
-		
-		txtSalary.setText(nSalary+"");
+		return txtOtherSalary;
 	}
-	private void doSave()
-	{
-		if(btnAdd.isEnabled())
-		{
-			//We save Position title here
-			if(m_PostionList==null)
-				m_PostionList=new PositionList();
-			int nSalary=Integer.parseInt(txtSalary.getText());
-			int nOtherSalary=Integer.parseInt(txtOtherSalary.getText());
-			
-			int nIndex=cboTitle.getSelectedIndex();
-			
-			PositionTitle posTitle=getPostionTitle(nIndex);
-			
-			//posTitle.
-			Position aPostion=new Position(posTitle,nSalary, nOtherSalary);
-			boolean bcheckExist=m_PostionList.checkExist(aPostion);
-			if(bcheckExist)
-			{
-				JOptionPane.showMessageDialog(null, "Duplicate Postion Title");
-				return;
-			}
-			m_PostionList.add(aPostion);
-			Vector<String>vec=new Vector<String>();
-			vec.add(cboTitle.getSelectedItem().toString());
-			vec.add(txtSalary.getText());
-			vec.add(txtOtherSalary.getText());
-			
-			tblModel.addRow(vec);
-			cboTitle.requestFocus();
-			boolean bResult=ProcessFile.WriteData(m_PostionList, ProcessFile.FILENAME_POSITION);
-			if(bResult)
-			{
-				JOptionPane.showMessageDialog(null, "Save success");
-			}
-			else
-				JOptionPane.showMessageDialog(null, "Save Failed");
-			
-			btnAdd.setText("Add");
-			btnSave.setEnabled(false);
-			LockTheTextBox(true);
-			tblDetail.setEnabled(true);
-		}
-		else
-		{
-			//We update Position title here
-			int nRow=tblDetail.getSelectedRow();
-			
-			Position aPostion=m_PostionList.get(nRow);
-			int nSalary=Integer.parseInt( txtSalary.getText());
-			aPostion.setSalary(nSalary);
-			
-			int nOtherSalary=Integer.parseInt( txtOtherSalary.getText());
-			aPostion.setOtherSalary(nOtherSalary);
-			
-			m_PostionList.update(nRow, aPostion);
-			boolean bResult=ProcessFile.WriteData(m_PostionList, ProcessFile.FILENAME_POSITION);
-			
-			if(!bResult)
-			{
-				JOptionPane.showMessageDialog(null, "Update success");
-			}
-			loadDataOnTable();
-			btnUpdate.setText("Update");
-			btnSave.setEnabled(false);
-			btnAdd.setEnabled(true);
-			LockTheTextBox(true);
-		}
-	}
-	private class CMyProcessButtonEvent implements ActionListener
-	{
-
-		@Override
-		public void actionPerformed(ActionEvent e) 
-		{
-			Object myObj=e.getSource();
-			if(myObj.equals(btnAdd))
-			{
-				doAdd();	
-			}
-			else if(myObj.equals(btnUpdate))
-			{
-				doUpdate();
-			}
-			else if(myObj.equals(btnDelete))
-			{
-				doDelete();
-			}
-			else if(myObj.equals(cboTitle))
-			{
-				doGetSalary();
-			}
-			else if(myObj.equals(btnSave))
-			{
-				doSave();
-			}
-			else if(myObj.equals(btnExit))
-			{
-				doExit();
-			}
-		}
-		
-	}
-	
-	private class CMyProcessMouseEvent implements MouseListener
-	{
-
-		@Override
-		public void mouseClicked(MouseEvent e) 
-		{
-			// TODO Auto-generated method stub
-			if(tblDetail!=null)
-			{
-				doSelectedOnTable();
-				
-			}
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	}
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new CPostionFrame("PositionFrame");
-	}
-
 }

@@ -19,6 +19,9 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
+
+import controller.CPostionController;
+import controller.CTimeKeepingBookController;
 import controller.StaffController;
 
 import java.awt.event.ActionListener;
@@ -54,9 +57,9 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem mntmManageDayoffs = new JMenuItem("Manage Day-offs...");
 	
 	private JMenu mnTimekeeping = new JMenu("Timekeeping");
-	private JMenuItem mntmTimekeeping = new JMenuItem("Timekeeping");	
+	//private JMenuItem mntmTimekeeping = new JMenuItem("Timekeeping");	
 	private JMenuItem mnTimekeepingContractManagement=new JMenuItem("Contract Management");
-	private JMenuItem mntmViewTimekeepingReport = new JMenuItem("View Report");
+	//private JMenuItem mntmViewTimekeepingReport = new JMenuItem("View Report");
 	
 	private JMenu mnPosition = new JMenu("Position");
 	private JMenuItem mnPositionManagement = new JMenuItem("Position Management");
@@ -119,11 +122,11 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		mnTimekeeping.setMnemonic('T');
 		menuBar.add(mnTimekeeping);
-		mnTimekeeping.add(mntmTimekeeping);
-		mnTimekeeping.add(mntmViewTimekeepingReport);
+		//mnTimekeeping.add(mntmTimekeeping);
+		//mnTimekeeping.add(mntmViewTimekeepingReport);
 		mnTimekeeping.addSeparator();
 		mnTimekeeping.add(mnTimekeepingContractManagement);
-		mntmViewTimekeepingReport.addActionListener(this);
+		//mntmViewTimekeepingReport.addActionListener(this);
 		mnTimekeepingContractManagement.addActionListener(this);
 		
 		mnPosition.setMnemonic('P');
@@ -190,21 +193,24 @@ public class MainFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 
-		/*if (source == passwordField || source == btnLogIn) { // Process the
+		if (source == passwordField || source == btnLogIn) { // Process the
 																// password
 			handleLogIn();
 		} 
-		else */
-		if (source.equals(mnPositionManagement)) {
-			new CPostionFrame("Position Management");
+		else if (source.equals(mnPositionManagement)){
+			//new CPostionFrame("Position Management");
+			CPostionController postionController=new CPostionController();
+			postionController.doShow();
 			
-		} else if(source.equals(mnTimekeepingContractManagement)) {
-			CTimeKeepingBookFrame ui = new CTimeKeepingBookFrame("Contract Management");
-			ui.doShow();
+		}
+		else if(source.equals(mnTimekeepingContractManagement))
+		{
+			CTimeKeepingBookController timeKeepingBookController=new CTimeKeepingBookController();
+			timeKeepingBookController.doShow();
 		}
 	}
 
-	/*private void handleLogIn() {
+	private void handleLogIn() {
 		char[] input = passwordField.getPassword();
 		if (usernameField.getText().equals("admin") && isPasswordCorrect(input)) {
 			JOptionPane.showMessageDialog(this, "Log in successfully");
@@ -219,8 +225,14 @@ public class MainFrame extends JFrame implements ActionListener {
 					"Invalid username or password. Try again.",
 					"Error Message", JOptionPane.ERROR_MESSAGE);
 		}
-	}*/
-
+	}
+	private void displayInfoOnMainFrame() {
+		JPanel contentPane = new JPanel();
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		contentPane.add(scrollPane);
+		validate();
+	}
 	private void showInfo() {
 		try {
 			FileReader file = new FileReader("data/info.txt");
@@ -242,7 +254,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		}
 	}
 
-	/*private boolean isPasswordCorrect(char[] input) {
+	private boolean isPasswordCorrect(char[] input) {
 		boolean isCorrect = true;
 		char[] correctPassword = { '1', '1', '1' };
 
@@ -253,5 +265,5 @@ public class MainFrame extends JFrame implements ActionListener {
 		}
 
 		return isCorrect;
-	}*/
+	}
 }

@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
 
 import model.Address;
 import model.BankAccount;
-import model.CListEmployee;
 import model.Certificate;
 import model.Diploma;
 import model.Employee;
@@ -40,15 +39,14 @@ public class EmployeeController {
 	private List<Diploma> diplomas = new ArrayList<Diploma>();
 	private List<Certificate> languages = new ArrayList<Certificate>();
 	private List<Certificate> itCertificates = new ArrayList<Certificate>();
-	private CListEmployee m_ListEmployee=null;
 	private boolean isUpdate = false;
 	private int index = 0;
 
 	public EmployeeController() {
 		this.view = new EmployeeFrame();
-		m_ListEmployee=(CListEmployee)ProcessFile.ReadData(ProcessFile.FILENAME_EMPLOYEE);
-		if(m_ListEmployee==null)
-			m_ListEmployee=new CListEmployee();
+		//m_ListEmployee=(CListEmployee)ProcessFile.ReadData(ProcessFile.FILENAME_EMPLOYEE);
+		//if(m_ListEmployee==null)
+			//m_ListEmployee=new CListEmployee();
 		
 	}
 //this function use to set visible for employeeFrame.
@@ -88,7 +86,7 @@ public class EmployeeController {
 					issueDate=dateFormat.parse(this.view.getIssueDateText().getText(),pp);
 					
 					
-					m_ListEmployee.add(new Employee(
+					/*m_ListEmployee.add(new Employee(
 									this.view.getFullNameTextField().getText(),
 									birthday,
 									sex, emails, phoneNumbers, new IDCard(
@@ -100,9 +98,10 @@ public class EmployeeController {
 											.getText(), addresses, accounts,
 									this.view.getEducationComboBox()
 											.getSelectedIndex()+"",
-									diplomas, languages, itCertificates));
+									diplomas, languages, itCertificates));*/
 				// lbResult.setText("Save successfully!");
-				boolean bRet=ProcessFile.WriteData(m_ListEmployee, ProcessFile.FILENAME_EMPLOYEE);
+				//boolean bRet=ProcessFile.WriteData(m_ListEmployee, ProcessFile.FILENAME_EMPLOYEE);
+					boolean bRet=true;
 				if(bRet==true)
 				{
 					JOptionPane.showMessageDialog(this.view, "Save successfully!",
@@ -150,12 +149,13 @@ public class EmployeeController {
 				e.printStackTrace();
 			}
             employee.getItCertificates().add(new Certificate(this.view.getCertificateOfITcombobox().getSelectedIndex()+"",new Date()));
-			m_ListEmployee.set(index, employee);
+			//m_ListEmployee.set(index, employee);
             //Staff.getInstance().updateEmployee(index, employee);
 			
 			singleton.setVisible(false);
 			StaffController.singleton.refresh();
-			boolean bRet=ProcessFile.WriteData(m_ListEmployee, ProcessFile.FILENAME_EMPLOYEE);
+			//boolean bRet=ProcessFile.WriteData(m_ListEmployee, ProcessFile.FILENAME_EMPLOYEE);
+			boolean bRet=true;
 			if(bRet==true)
 				JOptionPane.showMessageDialog(this.view, "Update successful");
 			else
