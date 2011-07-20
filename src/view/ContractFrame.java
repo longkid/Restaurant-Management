@@ -243,7 +243,7 @@ public class ContractFrame extends JDialog {
 		m_PostionList=(PositionList)ProcessFile.ReadData(ProcessFile.FILENAME_POSITION);
 		if(m_PostionList!=null)
 		{
-			for(int i=0;i<m_PostionList.Count();i++)
+			for(int i=0;i<m_PostionList.size();i++)
 			{
 				cboTitle.addItem(Position.getPostionTitleString(m_PostionList.get(i).getTitle()));
 			}

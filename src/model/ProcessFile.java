@@ -16,14 +16,14 @@ public class ProcessFile
 	public static String FILENAME_USERLOGIN="userlogin.dat";
 	/* *******************************************************************************
 	 * Description: 
-	 * 		this method is used to read one object
-	 * 		return an Object, so must be convert type 
-	 * 		example: to read the list employee from file:
+	 * 		this method is used to read an object
+	 * 		the result will be returned to an Object, so we must convert the type 
+	 * 		example: to read the employee list from the file:
 	 * 			CListEmployee list=(CListEmployee) ProcessFile.ReadData(ProcessFile.FILENAME_EMPLOYEE);	
 	 * Parameters:
 	 * 		String strPath - the path to the file
 	 * Exception:
-	 * 		Error if the file does not exist, or can't be accessed
+	 * 		Error occurs if the file does not exist, or can't be accessed
 	 * return type: Object
 	 * *******************************************************************************/
 	public static Object ReadData(String strPath)
@@ -48,14 +48,14 @@ public class ProcessFile
 	}
 	/* *******************************************************************************
 	 * Description: 
-	 * 		this method is used to write an object into file
+	 * 		this method is used to write an object into a file
 	 * 		list: type CListEmployee	
 	 * 		if the saving is successful, return TRUE, otherwise return FALSE
 	 * Parameters:
-	 * 		Object obj : object implements Serializable that we want to save into file
-	 * 		String strPath - the path of the file
+	 * 		Object obj 
+	 * 		String strPath 
 	 * Exception:
-	 * 		error if the path is invalid or can't be accessed to drive 
+	 * 		error occurs if the path is invalid or the drive can't be accessed   
 	 * return type: boolean
 	 * *******************************************************************************/
 	public static boolean WriteData(Object obj,String strPath)

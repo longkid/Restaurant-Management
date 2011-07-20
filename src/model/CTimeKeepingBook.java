@@ -6,14 +6,13 @@ import java.util.Date;
 /*
  * @author Tu Thi Xuan Hien
  * Description: 
- * 		this class us used to save timekeeping of each month (CTimeKeepingSheet)		
- * 		we can use this class to get time keeping of any month in the year, and we get 
- * 		timekeeping detail of the day
- * general view:
- * 		one employee has one or several contract
- * 		one contract has one timekeeping table
- * 		one timekeeping table has several months
- *  	one month timekeeping has several days  
+ * 		this class is used to save the timekeeping of each month (CTimeKeepingSheet)		
+ * 		base on this class, we can search the timekeeping of each month and each day
+ * in brief:
+ * 		each employee has one or more contracts
+ * 		each contract has one timekeeping table
+ * 		each timekeeping table contains the timekeeping information of several months  
+ *  	the timekeeping of each month contains the timekeeping of several days  
  *  	Employee->Contract->CTimeKeepingBook->CTimeKeepingSheet->CTimeKeepingDetailInfor
  * Attributes:
  * 		 ArrayList<CTimeKeepingSheet> m_ListTimeKeepingSheet;
@@ -33,8 +32,8 @@ public class CTimeKeepingBook implements Serializable{
 	}
 	/* *******************************************************************************
 	 * Description: 
-	 * 		this method check month and year timekeeping is existing in timekeeping 
-	 * 		if exist the return true else return false	
+	 * 		this method is used to check if a particular month or year exists in timekeeping table
+	 * 		if it exist, return TRUE otherwise return FALSE
 	 * Parameters:
 	 * 		int month - month timekeeping
 	 * 		int year - year timekeeping
@@ -55,12 +54,13 @@ public class CTimeKeepingBook implements Serializable{
 	}
 	/* *******************************************************************************
 	 * Description: 
-	 * 		this method is used to check  timekeeping of month (CTimeKeepingSheet) is existing in timekeeping table 
-	 * 		if exist then return the place of the month in list else return -1 
+	 * 		this method is used to check  if the timekeeping of a particular month (CTimeKeepingSheet)
+	 * 		exists in the timekeeping table 
+	 * 		if it exists, return to the position of that month in the list, otherwise, return to -1 
 	 * 	Parameters:
 	 * 		CTimeKeepingSheet aSheet - month of timekeeping
 	 * Exception:
-	 * 		error if m_ListTimeKeepingSheet is not allocated memory
+	 * 		error occurs if m_ListTimeKeepingSheet is not allocated with memory
 	 * 		or aSheet is null
 	 * return type: int
 	 * *******************************************************************************/
@@ -80,9 +80,9 @@ public class CTimeKeepingBook implements Serializable{
 	}
 	/* *******************************************************************************
 	 * Description: 
-	 * 		set the last day modify of the timekeeping table		
+	 * 		set the last modified date of the timekeeping table		
 	 * Parameters:
-	 * 		Date dateLastModified - date of last modify
+	 * 		Date dateLastModified - the last modified date
 	 * return type: void
 	 * *******************************************************************************/
 	public void setLastModified(Date dateLastModified)
@@ -90,9 +90,8 @@ public class CTimeKeepingBook implements Serializable{
 		m_dateLastModified=dateLastModified;
 	}
 	/* *******************************************************************************
-	 * Description: 
-	 * 		
-	 * 		get the date of the last modify in timekeeping table
+	 * Description:  		
+	 * 		get the last modified date of the timekeeping table
 	 * return type: Date
 	 * *******************************************************************************/
 	public Date getLastModified()
@@ -101,12 +100,12 @@ public class CTimeKeepingBook implements Serializable{
 	}
 	/* *******************************************************************************
 	 * Description: 
-	 * 		reset the month of the timekeeping in the timekeeping table at the place n		
+	 * 		reset the month at n in the timekeeping table 	
 	 * Parameters:
 	 * 		int n - place n
 	 * 		CTimeKeepingSheet aSheet - month of timekeeping
 	 * Exception:
-	 * 		error if m_ListTimeKeepingSheet is not allocated the memory
+	 * 		error occurs if m_ListTimeKeepingSheet is not allocated with the memory
 	 * 		or n is invalid (n<0 or n>size of the list)
 	 * return type: void
 	 * *******************************************************************************/
@@ -116,12 +115,12 @@ public class CTimeKeepingBook implements Serializable{
 	}
 	/* *******************************************************************************
 	 * Description: 
-	 * 		this method is used to add the new month (CTimeKeepingSheet) into timekeeping tabe 
+	 * 		this method is used to add a new month (CTimeKeepingSheet) into the timekeeping tabe 
 	 * 		(m_ListTimeKeepingSheet)
 	 * Parameters:
 	 * 		CTimeKeepingSheet aSheet (one any month)
 	 * Exception:
-	 * 		error if m_ListTimeKeepingSheet is not allocated the memory
+	 * 		error occur if m_ListTimeKeepingSheet is not allocated with the memory
 	 * return type: void
 	 * *******************************************************************************/
 	public void add(CTimeKeepingSheet aSheet)
@@ -142,12 +141,12 @@ public class CTimeKeepingBook implements Serializable{
 	}
 	/* *******************************************************************************
 	 * Description: 
-	 * 		this method is used to get one month (CTimeKeepingSheet) at the place n in 
+	 * 		this method is used to get the month (CTimeKeepingSheet) at  n in 
 	 * 	  	timekeeping table(m_ListTimeKeepingSheet)
 	 * Parameters:
 	 * 		int n - (n is place)
 	 * Exception:
-	 * 		error if  m_ListTimeKeepingSheet is not allocated the memory
+	 * 		error occurs if  m_ListTimeKeepingSheet is not allocated with the memory
 	 * 		or n is invalid (n<0 or n>size of the list)
 	 * return type: CTimeKeepingSheet
 	 * *******************************************************************************/
@@ -180,12 +179,12 @@ public class CTimeKeepingBook implements Serializable{
 	}
 	/* *******************************************************************************
 	 * Description: 
-	 * 		this method is used to delete one month timekeeping(CTimeKeepingSheet) in
-	 *  	the timekeeping m_ListTimeKeepingSheet at the place n
+	 * 		this method is used to delete a month (CTimeKeepingSheet) at n in
+	 *  	the timekeeping m_ListTimeKeepingSheet 
 	 * Parameters:
 	 * 		int n - any place
 	 * Exception:
-	 * 		error if m_ListTimeKeepingSheet is not allocated the memory 
+	 * 		error occurs if m_ListTimeKeepingSheet is not allocated with the memory 
 	 * 		or n is invalid, (n<0 or n>size of the list)
 	 * return type: void
 	 * *******************************************************************************/
@@ -195,11 +194,11 @@ public class CTimeKeepingBook implements Serializable{
 	}
 	/* *******************************************************************************
 	 * Description: 
-	 * 		this method is used to delete one month timekeeping (CTimeKeepingSheet) 
+	 * 		this method is used to delete a month (CTimeKeepingSheet) in the list
 	 * Parameters:
 	 * 		CTimeKeepingSheet aSheet (any month)
 	 * Exception:
-	 * 		error if m_ListTimeKeepingSheet is not allocated the memory
+	 * 		error occurs if m_ListTimeKeepingSheet is not allocated with the memory
 	 * return type: void
 	 * *******************************************************************************/
 	public void remove(CTimeKeepingSheet aSheet)

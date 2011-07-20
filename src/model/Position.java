@@ -4,11 +4,11 @@ import java.io.Serializable;
 /*
  * @author Tu Thi Xuan Hien
  * Description: 
- * 		this class is used to store the position of the employee, each position has 
- * 		salary and other salary
+ * 		this class is used to store the position of the employee, each 
+ * 		position contains the basic salary and other salary
  * Attributes:
  * 		PositionTitle title;==> title of the position
- *		int salary; ==> basic salary depend on the position
+ *		int salary; ==> basic salary depending on the position
  *		int otherSalary;==> other salary
  *Modified Date:
  */
@@ -62,14 +62,14 @@ public class Position implements Serializable{
 	/* *******************************************************************************
 	 * Description: set the position of the employee
 	 * Parameters:
-	 * 		PositionTitle title - chức vụ
+	 * 		PositionTitle title - 
 	 * return type: void
 	 * *******************************************************************************/
 	public void setTitle(PositionTitle title) {
 		this.title = title;
 	}
 	/* *******************************************************************************
-	 * Description: get the salary of the employee follow the position
+	 * Description: get the salary of the employee base on the position
 	 * return type: PositionTitle
 	 * *******************************************************************************/
 	public int getSalary() {
@@ -101,11 +101,11 @@ public class Position implements Serializable{
 		this.otherSalary = otherSalary;
 	}
 	/* *******************************************************************************
-	 * Description: this method is used to create a position and add into position list
+	 * Description: this method is used to create a position in the position list
 	 * Parameters:
 	 * 		PositionTitle title
-	 * note: this method is seldom used because the user interface allow entering only the salary 
-	 * and other salary.
+	 * note: this method is seldom used because the user interface only allows entering  
+	 * the basic salary and other salary.
 	 * return type: Position
 	 * *******************************************************************************/
 	public static Position createPosition(PositionTitle title) {
@@ -195,7 +195,7 @@ public class Position implements Serializable{
 		return strResult;
 	}
 	/* *******************************************************************************
-	 * Description: get title position base parameter position 
+	 * Description: get title position base on the parameter position 
 	 * Parameters:
 	 * 		int nIndex - position in enum PostionTitle
 	 * return type: PositionTitle

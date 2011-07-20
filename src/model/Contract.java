@@ -5,15 +5,15 @@ import java.util.Date;
 /*
  * @author Tu Thi Xuan Hien
  * Description: 
- * 		this class is used to save contract of each Employee
- * 		an employee has one or several contracts
- * 		class Employee has 2 properties:
- * 		List<Contract> contracts;==> List of contract before
+ * 		this class is used to save the contract of each Employee
+ * 		each employee has one or several contracts
+ * 		the Employee class has 2 properties:
+ * 		List<Contract> contracts;==> List of contracts created before
  *		Contract currentContract;==> current contract
  * Attributes:
  * 		Position position; ==> store the position of each employee(Position, salary, ...)
- *		Date startDate;==> Starting date of the contract
- *		Duration time;==> Ending date of the contract
+ *		Date startDate;==> store the Starting date of the contract
+ *		Duration time;==> store the Ending date of the contract
  *			TWO_MONTHS, ONE_YEAR, THREE_YEARS, NO_LIMIT
  *		CTimeKeepingBook m_TimeKeeping;==> store time keeping
  * Modified Date: 

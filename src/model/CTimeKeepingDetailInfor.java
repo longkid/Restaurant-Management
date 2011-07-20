@@ -5,18 +5,18 @@ import java.util.Date;
 /*
  * @author Tu Thi Xuan Hien
  *  Description: 
- *  	this class is used to store the detail information of the working day of one employee
- *  	this object will be store in the CTimeKeepingSheet
+ *  	this class is used to store the information of a working day of each employee
+ *  	this object will be stored in the CTimeKeepingSheet
  * Attributes:
  *  	boolean m_bIsWorking
- *  		if m_bIsWorking=true then the employee present
- *  		if m_bIsWorking=false then the employee absent
+ *  		if m_bIsWorking=true then the employee is present
+ *  		if m_bIsWorking=false then the employee is absent
  *  	Date m_dateWorking
- *  		store working day(example: 08/07/2011)
+ *  		stores the working date(example: 08/07/2011)
  *  	String m_strWhoCheck
- *  		Store the name of the timekeeper (name of the login user)
+ *  		Stores the name of the timekeeper (name of the login user)
  *  	String m_strReason
- *  		store detail of timekeeping (example: reason of the absent, late, etc...
+ *  		stores the detail of timekeeping (example: reason of the absent, late, etc...
  *  Modified Date:
  */
 public class CTimeKeepingDetailInfor implements Serializable{
@@ -55,9 +55,9 @@ public class CTimeKeepingDetailInfor implements Serializable{
 		this.m_strReason=strReason;
 	}
 	/* *******************************************************************************
-	 * Description: set status of working day of employee
+	 * Description: set working status of employee in a particular day
 	 * Parameters:
-	 * 		boolean bIsWorking- true present, else absent
+	 * 		boolean bIsWorking- true: the employee is present, otherwise he or she is absent
 	 * return type: void
 	 * *******************************************************************************/
 	public void setIsWorking(boolean bIsWorking)
@@ -65,7 +65,7 @@ public class CTimeKeepingDetailInfor implements Serializable{
 		this.m_bIsWorking=bIsWorking;
 	}
 	/* *******************************************************************************
-	 * Description: return working day of employee
+	 * Description: check if the employee is present on that day
 	 * return type: boolean
 	 * *******************************************************************************/
 	public boolean getIsWorking()

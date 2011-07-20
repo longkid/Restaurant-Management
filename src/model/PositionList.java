@@ -22,12 +22,12 @@ public class PositionList implements Serializable
 	}
 	/* *******************************************************************************
 	 * Description: 
-	 * 		this method is used to check the existing of the position in the list
-	 * 		if exist then return true, else return false
+	 * 		this method is used to check the existing of a position in the list
+	 * 		if it exists, return TRUE, otherwise return FALSE
 	 * Parameters:
 	 * 		Position aPostion - position
 	 * Exception:
-	 * 		error if m_PositionList is not allocated with the memory
+	 * 		error occurs if m_PositionList is not allocated with the memory
 	 * return type: boolean
 	 * *******************************************************************************/
 	public boolean checkExist(Position aPostion)
