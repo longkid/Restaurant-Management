@@ -16,6 +16,7 @@ import model.CTimeKeepingBook;
 import model.CTimeKeepingSheet;
 import model.Employee;
 import model.Position;
+import model.PositionTitle;
 import view.CPrintPreview;
 
 public class CPrintPreviewController 
@@ -94,7 +95,7 @@ public class CPrintPreviewController
 					continue;
 				strContent+="<tr>";
 				strContent+="<td>&nbsp;"+emp.getFullName()+"</td>";
-				strContent+="<td>&nbsp;"+Position.getPostionTitleString(emp.getCurrentContract().getPosition().getTitle())+"</td>";
+				strContent+="<td>&nbsp;"+PositionTitle.getTitleString(emp.getCurrentContract().getPosition().getTitle())+"</td>";
 				strContent+="<td>&nbsp;"+emp.getCurrentContract().getPosition().getSalary()+"</td>";
 				strContent+="<td>&nbsp;"+emp.getCurrentContract().getPosition().getOtherSalary()+"</td>";
 				

@@ -124,17 +124,15 @@ public class Contract  implements Serializable{
 	 * 		CTimeKeepingBook TimeKeeping
 	 * return type: void
 	 * *******************************************************************************/
-	public void setTimeKeeping(CTimeKeepingBook TimeKeeping)
-	{
-		this.m_TimeKeeping=TimeKeeping;
+	public void setTimeKeeping(CTimeKeepingBook TimeKeeping) {
+		this.m_TimeKeeping = TimeKeeping;
 	}
 	/* *******************************************************************************
 	 * Description: 
 	 * 		get the time keeping 
 	 * return type: CTimeKeepingBook
 	 * *******************************************************************************/
-	public CTimeKeepingBook getTimeKeeping()
-	{
+	public CTimeKeepingBook getTimeKeeping() {
 		return this.m_TimeKeeping;
 	}
 	/* *******************************************************************************
@@ -150,15 +148,12 @@ public class Contract  implements Serializable{
 	 * 						(Dishwasher)-08/07/2009
 	 * return type: String
 	 * *******************************************************************************/
-	private String parseNodeTitle()
-	{
-		int day=this.getStartDate().getDate();
-		int month=this.getStartDate().getMonth();
-		int year=this.getStartDate().getYear();
-		 if(year-1900<0)
-			 year=year+1900;
-		String strNode="("+this.getPosition().getTitle().toString()+")-"+day+"/"+month+"/"+(year);
-		
+	private String parseNodeTitle() {
+		String strNode = "("
+				+ PositionTitle.getTitleString(position.getTitle()) + "); "
+				+ Staff.dateFormat.format(startDate) + "; "
+				+ Duration.getDurationString(time);
+
 		return strNode;
 	}
 	@Override

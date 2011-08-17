@@ -13,13 +13,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+
 public class Staff {
 	private static Staff singleton;
 	public static SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"yyyy-MM-dd");
 	private List<Employee> employees = new ArrayList<Employee>();
+	private List<Position> positions = new ArrayList<Position>();
 
 	private Staff() {
+		initializePositions();
 		initializeEmployees();
 	}
 
@@ -29,6 +32,27 @@ public class Staff {
 		}
 		
 		return singleton;
+	}
+
+	private void initializePositions() {
+		for (PositionTitle title : PositionTitle.values()) {
+			positions.add(Position.createPosition(title));
+		}
+	}
+	
+	public List<Position> getPositions() {
+		return positions;
+	}
+	
+	public Position getPosition(int index) {
+		return positions.get(index);
+	}
+	
+	public void updatePosition(int index, Position p) {
+		Position temp = positions.get(index);
+		temp.setSalary(p.getSalary());
+		temp.setOtherSalary(p.getOtherSalary());
+		positions.set(index, temp);
 	}
 
 	public List<Employee> getEmployees() {
@@ -201,11 +225,12 @@ public class Staff {
 				return new BankAccount(str.nextToken(), str.nextToken(),
 						dateFormat.parse(str.nextToken()));
 			}
-			/*
-			 * if (input instanceof Contract) { Position pos = Position. return
+			
+			 /* if (input instanceof Contract) { Position pos = Position. return
 			 * new Address(str.nextToken(), dateFormat.parse(str.nextToken()));
 			 * }
-			 */
+			 * */
+			 
 			if (input instanceof Diploma) {
 				return new Diploma(str.nextToken(), dateFormat.parse(str
 						.nextToken()));
@@ -220,9 +245,4 @@ public class Staff {
 
 		return null;
 	}
-
-	public void setEmployees(List<Employee> employees) {
-		this.employees = employees;
-	}
-	
 }

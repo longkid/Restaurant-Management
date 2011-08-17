@@ -1,10 +1,11 @@
 package model;
+
 /**
  * Author: Le Duy Phong
 
-<<<<<<< HEAD
-import java.io.Serializable;
-=======
+ <<<<<<< HEAD
+ import java.io.Serializable;
+ =======
  * Purpose of this class: this class is used to save information about employee.
  */
 import java.io.Serializable;
@@ -12,9 +13,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
+
 @SuppressWarnings("deprecation")
-public class Employee  implements Serializable
-{
+public class Employee implements Serializable {
 	/**
 	 * 
 	 */
@@ -35,8 +36,8 @@ public class Employee  implements Serializable
 	private List<Diploma> diplomas;
 	private List<Certificate> languageCertificates;
 	private List<Certificate> itCertificates;
-	public Employee()
-	{
+
+	public Employee() {
 		this.fullName = "";
 		this.birthday = new Date();
 		this.sex = Sex.MALE;
@@ -50,10 +51,10 @@ public class Employee  implements Serializable
 		this.diplomas = new ArrayList<Diploma>();
 		this.languageCertificates = new ArrayList<Certificate>();
 		this.itCertificates = new ArrayList<Certificate>();
-		this.currentContract=null;
-		this.contracts=null;
+		this.currentContract = null;
+		this.contracts = null;
 	}
-	
+
 	public Employee(String fullName, Date birthday, Sex sex,
 			List<String> emails, List<TelephoneNumber> phoneNumbers,
 			IDCard identityCard, String permanentAddress,
@@ -74,7 +75,7 @@ public class Employee  implements Serializable
 		this.diplomas = diplomas;
 		this.languageCertificates = languageCertificates;
 		this.itCertificates = itCertificates;
-		this.contracts=null;
+		this.contracts = null;
 	}
 
 	public String getFullName() {
@@ -228,65 +229,59 @@ public class Employee  implements Serializable
 	public void addItCertificate(Certificate certificate) {
 		itCertificates.add(certificate);
 	}
+
 	/*
 	 * @author Tu Thi Xuan Hien
 	 */
-	public Vector<String>getVector()
-	{
-		Vector<String>vec=new Vector<String>();
+	public Vector<String> getVector() {
+		Vector<String> vec = new Vector<String>();
 		vec.add(this.fullName);
-		vec.add(this.birthday.getDay()+"/" +this.birthday.getMonth()+"/"+this.birthday.getYear());
-		if(this.sex==Sex.FEMALE)
-			vec.add("Female");
-		else
-			vec.add("Male");
-		String strNote="";
-		if(currentContract==null)
-			strNote="No";
-		vec.add(strNote);
+		vec.add(Staff.dateFormat.format(birthday));
+		vec.add((sex == Sex.FEMALE) ? "Female" : "Male");
+		vec.add((currentContract == null) ? "No" : "Yes");
 		return vec;
 	}
-	public void setCurrentContract(Contract con)
-	{
-		this.currentContract=con;
+
+	public void setCurrentContract(Contract con) {
+		this.currentContract = con;
 	}
-	public Contract getCurrentContract()
-	{
+
+	public Contract getCurrentContract() {
 		return this.currentContract;
 	}
-		
+
 	public String getLatestEmail() {
 		return getLastElement(emails);
 	}
-	
+
 	public TelephoneNumber getLatestPhoneNumber() {
 		return getLastElement(phoneNumbers);
 	}
-	
+
 	public Address getLatestTempAddress() {
 		return getLastElement(temporaryAddresses);
 	}
-	
+
 	public BankAccount getLatestAccount() {
 		return getLastElement(accounts);
 	}
-	
+
 	public Contract getLatestContract() {
 		return getLastElement(contracts);
 	}
-	
+
 	public Diploma getLatestDiploma() {
 		return getLastElement(diplomas);
 	}
-	
+
 	public Certificate getLatestLangCertificate() {
 		return getLastElement(languageCertificates);
 	}
-	
+
 	public Certificate getLatestITCertificate() {
 		return getLastElement(itCertificates);
 	}
-	
+
 	public static <E> E getLastElement(List<E> l) {
 		return (l.isEmpty() ? null : l.get(l.size() - 1));
 	}
