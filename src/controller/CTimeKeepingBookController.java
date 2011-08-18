@@ -25,7 +25,8 @@ import model.CTimeKeepingDetailInfor;
 import model.CTimeKeepingSheet;
 import model.Contract;
 import model.Employee;
-import model.ProcessFile;
+import model.FileProcessing;
+import model.Staff;
 
 enum eSHOW {
 	NEWCONTRACT, EDITCONTRACT, DELETECONTRACT, CALCPAYROLL, CALCWORKDAYREPORT,
@@ -33,7 +34,7 @@ enum eSHOW {
 
 public class CTimeKeepingBookController {
 	private CTimeKeepingBookFrame timeKeepingBookFrame = null;
-	private List<Employee> listEmployee;
+	private List<Employee> listEmployee = Staff.getInstance().getEmployees();
 	private Employee currentEmployee = null;
 	private Contract currentContract = null;
 	private int nMonthSelected, nYearSelected, nNumberDayOfMonth;
@@ -54,9 +55,6 @@ public class CTimeKeepingBookController {
 	}
 
 	public void doLoadData() {
-		// Load Data Employee
-		listEmployee = (ArrayList<Employee>) ProcessFile
-				.ReadData(ProcessFile.FILENAME_EMPLOYEE);
 		loadDataIntoTable(listEmployee);
 		enableControlForContract();
 		if (currentEmployee != null) {
@@ -200,8 +198,8 @@ public class CTimeKeepingBookController {
 						currentEmployee.setContracts(null);
 					}
 					currentEmployee.setContracts(listContracts);
-					ProcessFile.WriteData(listEmployee,
-							ProcessFile.FILENAME_EMPLOYEE);
+					FileProcessing.WriteData(listEmployee,
+							FileProcessing.FILENAME_EMPLOYEE);
 				}
 				processMouseClickOnEmployeeTable();
 			}
@@ -340,8 +338,8 @@ public class CTimeKeepingBookController {
 					keepBook.add(keepSheet);
 					currentContract.setTimeKeeping(keepBook);
 					currentEmployee.setCurrentContract(currentContract);
-					ProcessFile.WriteData(listEmployee,
-							ProcessFile.FILENAME_EMPLOYEE);
+					FileProcessing.WriteData(listEmployee,
+							FileProcessing.FILENAME_EMPLOYEE);
 					JOptionPane.showMessageDialog(null, "Save Data success!");
 				}
 			}
@@ -421,7 +419,7 @@ public class CTimeKeepingBookController {
 		Object[] options = { "Yes", "No" };
 		ImageIcon icon = new ImageIcon("images/exit.png");
 		int ret = JOptionPane.showOptionDialog(null,
-				"Do you want to exit?", "Exit",
+				"Do you want to close this function?", null,
 
 				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
 

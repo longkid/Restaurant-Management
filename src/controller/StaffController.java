@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import model.Employee;
-import model.ProcessFile;
+import model.FileProcessing;
 import model.Staff;
 
 import view.EmployeeFrame;
@@ -73,7 +73,7 @@ public class StaffController {
 		index--;
 		if(index<0){return;}
 		Staff.getInstance().deleteEmployee(index);
-		ProcessFile.WriteData(Staff.getInstance().getEmployees(), ProcessFile.FILENAME_EMPLOYEE);
+		FileProcessing.WriteData(Staff.getInstance().getEmployees(), FileProcessing.FILENAME_EMPLOYEE);
 		JOptionPane.showMessageDialog(this.view, "Delete successful!");
 		this.refresh();
 	}

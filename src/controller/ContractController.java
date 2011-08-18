@@ -16,13 +16,13 @@ import model.Duration;
 import model.Employee;
 import model.Position;
 import model.PositionTitle;
-import model.ProcessFile;
+import model.FileProcessing;
 import model.Staff;
 import view.CContractFrame;
 
 public class ContractController {
 	private CContractFrame contractFrame = null;
-	private List<Position> positions = null;
+	private static List<Position> positions = Staff.getInstance().getPositions();
 	private Employee currentEmployee = null;
 	private List<Employee> listEmployee = null;
 	private Contract contract = null;
@@ -70,10 +70,8 @@ public class ContractController {
 	}
 
 	private void addTitleForTitleComboBox() {
-		positions = Staff.getInstance().getPositions();
-		for (Position pos : positions) {
-			contractFrame.getComboBoxTitle().addItem(
-					PositionTitle.getTitleString(pos.getTitle()));
+		for (PositionTitle title : PositionTitle.values()) {
+			contractFrame.getComboBoxTitle().addItem(PositionTitle.getTitleString(title));
 		}
 	}
 
@@ -120,12 +118,13 @@ public class ContractController {
 			// Set new current contract
 			currentEmployee.setCurrentContract(createContract());
 		}
-		boolean bResult = ProcessFile.WriteData(listEmployee,
-				ProcessFile.FILENAME_EMPLOYEE);
+		boolean bResult = FileProcessing.WriteData(listEmployee,
+				FileProcessing.FILENAME_EMPLOYEE);
 		if (bResult) {
 			JOptionPane.showMessageDialog(null, "Successful Save");
-		} else
+		} else {
 			JOptionPane.showMessageDialog(null, "Failed Save");
+		}
 		contractFrame.dispose();
 		bIsSave = true;
 	}

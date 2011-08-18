@@ -8,10 +8,8 @@ import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JEditorPane;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -20,8 +18,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 
-import controller.CPostionController;
 import controller.CTimeKeepingBookController;
+import controller.PositionController;
 import controller.StaffController;
 
 import java.awt.event.ActionListener;
@@ -30,7 +28,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Arrays;
 
 // 20110512 - LH: I'll add functionality for this frame.
@@ -44,26 +41,16 @@ import java.util.Arrays;
  */
 public class MainFrame extends JFrame implements ActionListener {
 
-	private static final long serialVersionUID = 1L;
-	private JMenu mnAdministrator = new JMenu("Administrator");
-	private JMenuItem mntmCreateAUser = new JMenuItem("Create a user...");
-	private JMenuItem mntmLogIn = new JMenuItem("Log in");
-	private JMenuItem mntmSignOut = new JMenuItem("Sign out");
-	private JMenuItem mntmExit = new JMenuItem("Exit");
-	
+	private static final long serialVersionUID = 1L;	
 	private JMenu mnManage = new JMenu("Manage");
 	private JMenuItem mntmManageStaff = new JMenuItem("Manage Staff...");
+	private JMenuItem mntmManagePosition = new JMenuItem("Manage Positions...");
 	private JMenuItem mntmManageWaiters = new JMenuItem("Manage Waiters...");
 	private JMenuItem mntmManageDayoffs = new JMenuItem("Manage Day-offs...");
 	
 	private JMenu mnTimekeeping = new JMenu("Timekeeping");
-	//private JMenuItem mntmTimekeeping = new JMenuItem("Timekeeping");	
 	private JMenuItem mnTimekeepingContractManagement=new JMenuItem("Contract Management");
-	//private JMenuItem mntmViewTimekeepingReport = new JMenuItem("View Report");
-	
-	private JMenu mnPosition = new JMenu("Position");
-	private JMenuItem mnPositionManagement = new JMenuItem("Position Management");
-	
+		
 	private JMenu mnHelp = new JMenu("Help");
 	private JMenuItem mntmHelp = new JMenuItem("Help...");
 	private JMenuItem mntmAboutRestaurant = new JMenuItem("About Restaurant...");
@@ -100,39 +87,20 @@ public class MainFrame extends JFrame implements ActionListener {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
-		mnAdministrator.setMnemonic('A');
-		menuBar.add(mnAdministrator);
-		mnAdministrator.add(mntmCreateAUser);
-		mnAdministrator.addSeparator();
-		mnAdministrator.add(mntmLogIn);
-		mnAdministrator.add(mntmSignOut);
-		mnAdministrator.addSeparator();
-		mnAdministrator.add(mntmExit);
-
 		mnManage.setMnemonic('M');
 		menuBar.add(mnManage);
+		mntmManageStaff.addActionListener(this);		
+		mntmManagePosition.addActionListener(this);
 		mnManage.add(mntmManageStaff);
-		mntmManageStaff.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				StaffController.singleton.visible();
-			}
-		});
+		mnManage.add(mntmManagePosition);
 		mnManage.add(mntmManageWaiters);
 		mnManage.add(mntmManageDayoffs);
 
 		mnTimekeeping.setMnemonic('T');
 		menuBar.add(mnTimekeeping);
-		//mnTimekeeping.add(mntmTimekeeping);
-		//mnTimekeeping.add(mntmViewTimekeepingReport);
 		mnTimekeeping.addSeparator();
 		mnTimekeeping.add(mnTimekeepingContractManagement);
-		//mntmViewTimekeepingReport.addActionListener(this);
 		mnTimekeepingContractManagement.addActionListener(this);
-		
-		mnPosition.setMnemonic('P');
-		menuBar.add(mnPosition);
-		mnPosition.add(mnPositionManagement);
-		mnPositionManagement.addActionListener(this);		
 		
 		mnHelp.setMnemonic('H');
 		menuBar.add(mnHelp);
@@ -187,6 +155,7 @@ public class MainFrame extends JFrame implements ActionListener {
         areaScrollPane.setPreferredSize(this.getPreferredSize());
         showInfo();
 		contentPane.add(areaScrollPane, BorderLayout.CENTER);
+		setLocationRelativeTo(null);
 	}
 
 	@Override
@@ -196,11 +165,11 @@ public class MainFrame extends JFrame implements ActionListener {
 		if (source == passwordField || source == btnLogIn) { // Process the
 																// password
 			handleLogIn();
-		} 
-		else if (source.equals(mnPositionManagement)){
-			//new CPostionFrame("Position Management");
-			CPostionController postionController=new CPostionController();
-			postionController.doShow();
+		} else if (source.equals(mntmManageStaff)) {
+			StaffController.singleton.visible();
+		} else if (source.equals(mntmManagePosition)){
+			PositionController positionController=new PositionController();
+			positionController.doShow();
 			
 		}
 		else if(source.equals(mnTimekeepingContractManagement))
@@ -214,10 +183,8 @@ public class MainFrame extends JFrame implements ActionListener {
 		char[] input = passwordField.getPassword();
 		if (usernameField.getText().equals("admin") && isPasswordCorrect(input)) {
 			JOptionPane.showMessageDialog(this, "Log in successfully");
-			mnAdministrator.setEnabled(true);
 			mnManage.setEnabled(true);
 			mnTimekeeping.setEnabled(true);
-			mnPosition.setEnabled(true);
 			mnHelp.setEnabled(true);
 			displayInfoOnMainFrame();
 		} else {

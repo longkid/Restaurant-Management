@@ -5,6 +5,7 @@ package model;
  * There should be only one instance of this class in the application.
  */
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,16 +15,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import javax.swing.JOptionPane;
+
 public class Staff {
 	private static Staff singleton;
 	public static SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"yyyy-MM-dd");
-	private List<Employee> employees = new ArrayList<Employee>();
-	private List<Position> positions = new ArrayList<Position>();
+	private List<Employee> employees = null;
+	private List<Position> positions = null;
 
+	@SuppressWarnings("unchecked")
 	private Staff() {
-		initializePositions();
-		initializeEmployees();
+		File f = new File(FileProcessing.FILENAME_POSITION);
+		if (f.exists()) {
+			positions = (List<Position>) FileProcessing.ReadData(FileProcessing.FILENAME_POSITION);
+		}
+		
+		if (positions == null) {
+			positions = new ArrayList<Position>();
+			initializePositions();
+			FileProcessing.WriteData(positions, FileProcessing.FILENAME_POSITION);
+		}
+		f = new File(FileProcessing.FILENAME_EMPLOYEE);
+		if (f.exists()) {
+			employees = (List<Employee>) FileProcessing.ReadData(FileProcessing.FILENAME_EMPLOYEE);
+		}
+		if (employees == null) {
+			employees = new ArrayList<Employee>();
+			initializeEmployees();
+			FileProcessing.WriteData(employees, FileProcessing.FILENAME_EMPLOYEE);
+		}
 	}
 
 	public static Staff getInstance() {
@@ -44,6 +65,11 @@ public class Staff {
 		return positions;
 	}
 	
+	public void setPositions(List<Position> positions) {
+		this.positions = positions;
+		writeData(positions, FileProcessing.FILENAME_POSITION);
+	}
+
 	public Position getPosition(int index) {
 		return positions.get(index);
 	}
@@ -53,6 +79,16 @@ public class Staff {
 		temp.setSalary(p.getSalary());
 		temp.setOtherSalary(p.getOtherSalary());
 		positions.set(index, temp);
+		writeData(positions, FileProcessing.FILENAME_POSITION);
+	}
+
+	private void writeData(Object obj, String strPath) {
+		boolean result = FileProcessing.WriteData(obj, strPath);
+		if (result) {
+			JOptionPane.showMessageDialog(null, "Successful Update");
+		} else {
+			JOptionPane.showMessageDialog(null, "Failed Update");
+		}
 	}
 
 	public List<Employee> getEmployees() {

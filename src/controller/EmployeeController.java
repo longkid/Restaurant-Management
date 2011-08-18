@@ -20,7 +20,7 @@ import model.Certificate;
 import model.Diploma;
 import model.Employee;
 import model.IDCard;
-import model.ProcessFile;
+import model.FileProcessing;
 import model.Sex;
 import model.Staff;
 import model.TelephoneNumber;
@@ -99,7 +99,7 @@ public class EmployeeController {
 						"Save successfully!", JOptionPane.INFORMATION_MESSAGE);
 				singleton.setVisible(false);
 				StaffController.singleton.refresh();
-				ProcessFile.WriteData(Staff.getInstance().getEmployees(), ProcessFile.FILENAME_EMPLOYEE);
+				FileProcessing.WriteData(Staff.getInstance().getEmployees(), FileProcessing.FILENAME_EMPLOYEE);
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(this.view, "You must input date follow the format yyyy-mm-dd, please!");
@@ -136,7 +136,7 @@ public class EmployeeController {
 			}
             employee.getItCertificates().add(new Certificate(this.view.getCertificateOfITcombobox().getSelectedIndex()+"",new Date()));
 			Staff.getInstance().updateEmployee(index, employee);
-			ProcessFile.WriteData(Staff.getInstance().getEmployees(), ProcessFile.FILENAME_EMPLOYEE);
+			FileProcessing.WriteData(Staff.getInstance().getEmployees(), FileProcessing.FILENAME_EMPLOYEE);
 			singleton.setVisible(false);
 			StaffController.singleton.refresh();
 			JOptionPane.showMessageDialog(this.view, "Update successful");
