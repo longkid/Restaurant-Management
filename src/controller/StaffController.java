@@ -6,14 +6,11 @@ package controller;
  */
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import model.Employee;
-import model.FileProcessing;
 import model.Staff;
 
-import view.EmployeeFrame;
 import view.StaffFrame;
 
 public class StaffController {
@@ -34,7 +31,7 @@ public class StaffController {
 		objects[0][2] ="No identity card";
 		for (int i = 1; i <= employees.size(); i++) {
 			objects[i][0] = employees.get(i-1).getFullName();
-			objects[i][1] = Staff.getInstance().dateFormat.format(employees.get(i-1).getBirthday());
+			objects[i][1] = Staff.dateFormat.format(employees.get(i-1).getBirthday());
 			objects[i][2] = employees.get(i-1).getIdentityCard().getCardNum();
 		}
 		return objects;
@@ -66,15 +63,13 @@ public class StaffController {
 		EmployeeController.singleton.setVisible(true);
 		
 	}
-	//this fuction is used to delete an employee
+	//this function is used to delete an employee
 	public void delete() {
 		// TODO Auto-generated method stub
 		int index = this.view.getTable_1().getSelectedRow();
 		index--;
 		if(index<0){return;}
 		Staff.getInstance().deleteEmployee(index);
-		FileProcessing.WriteData(Staff.getInstance().getEmployees(), FileProcessing.FILENAME_EMPLOYEE);
-		JOptionPane.showMessageDialog(this.view, "Delete successful!");
 		this.refresh();
 	}
 }

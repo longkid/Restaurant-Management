@@ -25,7 +25,6 @@ import model.CTimeKeepingDetailInfor;
 import model.CTimeKeepingSheet;
 import model.Contract;
 import model.Employee;
-import model.FileProcessing;
 import model.Staff;
 
 enum eSHOW {
@@ -34,7 +33,7 @@ enum eSHOW {
 
 public class CTimeKeepingBookController {
 	private CTimeKeepingBookFrame timeKeepingBookFrame = null;
-	private List<Employee> listEmployee = Staff.getInstance().getEmployees();
+	private List<Employee> employees = Staff.getInstance().getEmployees();
 	private Employee currentEmployee = null;
 	private Contract currentContract = null;
 	private int nMonthSelected, nYearSelected, nNumberDayOfMonth;
@@ -55,7 +54,7 @@ public class CTimeKeepingBookController {
 	}
 
 	public void doLoadData() {
-		loadDataIntoTable(listEmployee);
+		loadDataIntoTable(employees);
 		enableControlForContract();
 		if (currentEmployee != null) {
 			doProcessMonthSelection();
@@ -121,16 +120,16 @@ public class CTimeKeepingBookController {
 			timeKeepingBookFrame.getTableModelTimeKeeping().setColumnCount(0);
 	}
 
-	private void loadDataIntoTable(List<Employee> listEmployee) {
-		if (listEmployee != null) {
+	private void loadDataIntoTable(List<Employee> employees) {
+		if (employees != null) {
 			timeKeepingBookFrame.getTableModelEmployee().setRowCount(0);
-			for (int i = 0; i < listEmployee.size(); i++) {
-				Employee emp = listEmployee.get(i);
+			for (int i = 0; i < employees.size(); i++) {
+				Employee emp = employees.get(i);
 				timeKeepingBookFrame.getTableModelEmployee().addRow(
 						emp.getVector());
 			}
-			if (listEmployee.size() > 0) {
-				currentEmployee = listEmployee.get(0);
+			if (employees.size() > 0) {
+				currentEmployee = employees.get(0);
 				currentContract = currentEmployee.getCurrentContract();
 			}
 		}
@@ -143,26 +142,26 @@ public class CTimeKeepingBookController {
 	private void doActionFromToolBar(eSHOW eShow) {
 		switch (eShow) {
 		case NEWCONTRACT:
-			ContractController newContactController = new ContractController(
+			ContractController newContractController = new ContractController(
 					"New contract", "New contract:", currentEmployee,
-					listEmployee);
-			newContactController.doShow();
-			if (newContactController.isSave()) {
+					employees);
+			newContractController.doShow();
+			if (newContractController.isSave()) {
 				processMouseClickOnEmployeeTable();
 				int nRow = timeKeepingBookFrame.getTableEmployee()
 						.getSelectedRow();
-				loadDataIntoTable(listEmployee);
+				loadDataIntoTable(employees);
 				timeKeepingBookFrame.getTableEmployee().changeSelection(nRow,
 						0, false, false);
 			}
 			break;
 		case EDITCONTRACT:
-			ContractController editContactController = new ContractController(
+			ContractController editContractController = new ContractController(
 					"Edit contract", "Edit contract:", currentEmployee,
-					listEmployee);
-			editContactController.doShow();
-			editContactController.updateInformationForEdit();
-			if (editContactController.isSave()) {
+					employees);
+			editContractController.doShow();
+			editContractController.updateInformationForEdit();
+			if (editContractController.isSave()) {
 				processMouseClickOnEmployeeTable();
 			}
 			break;
@@ -172,7 +171,7 @@ public class CTimeKeepingBookController {
 					.getTreeViewContract().getLastSelectedPathComponent();
 			if (node == null) {
 				JOptionPane.showMessageDialog(null,
-						"please choose contract to delete");
+						"Please choose the contract you want to delete.");
 				return;
 			}
 			Object obj = node.getUserObject();
@@ -182,10 +181,8 @@ public class CTimeKeepingBookController {
 				int ret = JOptionPane.showOptionDialog(null,
 						"Are you sure you want to delete [" + obj.toString()
 								+ "]?", "Delete Contract",
-
 						JOptionPane.DEFAULT_OPTION,
 						JOptionPane.QUESTION_MESSAGE,
-
 						icon, options, options[0]);
 				if (ret != 0)
 					return;
@@ -198,8 +195,8 @@ public class CTimeKeepingBookController {
 						currentEmployee.setContracts(null);
 					}
 					currentEmployee.setContracts(listContracts);
-					FileProcessing.WriteData(listEmployee,
-							FileProcessing.FILENAME_EMPLOYEE);
+					// Update employees list in Staff class
+					Staff.getInstance().setEmployees(employees);
 				}
 				processMouseClickOnEmployeeTable();
 			}
@@ -219,7 +216,7 @@ public class CTimeKeepingBookController {
 		CPrintPreviewController printPreviewController = new CPrintPreviewController();
 		printPreviewController.setTittle("Printing Calc Payroll");
 		printPreviewController.setJobName("calcPayroll");
-		printPreviewController.setListEmployee(listEmployee);
+		printPreviewController.setListEmployee(employees);
 		printPreviewController.setMonth(nMonthSelected);
 		printPreviewController.setYear(nYearSelected);
 		printPreviewController.setContent(printPreviewController
@@ -279,8 +276,8 @@ public class CTimeKeepingBookController {
 		String strName = timeKeepingBookFrame.getTextFieldSearch().getText();
 		List<Employee> listSearch = new ArrayList<Employee>();
 
-		for (int i = 0; i < listEmployee.size(); i++) {
-			Employee employee = listEmployee.get(i);
+		for (int i = 0; i < employees.size(); i++) {
+			Employee employee = employees.get(i);
 			if (employee.getFullName().indexOf(strName) != -1) {
 				listSearch.add(employee);
 			}
@@ -289,12 +286,12 @@ public class CTimeKeepingBookController {
 	}
 
 	private void doShowAll() {
-		loadDataIntoTable(listEmployee);
+		loadDataIntoTable(employees);
 	}
 
 	private void processMouseClickOnEmployeeTable() {
 		int row = timeKeepingBookFrame.getTableEmployee().getSelectedRow();
-		currentEmployee = listEmployee.get(row);
+		currentEmployee = employees.get(row);
 		currentContract = currentEmployee.getCurrentContract();
 		if (currentContract != null) {
 			doProcessMonthSelection();
@@ -338,9 +335,8 @@ public class CTimeKeepingBookController {
 					keepBook.add(keepSheet);
 					currentContract.setTimeKeeping(keepBook);
 					currentEmployee.setCurrentContract(currentContract);
-					FileProcessing.WriteData(listEmployee,
-							FileProcessing.FILENAME_EMPLOYEE);
-					JOptionPane.showMessageDialog(null, "Save Data success!");
+					// Update employees list in Staff class
+					Staff.getInstance().setEmployees(employees);
 				}
 			}
 		}
@@ -449,15 +445,11 @@ public class CTimeKeepingBookController {
 			Object o = e.getSource();
 			if (o.equals(timeKeepingBookFrame.getButtonAddNewContract())) {
 				doActionFromToolBar(eSHOW.NEWCONTRACT);
-			}
-
-			else if (o.equals(timeKeepingBookFrame.getButtonModifyContract())) {
+			} else if (o.equals(timeKeepingBookFrame.getButtonModifyContract())) {
 				doActionFromToolBar(eSHOW.EDITCONTRACT);
 			} else if (o.equals(timeKeepingBookFrame.getButtonTrash())) {
 				doActionFromToolBar(eSHOW.DELETECONTRACT);
-			}
-
-			else if (o.equals(timeKeepingBookFrame.getButtonCalcPayroll())) {
+			} else if (o.equals(timeKeepingBookFrame.getButtonCalcPayroll())) {
 				doActionFromToolBar(eSHOW.CALCPAYROLL);
 			} else if (o.equals(timeKeepingBookFrame.getMenuItemSystemExit())) {
 				doExit();

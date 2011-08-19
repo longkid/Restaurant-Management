@@ -16,7 +16,6 @@ import model.Duration;
 import model.Employee;
 import model.Position;
 import model.PositionTitle;
-import model.FileProcessing;
 import model.Staff;
 import view.CContractFrame;
 
@@ -24,18 +23,18 @@ public class ContractController {
 	private CContractFrame contractFrame = null;
 	private static List<Position> positions = Staff.getInstance().getPositions();
 	private Employee currentEmployee = null;
-	private List<Employee> listEmployee = null;
+	private List<Employee> employees = null;
 	private Contract contract = null;
 	private boolean bIsSave = false;
 
 	public ContractController(String strTitle, String strCaption,
-			Employee employee, List<Employee> listEmployee) {
+			Employee currentEmployee, List<Employee> employees) {
 		contractFrame = new CContractFrame(strTitle, strCaption);
-		contractFrame.setEmployeeName(employee.getFullName());
+		contractFrame.setEmployeeName(currentEmployee.getFullName());
 		addTitleForTitleComboBox();
 		addDurationForCombobox();
-		currentEmployee = employee;
-		this.listEmployee = listEmployee;
+		this.currentEmployee = currentEmployee;
+		this.employees = employees;
 	}
 
 	public boolean isSave() {
@@ -118,13 +117,8 @@ public class ContractController {
 			// Set new current contract
 			currentEmployee.setCurrentContract(createContract());
 		}
-		boolean bResult = FileProcessing.WriteData(listEmployee,
-				FileProcessing.FILENAME_EMPLOYEE);
-		if (bResult) {
-			JOptionPane.showMessageDialog(null, "Successful Save");
-		} else {
-			JOptionPane.showMessageDialog(null, "Failed Save");
-		}
+		// Update employees list in Staff class
+		Staff.getInstance().setEmployees(employees);
 		contractFrame.dispose();
 		bIsSave = true;
 	}

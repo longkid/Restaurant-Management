@@ -2,6 +2,7 @@ package model;
 /*
  * @author Tu Thi Xuan Hien
  */
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -27,6 +28,10 @@ public class FileProcessing {
 	 * *******************************************************************************/
 	public static Object ReadData(String strPath) {
 		Object obj = null;
+		File f = new File(strPath);
+		if (!f.exists()) {
+			return obj;
+		}
 		try {
 			FileInputStream file = new FileInputStream(strPath);
 			ObjectInputStream instream = new ObjectInputStream(file);

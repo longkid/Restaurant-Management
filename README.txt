@@ -8,4 +8,4 @@
 - This project is done in Eclipse Helios IDE (http://eclipse.org/).
 - Webpage: https://github.com/longkid/Restaurant-Management
 
-Thank you if you have any contribution on our project!
+We are thankful if you have any contribution on our project!

@@ -5,7 +5,6 @@ package model;
  * There should be only one instance of this class in the application.
  */
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -26,22 +25,14 @@ public class Staff {
 
 	@SuppressWarnings("unchecked")
 	private Staff() {
-		File f = new File(FileProcessing.FILENAME_POSITION);
-		if (f.exists()) {
-			positions = (List<Position>) FileProcessing.ReadData(FileProcessing.FILENAME_POSITION);
-		}
-		
+		positions = (List<Position>) FileProcessing.ReadData(FileProcessing.FILENAME_POSITION);
 		if (positions == null) {
-			positions = new ArrayList<Position>();
 			initializePositions();
 			FileProcessing.WriteData(positions, FileProcessing.FILENAME_POSITION);
 		}
-		f = new File(FileProcessing.FILENAME_EMPLOYEE);
-		if (f.exists()) {
-			employees = (List<Employee>) FileProcessing.ReadData(FileProcessing.FILENAME_EMPLOYEE);
-		}
+		
+		employees = (List<Employee>) FileProcessing.ReadData(FileProcessing.FILENAME_EMPLOYEE);
 		if (employees == null) {
-			employees = new ArrayList<Employee>();
 			initializeEmployees();
 			FileProcessing.WriteData(employees, FileProcessing.FILENAME_EMPLOYEE);
 		}
@@ -56,6 +47,7 @@ public class Staff {
 	}
 
 	private void initializePositions() {
+		positions = new ArrayList<Position>();
 		for (PositionTitle title : PositionTitle.values()) {
 			positions.add(Position.createPosition(title));
 		}
@@ -82,6 +74,39 @@ public class Staff {
 		writeData(positions, FileProcessing.FILENAME_POSITION);
 	}
 
+	public List<Employee> getEmployees() {
+		return employees;
+	}
+
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
+		writeData(employees, FileProcessing.FILENAME_EMPLOYEE);
+	}
+
+	/*
+	 * Add the specified employee
+	 */
+	public void addEmployee(Employee emp) {
+		employees.add(emp);
+		writeData(employees, FileProcessing.FILENAME_EMPLOYEE);
+	}
+
+	/*
+	 * Update information of existed employee with information of specified employee
+	 */
+	public void updateEmployee(int index, Employee emp) {
+		employees.set(index, emp);
+		writeData(employees, FileProcessing.FILENAME_EMPLOYEE);
+	}
+
+	/*
+	 * Remove the employee equivalent to specified employee
+	 */
+	public void deleteEmployee(int index) {
+		employees.remove(index);
+		writeData(employees, FileProcessing.FILENAME_EMPLOYEE);
+	}
+
 	private void writeData(Object obj, String strPath) {
 		boolean result = FileProcessing.WriteData(obj, strPath);
 		if (result) {
@@ -90,31 +115,6 @@ public class Staff {
 			JOptionPane.showMessageDialog(null, "Failed Update");
 		}
 	}
-
-	public List<Employee> getEmployees() {
-		return employees;
-	}
-
-	/*
-	 * Add the specified employee
-	 */
-	public void addEmployee(Employee emp) {
-		employees.add(emp);
-	}
-
-	/*
-	 * Update information of existed employee with information of specified employee
-	 */
-	public void updateEmployee(int index, Employee emp) {
-		employees.set(index, emp);
-	}
-
-	/*
-	 * Remove the employee equivalent to specified employee
-	 */
-	public void deleteEmployee(int index) {
-		employees.remove(index);
-	}
 	
 	/*
 	 * 20110618 - LH: This method will initialize information of some
@@ -122,6 +122,7 @@ public class Staff {
 	 * will use this application to add new employee.
 	 */
 	private void initializeEmployees() {
+		employees = new ArrayList<Employee>();
 		try {
 			FileReader file = new FileReader("data/StaffInformation.txt");
 			BufferedReader buff = new BufferedReader(file);
