@@ -9,8 +9,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import model.Contract;
 import model.Duration;
 import model.Employee;
@@ -104,7 +102,8 @@ public class ContractController {
 			// Update contract information
 			currentEmployee.setCurrentContract(createContract());
 		} else {
-			if (currentEmployee.getCurrentContract() != null) {
+			// 20110822: LH changed
+			/*if (currentEmployee.getCurrentContract() != null) {
 				// Update list of old contracts
 				ArrayList<Contract> listContract = (ArrayList<Contract>) currentEmployee
 						.getContracts();
@@ -114,8 +113,11 @@ public class ContractController {
 				listContract.add(currentEmployee.getCurrentContract());
 				currentEmployee.setContracts(listContract);
 			}
-			// Set new current contract
-			currentEmployee.setCurrentContract(createContract());
+			currentEmployee.setCurrentContract(createContract());*/
+			if (currentEmployee.getContracts() == null) {
+				currentEmployee.setContracts(new ArrayList<Contract>());
+			}
+			currentEmployee.addContract(createContract());
 		}
 		// Update employees list in Staff class
 		Staff.getInstance().setEmployees(employees);

@@ -1,7 +1,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 /*
  * @author Tu Thi Xuan Hien
  * Description: 
@@ -160,5 +162,34 @@ public class Contract  implements Serializable{
 	public String toString() {
 		// TODO Auto-generated method stub
 		return parseNodeTitle();
+	}
+	
+	/*
+	 * 20110822: LH added
+	 * This function computes the end date of this contract.
+	 * Ex: Start date is 2011-01-01 => End date is 2011-02-28
+	 */
+	public Date getEndDate() {
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.setTime(startDate);
+		gc.add(Calendar.MONTH, Duration.getNumberOfMonths(time));
+		gc.add(Calendar.DAY_OF_MONTH, -1);
+		return gc.getTime();
+	}
+	
+	/*
+	 * 20110822: LH added
+	 * This function checks if the specified calendar is between
+	 * the duration of this contract or not.
+	 * Ex: Start date is 2011-01-01 => End date is 2011-02-28
+	 * Calendar c is 2011-02-01 => return true b/c c is after
+	 * the start date & c is before the end date.
+	 */
+	public boolean checkMiddleTime(Calendar c) {
+		Calendar c1 = Calendar.getInstance();
+		c1.setTime(getStartDate());
+		Calendar c2 = Calendar.getInstance();
+		c2.setTime(getEndDate());
+		return (c1.compareTo(c) <= 0) && (c.compareTo(c2) <= 0);
 	}
 }

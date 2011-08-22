@@ -28,7 +28,7 @@ import model.Employee;
 import model.Staff;
 
 enum eSHOW {
-	NEWCONTRACT, EDITCONTRACT, DELETECONTRACT, CALCPAYROLL, CALCWORKDAYREPORT,
+	NEWCONTRACT, EDITCONTRACT, DELETECONTRACT, CALCPAYROLL
 }
 
 public class CTimeKeepingBookController {
@@ -135,7 +135,7 @@ public class CTimeKeepingBookController {
 		}
 	}
 
-	private int numberDayOfMonth(int month, int year) {
+	public static int getNumberOfDaysInMonth(int month, int year) {
 		return new GregorianCalendar(year, month - 1, 1).getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 
@@ -191,50 +191,33 @@ public class CTimeKeepingBookController {
 							.getContracts();
 					if (listContracts.contains(obj)) {
 						listContracts.remove(obj);
+						currentEmployee.setContracts(listContracts);
 					} else {
 						currentEmployee.setContracts(null);
 					}
-					currentEmployee.setContracts(listContracts);
+					processMouseClickOnEmployeeTable();
+					loadDataIntoTable(employees);
 					// Update employees list in Staff class
 					Staff.getInstance().setEmployees(employees);
 				}
-				processMouseClickOnEmployeeTable();
 			}
 
 			break;
 		case CALCPAYROLL:
 			calcPayroll();
 			break;
-		case CALCWORKDAYREPORT:
-			calcWorkdayReport();
-			break;
-
 		}
 	}
 
 	private void calcPayroll() {
 		CPrintPreviewController printPreviewController = new CPrintPreviewController();
-		printPreviewController.setTittle("Printing Calc Payroll");
-		printPreviewController.setJobName("calcPayroll");
+		printPreviewController.setTittle("Payroll Report");
 		printPreviewController.setListEmployee(employees);
 		printPreviewController.setMonth(nMonthSelected);
 		printPreviewController.setYear(nYearSelected);
 		printPreviewController.setContent(printPreviewController
 				.createPayRollReport());
 		printPreviewController.doShow();
-	}
-
-	private void calcWorkdayReport() {
-		/*
-		 * CPrintPreview print=new CPrintPreview("Printing Workday Report");
-		 * Dimension screenSize=Toolkit.getDefaultToolkit().getScreenSize();
-		 * print.setSize(screenSize.width/2, screenSize.height/2);
-		 * print.setLocationRelativeTo(this);
-		 * print.setContent(print.createWorkSumaryReport());
-		 * print.setJobName("calcWorkdayReport");
-		 * print.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		 * print.setVisible(true);
-		 */
 	}
 
 	private void processTreeSelection() {
@@ -248,25 +231,26 @@ public class CTimeKeepingBookController {
 
 	private void doGetListContractForEmployee(Employee currentEmployee) {
 		Contract currentContract = currentEmployee.getCurrentContract();
-		ArrayList<Contract> listContracts = (ArrayList<Contract>) currentEmployee
-				.getContracts();
 		// Need remove all child node
 		timeKeepingBookFrame.getRootNode().removeAllChildren();
 		if (currentContract != null) {
 			// Add Current Contract here
-			DefaultMutableTreeNode currentNodeContract = new DefaultMutableTreeNode(
+			DefaultMutableTreeNode currentContractNode = new DefaultMutableTreeNode(
 					currentContract);
-			timeKeepingBookFrame.getRootNode().add(currentNodeContract);
+			timeKeepingBookFrame.getRootNode().add(currentContractNode);
 		}
-		if (listContracts != null) {
-			// update history here
-			DefaultMutableTreeNode oldNodeContract = new DefaultMutableTreeNode(
-					"Old Contract");
-			timeKeepingBookFrame.getRootNode().add(oldNodeContract);
-			for (Contract con : listContracts) {
-				DefaultMutableTreeNode oldNodeContractSub = new DefaultMutableTreeNode(
-						con);
-				oldNodeContract.add(oldNodeContractSub);
+		// 20110822: LH modified
+		List<Contract> remainingContracts = (ArrayList<Contract>) currentEmployee
+				.getContracts();
+		if (remainingContracts != null && remainingContracts.size() > 1) {
+			// Show contract history here
+			DefaultMutableTreeNode oldContractNode = new DefaultMutableTreeNode(
+					"Old Contracts");
+			timeKeepingBookFrame.getRootNode().add(oldContractNode);
+			for (int i = 0; i < remainingContracts.size() - 1; i++) {
+				DefaultMutableTreeNode oldContractSubNode = new DefaultMutableTreeNode(
+						remainingContracts.get(i));
+				oldContractNode.add(oldContractSubNode);
 			}
 		}
 		timeKeepingBookFrame.getTreeViewContract().updateUI();
@@ -275,14 +259,15 @@ public class CTimeKeepingBookController {
 	private void doSearch() {
 		String strName = timeKeepingBookFrame.getTextFieldSearch().getText();
 		List<Employee> listSearch = new ArrayList<Employee>();
-
-		for (int i = 0; i < employees.size(); i++) {
-			Employee employee = employees.get(i);
-			if (employee.getFullName().indexOf(strName) != -1) {
-				listSearch.add(employee);
+		if (employees != null) {
+			for (int i = 0; i < employees.size(); i++) {
+				Employee employee = employees.get(i);
+				if (employee.getFullName().indexOf(strName) != -1) {
+					listSearch.add(employee);
+				}
 			}
+			loadDataIntoTable(listSearch);
 		}
-		loadDataIntoTable(listSearch);
 	}
 
 	private void doShowAll() {
@@ -292,7 +277,7 @@ public class CTimeKeepingBookController {
 	private void processMouseClickOnEmployeeTable() {
 		int row = timeKeepingBookFrame.getTableEmployee().getSelectedRow();
 		currentEmployee = employees.get(row);
-		currentContract = currentEmployee.getCurrentContract();
+		/*currentContract = currentEmployee.getCurrentContract();
 		if (currentContract != null) {
 			doProcessMonthSelection();
 			doGetListContractForEmployee(currentEmployee);
@@ -301,14 +286,24 @@ public class CTimeKeepingBookController {
 		} else {
 			timeKeepingBookFrame.getRootNode().removeAllChildren();
 			timeKeepingBookFrame.getTreeViewContract().updateUI();
+		}*/
+		// 20110822: LH modified
+		doProcessMonthSelection();
+		doGetListContractForEmployee(currentEmployee);
+		if (currentEmployee.getContracts() != null) {
+			timeKeepingBookFrame.getTreeViewContract().expandRow(2);
 		}
 		enableControlForContract();
 	}
 
 	private void doProcessSaveTimeKeeping() {
 		if (currentEmployee != null) {
-			if (currentContract != null) {
-				CTimeKeepingBook keepBook = currentContract.getTimeKeeping();
+			Contract correctContract = currentEmployee.searchCorrespondingContract(nYearSelected, nMonthSelected);
+			// 20110822: LH modified
+			/*if (currentContract != null) {
+				CTimeKeepingBook keepBook = currentContract.getTimeKeeping();*/
+			if (correctContract != null) {
+				CTimeKeepingBook keepBook = correctContract.getTimeKeeping();
 				if (keepBook == null)
 					keepBook = new CTimeKeepingBook();
 				if (keepBook != null) {
@@ -333,8 +328,12 @@ public class CTimeKeepingBookController {
 						keepSheet.add(keepDetail);
 					}
 					keepBook.add(keepSheet);
-					currentContract.setTimeKeeping(keepBook);
-					currentEmployee.setCurrentContract(currentContract);
+					// 20110822: LH modified
+					/*currentContract.setTimeKeeping(keepBook);
+					currentEmployee.setCurrentContract(currentContract);*/
+					correctContract.setTimeKeeping(keepBook);
+					int index = currentEmployee.getContracts().indexOf(correctContract);
+					currentEmployee.updateContract(index, correctContract);
 					// Update employees list in Staff class
 					Staff.getInstance().setEmployees(employees);
 				}
@@ -349,8 +348,12 @@ public class CTimeKeepingBookController {
 		int day;
 		String date;
 		if (currentEmployee != null) {
-			if (currentContract != null) {
-				CTimeKeepingBook keepBook = currentContract.getTimeKeeping();
+			Contract correctContract = currentEmployee.searchCorrespondingContract(year, month);
+			// 20110822: LH modified
+			if (correctContract != null) {
+				CTimeKeepingBook keepBook = correctContract.getTimeKeeping();
+			/*if (currentContract != null) {
+				CTimeKeepingBook keepBook = currentContract.getTimeKeeping();*/
 				if (keepBook != null) {
 					CTimeKeepingSheet keepSheet = keepBook.get(month, year);
 					if (keepSheet == null) {
@@ -404,7 +407,7 @@ public class CTimeKeepingBookController {
 				.getSelectedItem().toString());
 		int year = Integer.parseInt(timeKeepingBookFrame.getComboBoxYear()
 				.getSelectedItem().toString());
-		int n = numberDayOfMonth(month, year);
+		int n = getNumberOfDaysInMonth(month, year);
 		nMonthSelected = month;
 		nYearSelected = year;
 		nNumberDayOfMonth = n;
@@ -479,10 +482,5 @@ public class CTimeKeepingBookController {
 			processTreeSelection();
 		}
 
-	}
-
-	public static void main(String[] args) {
-		CTimeKeepingBookController timeKeepingBookController = new CTimeKeepingBookController();
-		timeKeepingBookController.doShow();
 	}
 }

@@ -62,15 +62,15 @@ public class Staff {
 		writeData(positions, FileProcessing.FILENAME_POSITION);
 	}
 
-	public Position getPosition(int index) {
-		return positions.get(index);
+	public Position getPosition(PositionTitle title) {
+		return positions.get(title.ordinal());
 	}
 	
-	public void updatePosition(int index, Position p) {
-		Position temp = positions.get(index);
+	public void updatePosition(PositionTitle title, Position p) {
+		Position temp = getPosition(title);
 		temp.setSalary(p.getSalary());
 		temp.setOtherSalary(p.getOtherSalary());
-		positions.set(index, temp);
+		positions.set(title.ordinal(), temp);
 		writeData(positions, FileProcessing.FILENAME_POSITION);
 	}
 

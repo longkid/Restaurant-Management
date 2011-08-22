@@ -20,4 +20,19 @@ public enum Duration  implements Serializable{
 			return null;
 		}
 	}
+	
+	public static int getNumberOfMonths(Duration time) {
+		switch (time) {
+		case TWO_MONTHS:
+			return 2;
+		case ONE_YEAR:
+			return 12;
+		case THREE_YEARS:
+			return 36;
+		case NO_LIMIT:
+			return -1;
+		default:
+			return 0;
+		}
+	}
 }

@@ -10,11 +10,11 @@ package model;
  */
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-@SuppressWarnings("deprecation")
 public class Employee implements Serializable {
 	/**
 	 * 
@@ -31,7 +31,8 @@ public class Employee implements Serializable {
 	private List<Address> temporaryAddresses;
 	private List<BankAccount> accounts;
 	private List<Contract> contracts;
-	private Contract currentContract;
+	// 20110822: LH removed
+	//private Contract currentContract;
 	private String education;
 	private List<Diploma> diplomas;
 	private List<Certificate> languageCertificates;
@@ -47,11 +48,12 @@ public class Employee implements Serializable {
 		this.permanentAddress = "";
 		this.temporaryAddresses = new ArrayList<Address>();
 		this.accounts = new ArrayList<BankAccount>();
+		this.contracts = new ArrayList<Contract>();
 		this.education = "";
 		this.diplomas = new ArrayList<Diploma>();
 		this.languageCertificates = new ArrayList<Certificate>();
 		this.itCertificates = new ArrayList<Certificate>();
-		this.currentContract = null;
+		//this.currentContract = null;
 		this.contracts = null;
 	}
 
@@ -238,16 +240,19 @@ public class Employee implements Serializable {
 		vec.add(this.fullName);
 		vec.add(Staff.dateFormat.format(birthday));
 		vec.add((sex == Sex.FEMALE) ? "Female" : "Male");
-		vec.add((currentContract == null) ? "No" : "Yes");
+		vec.add((getCurrentContract() == null) ? "No" : "Yes");
 		return vec;
 	}
 
 	public void setCurrentContract(Contract con) {
-		this.currentContract = con;
+		//this.currentContract = con;
+		updateContract(contracts.size() - 1, con);
 	}
 
 	public Contract getCurrentContract() {
-		return this.currentContract;
+		// 20110822: LH changed
+		//return this.currentContract;
+		return getLastElement(contracts);
 	}
 
 	public String getLatestEmail() {
@@ -266,10 +271,6 @@ public class Employee implements Serializable {
 		return getLastElement(accounts);
 	}
 
-	public Contract getLatestContract() {
-		return getLastElement(contracts);
-	}
-
 	public Diploma getLatestDiploma() {
 		return getLastElement(diplomas);
 	}
@@ -283,6 +284,37 @@ public class Employee implements Serializable {
 	}
 
 	public static <E> E getLastElement(List<E> l) {
+		// 20110822: LH added to fix the error of NullPointerException
+		if (l == null) {
+			return null;
+		}
 		return (l.isEmpty() ? null : l.get(l.size() - 1));
 	}
+
+	/*
+	 * 20110822: LH added
+	 * This methods search the contract which corresponds to the specified time.
+	 * This methods is used inside the calculating payroll functionality, the
+	 * functionality of saving Timekeeping records and update Timekeeping table.
+	 */
+	public Contract searchCorrespondingContract(int selectedYear,
+			int selectedMonth) {
+		if (contracts != null) {
+			for (Contract con : contracts) {
+				if (con != null) {
+					Calendar c = Calendar.getInstance();
+					c.setTime(con.getStartDate());
+					int day = c.get(Calendar.DAY_OF_MONTH);
+					c.set(selectedYear, selectedMonth - 1, day);
+					if (con.checkMiddleTime(c)) {
+						return con;
+					}
+				}
+			}
+		}
+			
+		return null;
+	}
+	
+	
 }
