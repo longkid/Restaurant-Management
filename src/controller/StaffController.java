@@ -1,4 +1,5 @@
 package controller;
+
 /**
  * Author: Le Duy Phong
 
@@ -6,9 +7,11 @@ package controller;
  */
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import model.Employee;
+import model.Sex;
 import model.Staff;
 
 import view.StaffFrame;
@@ -16,60 +19,92 @@ import view.StaffFrame;
 public class StaffController {
 	public static StaffController singleton = new StaffController();
 	private StaffFrame view;
-//this function is used to open StaffFrame for managing staff
-	public void visible(){
-		this.view=new StaffFrame();
+
+	// this function is used to open StaffFrame for managing staff
+	public void visible() {
+		this.view = new StaffFrame();
 		this.initView();
 		this.view.setVisible(true);
 	}
-//this function get employee from employees	and fill into table
+
+	// this function get employee from employees and fill into table
 	private Object[][] fill() {
 		List<Employee> employees = Staff.getInstance().getEmployees();
-		Object[][] objects = new Object[employees.size()+1][3];
+		Object[][] objects = new Object[employees.size() + 1][4];
 		objects[0][0] = "Full name";
-		objects[0][1] = "Birthday";
-		objects[0][2] ="No identity card";
+		objects[0][1] = "Sex";
+		objects[0][2] = "Birthday";
+		objects[0][3] = "Identity card No.";
 		for (int i = 1; i <= employees.size(); i++) {
-			objects[i][0] = employees.get(i-1).getFullName();
-			objects[i][1] = Staff.dateFormat.format(employees.get(i-1).getBirthday());
-			objects[i][2] = employees.get(i-1).getIdentityCard().getCardNum();
+			objects[i][0] = employees.get(i - 1).getFullName();
+			objects[i][1] = (employees.get(i - 1).getSex() == Sex.MALE) ? "Male"
+					: "Female";
+			objects[i][2] = Staff.dateFormat.format(employees.get(i - 1)
+					.getBirthday());
+			objects[i][3] = employees.get(i - 1).getIdentityCard().getCardNum();
 		}
 		return objects;
 	}
-//init view and fill data to table
-	private void initView() {
 
+	// init view and fill data to table
+	private void initView() {
 		this.view.getTable_1().setModel(
-				new DefaultTableModel(fill(), new String[] { "Full name",
-						"Birthday", "No identity card" }));
+				new DefaultTableModel(fill(), new String[4]));
 	}
 
 	public void refresh() {
 		this.view.getTable_1().setModel(
-				new DefaultTableModel(fill(), new String[] { "Full name",
-						"Birthday", "No identity card" }));
+				new DefaultTableModel(fill(), new String[4]));
 	}
 
 	public void update() {
 		int index = this.view.getTable_1().getSelectedRow();
 		index--;
-		if(index<0){return;}
-		EmployeeController.singleton.displayEmployee(index);
+		if (index < 0) {
+			JOptionPane.showMessageDialog(view, "You must select an employee to update");
+		} else {
+			EmployeeController.singleton.displayEmployee(index);
+		}
 	}
-	//this function is used to open a form for input data when user add new employee
-	public void create(){
+
+	// this function is used to open a form for input data when user add new
+	// employee
+	public void create() {
+		EmployeeController.singleton.clearAllInputField();
 		EmployeeController.singleton.setIndex(0);
-		EmployeeController.singleton.setUpdate(false);		
+		EmployeeController.singleton.setUpdate(false);
 		EmployeeController.singleton.setVisible(true);
-		
 	}
-	//this function is used to delete an employee
+
+	// this function is used to delete an employee
 	public void delete() {
-		// TODO Auto-generated method stub
 		int index = this.view.getTable_1().getSelectedRow();
 		index--;
-		if(index<0){return;}
-		Staff.getInstance().deleteEmployee(index);
-		this.refresh();
+		if (index < 0) {
+			JOptionPane.showMessageDialog(view, "You must select an employee to delete");
+		} else {
+			String employeeName = Staff.getInstance().getEmployees().get(index)
+					.getFullName();
+			int ret = JOptionPane.showOptionDialog(view,
+					"Are you sure you want to delete " + employeeName + "?",
+					"Delete Employee", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null, null, null);
+			if (ret == JOptionPane.YES_OPTION) {
+				Staff.getInstance().deleteEmployee(index);
+				refresh();
+			}
+		}
+			
+	}
+	
+	// 20110828: LH added
+	public void viewDetails() {
+		int index = this.view.getTable_1().getSelectedRow();
+		index--;
+		if (index < 0) {
+			JOptionPane.showMessageDialog(view, "You must select an employee to view details");
+		} else {
+			EmployeeController.singleton.displayDetailsOfEmployee(index);
+		}
 	}
 }

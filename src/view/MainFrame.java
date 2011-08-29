@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Font;
 
 
@@ -59,22 +58,6 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JTextArea infoArea = new JTextArea();
 	private JScrollPane scrollPane;
 	private JButton btnLogIn = new JButton("Log in");
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainFrame frame = new MainFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.

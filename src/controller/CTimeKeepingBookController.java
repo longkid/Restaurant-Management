@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -40,7 +40,7 @@ public class CTimeKeepingBookController {
 
 	public CTimeKeepingBookController() {
 		timeKeepingBookFrame = new CTimeKeepingBookFrame(
-				"Time Keeping Book Management");
+				"Timekeeping & Contract Management");
 	}
 
 	public void doShow() {
@@ -296,6 +296,7 @@ public class CTimeKeepingBookController {
 		enableControlForContract();
 	}
 
+	@SuppressWarnings({ "deprecation", "unchecked" })
 	private void doProcessSaveTimeKeeping() {
 		if (currentEmployee != null) {
 			Contract correctContract = currentEmployee.searchCorrespondingContract(nYearSelected, nMonthSelected);

@@ -2,15 +2,11 @@ package controller;
 
 /**
  * Author: Le Duy Phong
-
-
+ * 
  * Purpose of this class: this class control the process between EmployeeFrame and some concern class in model
  */
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -27,210 +23,228 @@ import view.EmployeeFrame;
 
 public class EmployeeController {
 	public static EmployeeController singleton = new EmployeeController();
-	private SimpleDateFormat dateFormat = Staff.dateFormat;
 	private EmployeeFrame view;
 	private boolean isUpdate = false;
 	private int index = 0;
 
-	public EmployeeController() {
-		this.view = new EmployeeFrame();
-
+	private EmployeeController() {
+		view = new EmployeeFrame();
 	}
 
 	// this function use to set visible for employeeFrame.
 	public void setVisible(boolean b) {
-		this.view.setVisible(b);
+		view.setVisible(b);
 	}
 
 	// this function is used to add new employee
 	public void addAction() {
-		List<String> emails = new ArrayList<String>();
-		List<TelephoneNumber> phoneNumbers = new ArrayList<TelephoneNumber>();
-		List<Address> addresses = new ArrayList<Address>();
-		List<BankAccount> accounts = new ArrayList<BankAccount>();
-		List<String> educations = new ArrayList<String>();
-		List<Diploma> diplomas = new ArrayList<Diploma>();
-		List<Certificate> languages = new ArrayList<Certificate>();
-		List<Certificate> itCertificates = new ArrayList<Certificate>();
-
 		if (isUpdate == false) {
-			emails.add(this.view.getEmailAddressTextField().getText());
-			phoneNumbers.add(new TelephoneNumber(this.view
-					.getCellPhoneNumberTextField().getText(), new Date()));
-			addresses.add(new Address(this.view.getCurrentAddressTextField()
-					.getText(), new Date()));
-			accounts.add(new BankAccount(this.view.getAccountNoTextField()
-					.getText(), this.view.getNameOfBankTextField().getText(),
-					new Date()));
-
-			diplomas.add(new Diploma(this.view.getDiplomaTextField().getText(),
-					new Date()));
-
-			itCertificates.add(new Certificate(this.view
-					.getCertificateOfITcombobox().getSelectedIndex() + "",
-					new Date()));
-			languages.add(new Certificate(this.view
-					.getForeignLanguageCombobox().getSelectedIndex() + "",
-					new Date()));
-			phoneNumbers.add(new TelephoneNumber(this.view
-					.getCellPhoneNumberTextField().getText(), new Date()));
-
-			Sex sex = null;
-			Date birthday = null;
-			Date issueDate = null;
-			if (this.view.getSexradioMale().isSelected()) {
-				sex = Sex.MALE;
-			} else {
-				sex = Sex.FEMALE;
+			Employee newEmployee = updateEmployee(null);
+			if (newEmployee != null) {
+				Staff.getInstance().addEmployee(newEmployee);
 			}
-			try {
-				birthday = dateFormat.parse(this.view.getBirthdayTextField()
-						.getText());
-				issueDate = dateFormat.parse(this.view.getIssueDateText()
-						.getText());
-				Staff.getInstance().addEmployee(
-						new Employee(
-								this.view.getFullNameTextField().getText(),
-								birthday, sex, emails, phoneNumbers,
-								new IDCard(
-										this.view.getNoIdentityCardTextField()
-												.getText(), issueDate,
-										this.view.getIssuePlaceTextField()
-												.getText()), this.view
-										.getPermanentAddressTexField()
-										.getText(), addresses, accounts,
-								this.view.getEducationComboBox()
-										.getSelectedIndex() + "", diplomas,
-								languages, itCertificates));
-
-				singleton.setVisible(false);
-				StaffController.singleton.refresh();
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				JOptionPane
-						.showMessageDialog(this.view,
-								"You must input date following the format yyyy-mm-dd, please!");
-				e.printStackTrace();
-			}
-
+		} else {
+			Employee oldEmployee = Staff.getInstance().getEmployees()
+					.get(index);
+			Employee updatedEmployee = updateEmployee(oldEmployee);
+			Staff.getInstance().updateEmployee(index, updatedEmployee);
 		}
-		// the following code is used for update employee
-		else {
-			Employee employee = Staff.getInstance().getEmployees().get(index);
-			employee.getAccounts().add(
-					new BankAccount(
-							this.view.getAccountNoTextField().getText(),
-							this.view.getNameOfBankTextField().getText(),
-							new Date()));
-			employee.getDiplomas().add(
-					new Diploma(this.view.getDiplomaTextField().getText(),
-							new Date()));
-			employee.setEducation(this.view.getEducationComboBox()
-					.getSelectedIndex() + "");
-			employee.getEmails().add(
-					this.view.getEmailAddressTextField().getText());
-			employee.setFullName(this.view.getFullNameTextField().getText());
-			employee.getItCertificates().add(
-					new Certificate(this.view.getCertificateOfITcombobox()
-							.getSelectedIndex() + "", new Date()));
-			employee.getLanguageCertificates().add(
-					new Certificate(this.view.getForeignLanguageCombobox()
-							.getSelectedIndex() + "", new Date()));
-			employee.setPermanentAddress(this.view
-					.getPermanentAddressTexField().getText());
-			employee.getPhoneNumbers().add(
-					new TelephoneNumber(this.view.getCellPhoneNumberTextField()
-							.getText(), new Date()));
-			if (this.view.getSexradioMale().isSelected()) {
-				employee.setSex(Sex.MALE);
-			} else {
-				employee.setSex(Sex.FEMALE);
-			}
-			employee.getTemporaryAddresses().add(
-					new Address(this.view.getCurrentAddressTextField()
-							.getText(), new Date()));
-			try {
-				employee.setBirthday(dateFormat.parse(this.view
-						.getBirthdayTextField().getText()));
-				employee.setIdentityCard(new IDCard(this.view
-						.getNoIdentityCardTextField().getText(), dateFormat
-						.parse(this.view.getIssueDateText().getText()),
-						this.view.getIssuePlaceTextField().getText()));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				JOptionPane
-						.showMessageDialog(this.view,
-								"You must input date follow the format yyyy-mm-dd, please!");
-				e.printStackTrace();
-			}
-			employee.getItCertificates().add(
-					new Certificate(this.view.getCertificateOfITcombobox()
-							.getSelectedIndex() + "", new Date()));
-			Staff.getInstance().updateEmployee(index, employee);
-			singleton.setVisible(false);
-			StaffController.singleton.refresh();
-			JOptionPane.showMessageDialog(this.view, "Update successful");
-		}
-		this.view.getFullNameTextField().setText("");
-
+		
+		StaffController.singleton.refresh();
 	}
 
-	// this function get infomation of employee to display on form, user will
-	// modify some necessary information on form and click button save to update
-	// employee
+	@SuppressWarnings("unused")
+	private Employee updateEmployee(Employee inputEmp) {
+		Employee outputEmp;
+		if (inputEmp == null) {
+			outputEmp = new Employee();
+		} else {
+			outputEmp = inputEmp;
+		}
+
+		String notification = new String();
+
+		String fullName = view.getFullNameTextField().getText();
+		if (fullName.length() == 0) {
+			notification += "\n- Full name";
+		}
+
+		Date birthday = null;
+		try {
+			birthday = Staff.dateFormat.parse(view.getBirthdayTextField()
+					.getText());
+		} catch (ParseException e) {
+			notification += "\n- Birthday following the format "
+					+ Staff.dateFormat.toPattern();
+			// e.printStackTrace();
+		}
+
+		String phoneNumber = null;
+		try {
+			phoneNumber = view.getCellPhoneNumberTextField().getText();
+			int number = Integer.parseInt(phoneNumber);
+		} catch (NumberFormatException e) {
+			notification += "\n- Correct phone number";
+			// e.printStackTrace();
+		}
+
+		String idNumber = view.getNoIdentityCardTextField().getText();
+		try {
+			int number = Integer.parseInt(idNumber);
+		} catch (NumberFormatException e) {
+			notification += "\n- Correct Identity card No.";
+			// e.printStackTrace();
+		}
+		Date issueDate = null;
+		try {
+			issueDate = Staff.dateFormat.parse(view.getIssueDateText()
+					.getText());
+		} catch (ParseException e) {
+			notification += "\n- Issued date following the format "
+					+ Staff.dateFormat.toPattern();
+			// e.printStackTrace();
+		}
+		String place = view.getIssuePlaceTextField().getText();
+		if (place.length() == 0) {
+			notification += "\n- Issued place of ID card";
+		}
+
+		String permAddress = view.getPermanentAddressTexField().getText();
+		if (permAddress.length() == 0) {
+			notification += "\n- Permanent address";
+		}
+		String curraddress = view.getCurrentAddressTextField().getText();
+		if (curraddress.length() == 0) {
+			notification += "\n- Current address";
+		}
+
+		String accountNo = view.getAccountNoTextField().getText();
+		String bankName = view.getNameOfBankTextField().getText();
+		if (accountNo.length() == 0) {
+			notification += "\n- Bank account No.";
+		}
+		if (bankName.length() == 0) {
+			notification += "\n- Name of bank";
+		}
+
+		if (notification.length() != 0) { // Exist input errors
+			notification = "You must provide the following information:"
+					+ notification;
+			JOptionPane.showMessageDialog(view, notification);
+		} else { // No input errors
+			outputEmp.setFullName(fullName);
+			outputEmp.setBirthday(birthday);
+			if (view.getSexradioMale().isSelected()) {
+				outputEmp.setSex(Sex.MALE);
+			} else {
+				outputEmp.setSex(Sex.FEMALE);
+			}
+			String email = view.getEmailAddressTextField().getText();
+			if (email.length() != 0) {
+				outputEmp.addEmail(email);
+			}
+			outputEmp.addPhoneNumber(new TelephoneNumber(phoneNumber,
+					new Date()));
+			outputEmp.setIdentityCard(new IDCard(idNumber, issueDate, place));
+			outputEmp.setPermanentAddress(permAddress);
+			outputEmp.addTemporaryAddress(new Address(curraddress, new Date()));
+			outputEmp.addAccount(new BankAccount(accountNo, bankName,
+					new Date()));
+			String education = view.getEducationComboBox().getSelectedItem()
+					.toString();
+			outputEmp.setEducation(education);
+			String diploma = view.getDiplomaTextField().getText();
+			if (diploma.length() != 0) {
+				outputEmp.addDiploma(new Diploma(diploma, new Date()));
+			}
+			String language = view.getForeignLanguageTextField().getText();
+			if (language.length() != 0) {
+				outputEmp.addLanguageCertificate(new Certificate(language,
+						new Date()));
+			}
+			String itCertificate = view.getCertificateOfITcombobox()
+					.getSelectedItem().toString();
+			if (itCertificate.length() != 0) {
+				outputEmp.addItCertificate(new Certificate(itCertificate,
+						new Date()));
+			}
+			singleton.setVisible(false);
+			return outputEmp; // All necessary fields are valid -> Update
+								// successfully
+		}
+
+		// Lack of necessary information or one of those fields is invalid ->
+		// Update unsuccessfully
+		singleton.setVisible(true);
+		return inputEmp; // inputEmp = null or inputEmp contains old information
+	}
+
+	/*
+	 * This function displays existed information of an employee. The user will
+	 * modify some necessary information on form and click button Save to update
+	 * employee information
+	 */
 	public void displayEmployee(int index) {
 		Employee employee = Staff.getInstance().getEmployees().get(index);
-		this.view.getFullNameTextField().setText(employee.getFullName());
-		this.view.getBirthdayTextField().setText(
-				dateFormat.format(employee.getBirthday()));
-
-		this.view.getCellPhoneNumberTextField().setText(
-				employee.getPhoneNumbers()
-						.get(employee.getPhoneNumbers().size() - 1)
-						.getPhoneNumber());
-		this.view.getCertificateOfITcombobox()
-				.setSelectedIndex(
-						Integer.parseInt(employee.getItCertificates()
-								.get(employee.getItCertificates().size() - 1)
-								.getName()));
-		this.view.getDiplomaTextField().setText(
-				employee.getDiplomas().get(employee.getDiplomas().size() - 1)
-						.getName());
-		this.view.getEducationComboBox().setSelectedIndex(
-				Integer.parseInt(employee.getEducation()));
-		this.view.getEmailAddressTextField().setText(
-				employee.getEmails().get(employee.getEmails().size() - 1));
-		this.view.getForeignLanguageCombobox().setSelectedIndex(
-				Integer.parseInt(employee.getLanguageCertificates()
-						.get(employee.getLanguageCertificates().size() - 1)
-						.getName()));
-		this.view.getIssueDateText().setText(
-				dateFormat.format(employee.getIdentityCard().getIssuedDate()));
-		this.view.getIssuePlaceTextField().setText(
-				employee.getIdentityCard().getIssuedPlace());
-		this.view.getNoIdentityCardTextField().setText(
-				employee.getIdentityCard().getCardNum());
-		this.view.getNameOfBankTextField().setText(
-				(employee.getAccounts().get(employee.getAccounts().size() - 1)
-						.getBankName()));
-		this.view.getAccountNoTextField().setText(
-				employee.getAccounts().get(employee.getAccounts().size() - 1)
-						.getAccountNo());
-		this.view.getPermanentAddressTexField().setText(
-				employee.getPermanentAddress());
-		this.view.getCurrentAddressTextField().setText(
-				employee.getTemporaryAddresses()
-						.get(employee.getTemporaryAddresses().size() - 1)
-						.getName());
+		
+		view.getFullNameTextField().setText(employee.getFullName());
+		view.getBirthdayTextField().setText(
+				Staff.dateFormat.format(employee.getBirthday()));
 		if (employee.getSex().equals(Sex.MALE)) {
-			this.view.getSexradioMale().setSelected(true);
+			view.getSexradioMale().setSelected(true);
 		} else {
-			this.view.getSexradioFemale().setSelected(true);
+			view.getSexradioFemale().setSelected(true);
 		}
+		String latestEmail = employee.getLatestEmail();
+		if (latestEmail != null) {
+			view.getEmailAddressTextField().setText(latestEmail);
+		}
+		TelephoneNumber latestPhoneNumber = employee.getLatestPhoneNumber();
+		if (latestPhoneNumber != null) {
+			view.getCellPhoneNumberTextField().setText(
+					latestPhoneNumber.getPhoneNumber());
+		}
+		view.getNoIdentityCardTextField().setText(
+				employee.getIdentityCard().getCardNum());
+		view.getIssueDateText().setText(
+				Staff.dateFormat.format(employee.getIdentityCard()
+						.getIssuedDate()));
+		view.getIssuePlaceTextField().setText(
+				employee.getIdentityCard().getIssuedPlace());
+		view.getPermanentAddressTexField().setText(
+				employee.getPermanentAddress());
+		Address latestTempAddress = employee.getLatestTempAddress();
+		if (latestTempAddress != null) {
+			view.getCurrentAddressTextField().setText(
+					latestTempAddress.getName());
+		}
+		BankAccount latestAccount = employee.getLatestAccount();
+		if (latestAccount != null) {
+			view.getAccountNoTextField().setText(
+					latestAccount.getAccountNo());
+			view.getNameOfBankTextField().setText(
+					(latestAccount.getBankName()));
+		}
+		view.getEducationComboBox().setSelectedItem(employee.getEducation());
+		Diploma latestDiploma = employee.getLatestDiploma();
+		if (latestDiploma != null) {
+			view.getDiplomaTextField().setText(
+					latestDiploma.getName());
+		}
+		Certificate latestLangCertificate = employee.getLatestLangCertificate();
+		if (latestLangCertificate != null) {
+			view.getForeignLanguageTextField().setText(
+					latestLangCertificate.getName());
+		}
+		Certificate latestITCertificate = employee.getLatestITCertificate();
+		if (latestITCertificate != null) {
+			view.getCertificateOfITcombobox().setSelectedItem(
+					latestITCertificate.getName());
+		}
+
 		isUpdate = true;
 		this.index = index;
-		this.setVisible(true);
-
+		setVisible(true);
 	}
 
 	public void setUpdate(boolean isUpdate) {
@@ -239,6 +253,34 @@ public class EmployeeController {
 
 	public void setIndex(int index) {
 		this.index = index;
+	}
+
+	public void clearAllInputField() {
+		view.getFullNameTextField().setText("");
+		view.getBirthdayTextField().setText(Staff.dateFormat.toPattern());
+		view.getSexradioMale().setSelected(true);
+		view.getEmailAddressTextField().setText("");
+		view.getCellPhoneNumberTextField().setText("");
+		view.getNoIdentityCardTextField().setText("");
+		view.getIssueDateText().setText(Staff.dateFormat.toPattern());
+		view.getIssuePlaceTextField().setText("");
+		view.getPermanentAddressTexField().setText("");
+		view.getCurrentAddressTextField().setText("");
+		view.getAccountNoTextField().setText("");
+		view.getNameOfBankTextField().setText("");
+		view.getEducationComboBox().setSelectedIndex(0);
+		view.getDiplomaTextField().setText("");
+		view.getForeignLanguageTextField().setText("");
+		view.getCertificateOfITcombobox().setSelectedIndex(0);
+	}
+
+	public void doCancel() {
+		singleton.setVisible(false);
+	}
+	
+	// 20110828: LH added
+	public void displayDetailsOfEmployee(int index2) {
+		
 	}
 
 }

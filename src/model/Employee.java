@@ -53,8 +53,6 @@ public class Employee implements Serializable {
 		this.diplomas = new ArrayList<Diploma>();
 		this.languageCertificates = new ArrayList<Certificate>();
 		this.itCertificates = new ArrayList<Certificate>();
-		//this.currentContract = null;
-		this.contracts = null;
 	}
 
 	public Employee(String fullName, Date birthday, Sex sex,

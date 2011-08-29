@@ -3,7 +3,11 @@ package model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Education  implements Serializable{
+public class Education implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private Date validityDate;
 

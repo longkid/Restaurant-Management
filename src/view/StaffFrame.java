@@ -1,17 +1,9 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
-import model.Employee;
-import model.Staff;
 import javax.swing.JButton;
 
 import controller.StaffController;
@@ -20,16 +12,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class StaffFrame extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table_1;
 	private JButton btnUpdate;
+	private JButton btnViewDetails;
 
 	/**
 	 * Create the frame.
 	 */
 	public StaffFrame() {
+		setTitle("Staff Management");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 513, 402);
+		setBounds(100, 100, 560, 410);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -39,13 +37,13 @@ public class StaffFrame extends JFrame {
 		getTable_1().setBounds(12, 12, 487, 323);
 		contentPane.add(getTable_1());
 
-		JButton btnCreate = new JButton("Add new Employee");
+		JButton btnCreate = new JButton("Add an Employee");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				StaffController.singleton.create();
 			}
 		});
-		btnCreate.setBounds(12, 345, 113, 25);
+		btnCreate.setBounds(12, 345, 155, 25);
 		contentPane.add(btnCreate);
 
 		btnUpdate = new JButton("Update");
@@ -54,7 +52,7 @@ public class StaffFrame extends JFrame {
 				StaffController.singleton.update();
 			}
 		});
-		btnUpdate.setBounds(132, 345, 97, 25);
+		btnUpdate.setBounds(190, 345, 90, 25);
 		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("Delete");
@@ -63,8 +61,18 @@ public class StaffFrame extends JFrame {
 				StaffController.singleton.delete();
 			}
 		});
-		btnDelete.setBounds(239, 345, 117, 25);
+		btnDelete.setBounds(305, 345, 90, 25);
 		contentPane.add(btnDelete);
+		
+		btnViewDetails = new JButton("View Details");
+		btnViewDetails.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				StaffController.singleton.viewDetails();
+			}
+		});
+		btnViewDetails.setBounds(415, 345, 130, 25);
+		contentPane.add(btnViewDetails);
+		setLocationRelativeTo(null);
 	}
 
 	public void setTable_1(JTable table_1) {

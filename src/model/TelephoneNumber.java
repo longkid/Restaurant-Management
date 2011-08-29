@@ -7,7 +7,11 @@ package model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TelephoneNumber  implements Serializable{
+public class TelephoneNumber implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String phoneNumber;
 	private Date validityDate;
 

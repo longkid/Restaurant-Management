@@ -20,11 +20,11 @@ import java.util.GregorianCalendar;
  *		CTimeKeepingBook m_TimeKeeping;==> store time keeping
  * Modified Date: 
  */
-public class Contract  implements Serializable{
+public class Contract implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8231223811724698959L;
 	private Position position;
 	private WorkingTime workingTime;
 	private Date startDate;

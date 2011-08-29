@@ -8,6 +8,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class BankAccount implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String accountNo;
 	private String bankName;
 	private Date validityDate;
