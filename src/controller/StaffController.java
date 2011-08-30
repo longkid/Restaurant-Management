@@ -14,6 +14,7 @@ import model.Employee;
 import model.Sex;
 import model.Staff;
 
+import view.EmployeeDetailsFrame;
 import view.StaffFrame;
 
 public class StaffController {
@@ -104,7 +105,7 @@ public class StaffController {
 		if (index < 0) {
 			JOptionPane.showMessageDialog(view, "You must select an employee to view details");
 		} else {
-			EmployeeController.singleton.displayDetailsOfEmployee(index);
+			new EmployeeDetailsFrame().displayEmployee(index);
 		}
 	}
 }

@@ -191,23 +191,69 @@ public class Employee implements Serializable {
 	}
 
 	public void addEmail(String email) {
-		emails.add(email);
+		boolean notFound = true;
+		for (String item : emails) {
+			if (email.equalsIgnoreCase(item)) {
+				notFound = false;
+				break;
+			}
+		}
+		if (notFound) {
+			emails.add(email);
+		}
 	}
 
 	public void addPhoneNumber(TelephoneNumber num) {
-		phoneNumbers.add(num);
+		boolean notFound = true;
+		for (TelephoneNumber item : phoneNumbers) {
+			if (num.getPhoneNumber().equals(item.getPhoneNumber())) {
+				notFound = false;
+				break;
+			}
+		}
+		if (notFound) {
+			phoneNumbers.add(num);
+		}
 	}
 
 	public void addTemporaryAddress(Address address) {
-		temporaryAddresses.add(address);
+		boolean notFound = true;
+		for (Address item : temporaryAddresses) {
+			if (address.getName().equalsIgnoreCase(item.getName())) {
+				notFound = false;
+				break;
+			}
+		}
+		if (notFound) {
+			temporaryAddresses.add(address);
+		}
 	}
 
 	public void addAccount(BankAccount acc) {
-		accounts.add(acc);
+		boolean notFound = true;
+		for (BankAccount item : accounts) {
+			if (acc.getAccountNo().equals(item.getAccountNo())
+					&& acc.getBankName().equalsIgnoreCase(item.getBankName())) {
+				notFound = false;
+				break;
+			}
+		}
+		if (notFound) {
+			accounts.add(acc);
+		}
 	}
 
 	public void addContract(Contract contract) {
-		contracts.add(contract);
+		boolean notFound = true;
+		for (Contract item : contracts) {
+			if (contract.getPosition().getTitle().equals(item.getPosition().getTitle())) {
+				notFound = false;
+				break;
+			}
+		}
+		if (notFound) {
+			contracts.add(contract);
+		}
 	}
 
 	public void updateContract(int index, Contract newContract) {
@@ -219,15 +265,42 @@ public class Employee implements Serializable {
 	}
 
 	public void addDiploma(Diploma diploma) {
-		diplomas.add(diploma);
+		boolean notFound = true;
+		for (Diploma item : diplomas) {
+			if (diploma.getName().equalsIgnoreCase(item.getName())) {
+				notFound = false;
+				break;
+			}
+		}
+		if (notFound) {
+			diplomas.add(diploma);
+		}
 	}
 
 	public void addLanguageCertificate(Certificate certificate) {
-		languageCertificates.add(certificate);
+		boolean notFound = true;
+		for (Certificate item : languageCertificates) {
+			if (certificate.getName().equalsIgnoreCase(item.getName())) {
+				notFound = false;
+				break;
+			}
+		}
+		if (notFound) {
+			languageCertificates.add(certificate);
+		}
 	}
 
 	public void addItCertificate(Certificate certificate) {
-		itCertificates.add(certificate);
+		boolean notFound = true;
+		for (Certificate item : itCertificates) {
+			if (certificate.getName().equalsIgnoreCase(item.getName())) {
+				notFound = false;
+				break;
+			}
+		}
+		if (notFound) {
+			itCertificates.add(certificate);
+		}
 	}
 
 	/*

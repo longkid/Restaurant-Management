@@ -1,4 +1,5 @@
 package model;
+
 /**
  * Author: Le Duy Phong
 
@@ -7,7 +8,7 @@ package model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TelephoneNumber implements Serializable{
+public class TelephoneNumber implements Serializable {
 	/**
 	 * 
 	 */
@@ -16,7 +17,7 @@ public class TelephoneNumber implements Serializable{
 	private Date validityDate;
 
 	public TelephoneNumber() {
-		
+
 	}
 
 	public TelephoneNumber(String phoneNumber, Date validityDate) {
@@ -38,6 +39,11 @@ public class TelephoneNumber implements Serializable{
 
 	public void setValidityDate(Date validityDate) {
 		this.validityDate = validityDate;
+	}
+
+	@Override
+	public String toString() {
+		return phoneNumber + ", " + Staff.dateFormat.format(validityDate);
 	}
 
 }

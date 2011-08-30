@@ -7,7 +7,7 @@ package model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Diploma  implements Serializable{
+public class Diploma implements Serializable{
 	/**
 	 * 
 	 */
@@ -38,6 +38,11 @@ public class Diploma  implements Serializable{
 
 	public void setValidityDate(Date validityDate) {
 		this.validityDate = validityDate;
+	}
+
+	@Override
+	public String toString() {
+		return name + ", " + Staff.dateFormat.format(validityDate);
 	}
 
 }

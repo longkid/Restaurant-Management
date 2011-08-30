@@ -50,4 +50,9 @@ public class BankAccount implements Serializable {
 		this.validityDate = validityDate;
 	}
 
+	@Override
+	public String toString() {
+		return accountNo + ", " + bankName + ", " + Staff.dateFormat.format(validityDate);
+	}
+
 }

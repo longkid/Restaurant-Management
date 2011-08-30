@@ -40,4 +40,9 @@ public class Certificate implements Serializable{
 		this.validityDate = validityDate;
 	}
 
+	@Override
+	public String toString() {
+		return name + ", " + Staff.dateFormat.format(validityDate);
+	}
+
 }
