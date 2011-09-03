@@ -52,7 +52,7 @@ public class BankAccount implements Serializable {
 
 	@Override
 	public String toString() {
-		return accountNo + ", " + bankName + ", " + Staff.dateFormat.format(validityDate);
+		return accountNo + ", " + bankName + ", " + Staff.getDateFormat().format(validityDate);
 	}
 
 }

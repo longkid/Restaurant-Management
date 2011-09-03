@@ -8,15 +8,15 @@ import javax.swing.JOptionPane;
 
 import model.CUser;
 import model.FileProcessing;
-import view.CLoginFrame;
+import view.LoginFrame;
 import view.MainFrame;
 
-public class CLoginController {
-	private CLoginFrame m_loginFrame = null;
+public class LoginController {
+	private LoginFrame m_loginFrame = null;
 	private CUser m_userLogin = null;
 
-	public CLoginController() {
-		m_loginFrame = new CLoginFrame("Login Restaurant Management");
+	public LoginController() {
+		m_loginFrame = new LoginFrame("Login Restaurant Management");
 		m_userLogin = (CUser) FileProcessing
 				.ReadData(FileProcessing.FILENAME_USERLOGIN);
 	}

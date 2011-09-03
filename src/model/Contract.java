@@ -17,7 +17,7 @@ import java.util.GregorianCalendar;
  *		Date startDate;==> store the Starting date of the contract
  *		Duration time;==> store the Ending date of the contract
  *			TWO_MONTHS, ONE_YEAR, THREE_YEARS, NO_LIMIT
- *		CTimeKeepingBook m_TimeKeeping;==> store time keeping
+ *		TimeKeepingBook m_TimeKeeping;==> store time keeping
  * Modified Date: 
  */
 public class Contract implements Serializable{
@@ -29,19 +29,18 @@ public class Contract implements Serializable{
 	private WorkingTime workingTime;
 	private Date startDate;
 	private Duration time;
-	private CTimeKeepingBook m_TimeKeeping;
+	private TimeKeepingBook m_TimeKeeping;
 	/* *******************************************************************************
 	 * Description: 
 	 * 		Default Constructor
 	 * 		Initialize the default value of the attributes	
 	 * *******************************************************************************/
-	public Contract()
-	{
+	public Contract() {
 		this.position = new Position();
 		this.workingTime = null;
 		this.startDate = new Date();
 		this.time = null;
-		m_TimeKeeping=new CTimeKeepingBook();
+		m_TimeKeeping = new TimeKeepingBook();
 	}
 	/* *******************************************************************************
 	 * Description: 
@@ -49,7 +48,7 @@ public class Contract implements Serializable{
 	 * 		set the default value of the attributes	
 	 * *******************************************************************************/
 	public Contract(Position position, WorkingTime workingTime, Date startDate,
-			Duration time,CTimeKeepingBook timeKeeping) {
+			Duration time,TimeKeepingBook timeKeeping) {
 		this.position = position;
 		this.workingTime = workingTime;
 		this.startDate = startDate;
@@ -123,18 +122,18 @@ public class Contract implements Serializable{
 	 * Description: 
 	 * 		set the time keeping 
 	 * Parameters:
-	 * 		CTimeKeepingBook TimeKeeping
+	 * 		TimeKeepingBook TimeKeeping
 	 * return type: void
 	 * *******************************************************************************/
-	public void setTimeKeeping(CTimeKeepingBook TimeKeeping) {
+	public void setTimeKeeping(TimeKeepingBook TimeKeeping) {
 		this.m_TimeKeeping = TimeKeeping;
 	}
 	/* *******************************************************************************
 	 * Description: 
 	 * 		get the time keeping 
-	 * return type: CTimeKeepingBook
+	 * return type: TimeKeepingBook
 	 * *******************************************************************************/
-	public CTimeKeepingBook getTimeKeeping() {
+	public TimeKeepingBook getTimeKeeping() {
 		return this.m_TimeKeeping;
 	}
 	/* *******************************************************************************
@@ -153,7 +152,7 @@ public class Contract implements Serializable{
 	private String parseNodeTitle() {
 		String strNode = "("
 				+ PositionTitle.getTitleString(position.getTitle()) + "); "
-				+ Staff.dateFormat.format(startDate) + "; "
+				+ Staff.getDateFormat().format(startDate) + "; "
 				+ Duration.getDurationString(time);
 
 		return strNode;

@@ -11,25 +11,26 @@ import java.io.Serializable;
 import javax.swing.JEditorPane;
 import javax.swing.RepaintManager;
 
-public class CPrintAbleEditorPanel extends JEditorPane implements Printable, Serializable
-{
+public class PrintableEditorPanel extends JEditorPane implements Printable,
+		Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex)
 			throws PrinterException {
-		Graphics2D graph2D = (Graphics2D)graphics;
-		graph2D.setColor (Color.black);
+		Graphics2D graph2D = (Graphics2D) graphics;
+		graph2D.setColor(Color.black);
 
 		RepaintManager.currentManager(this).setDoubleBufferingEnabled(false);
 		Dimension dimension = getSize();
 		double scaleToPrint = pageFormat.getImageableWidth() / dimension.width;
-		int totalNumPages = (int)Math.ceil(scaleToPrint * dimension.height /
-				pageFormat.getImageableHeight());
+		int totalNumPages = (int) Math.ceil(scaleToPrint * dimension.height
+				/ pageFormat.getImageableHeight());
 		if (pageIndex >= totalNumPages)
 			return Printable.NO_SUCH_PAGE;
 
-		graph2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+		graph2D.translate(pageFormat.getImageableX(),
+				pageFormat.getImageableY());
 		graph2D.translate(0f, -pageIndex * pageFormat.getImageableHeight());
 		graph2D.scale(scaleToPrint, scaleToPrint);
 		this.paint(graph2D);

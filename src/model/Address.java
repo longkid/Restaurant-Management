@@ -42,7 +42,7 @@ public class Address implements Serializable{
 
 	@Override
 	public String toString() {
-		return name + ", " + Staff.dateFormat.format(validityDate);
+		return name + ", " + Staff.getDateFormat().format(validityDate);
 	}
 
 }

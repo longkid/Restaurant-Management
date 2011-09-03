@@ -88,7 +88,7 @@ public class EmployeeFrame extends JFrame {
 		contentPane.add(lblNewLabel);
 
 		birthdayTextField = new JTextField();
-		birthdayTextField.setText(Staff.dateFormat.toPattern());
+		birthdayTextField.setText(Staff.getDateFormat().toPattern());
 		birthdayTextField.setBounds(478, 45, 202, 19);
 		contentPane.add(birthdayTextField);
 		birthdayTextField.setColumns(10);
@@ -140,7 +140,7 @@ public class EmployeeFrame extends JFrame {
 		contentPane.add(lblIssueDate);
 
 		issueDateText = new JTextField();
-		issueDateText.setText(Staff.dateFormat.toPattern());
+		issueDateText.setText(Staff.getDateFormat().toPattern());
 		issueDateText.setBounds(152, 132, 190, 19);
 		contentPane.add(issueDateText);
 		issueDateText.setColumns(10);

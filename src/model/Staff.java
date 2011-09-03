@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 public class Staff {
 	private static Staff singleton;
-	public static SimpleDateFormat dateFormat = new SimpleDateFormat(
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"yyyy-MM-dd");
 	private List<Employee> employees = null;
 	private List<Position> positions = null;
@@ -39,6 +39,14 @@ public class Staff {
 		}
 		
 		return singleton;
+	}
+
+	public static SimpleDateFormat getDateFormat() {
+		return dateFormat;
+	}
+
+	public static void setDateFormat(SimpleDateFormat dateFormat) {
+		Staff.dateFormat = dateFormat;
 	}
 
 	private void initializePositions() {

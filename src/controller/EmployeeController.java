@@ -71,11 +71,11 @@ public class EmployeeController {
 
 		Date birthday = null;
 		try {
-			birthday = Staff.dateFormat.parse(view.getBirthdayTextField()
+			birthday = Staff.getDateFormat().parse(view.getBirthdayTextField()
 					.getText());
 		} catch (ParseException e) {
 			notification += "\n- Birthday following the format "
-					+ Staff.dateFormat.toPattern();
+					+ Staff.getDateFormat().toPattern();
 			// e.printStackTrace();
 		}
 
@@ -97,11 +97,11 @@ public class EmployeeController {
 		}
 		Date issueDate = null;
 		try {
-			issueDate = Staff.dateFormat.parse(view.getIssueDateText()
+			issueDate = Staff.getDateFormat().parse(view.getIssueDateText()
 					.getText());
 		} catch (ParseException e) {
 			notification += "\n- Issued date following the format "
-					+ Staff.dateFormat.toPattern();
+					+ Staff.getDateFormat().toPattern();
 			// e.printStackTrace();
 		}
 		String place = view.getIssuePlaceTextField().getText();
@@ -189,7 +189,7 @@ public class EmployeeController {
 		
 		view.getFullNameTextField().setText(employee.getFullName());
 		view.getBirthdayTextField().setText(
-				Staff.dateFormat.format(employee.getBirthday()));
+				Staff.getDateFormat().format(employee.getBirthday()));
 		if (employee.getSex().equals(Sex.MALE)) {
 			view.getSexradioMale().setSelected(true);
 		} else {
@@ -207,7 +207,7 @@ public class EmployeeController {
 		view.getNoIdentityCardTextField().setText(
 				employee.getIdentityCard().getCardNum());
 		view.getIssueDateText().setText(
-				Staff.dateFormat.format(employee.getIdentityCard()
+				Staff.getDateFormat().format(employee.getIdentityCard()
 						.getIssuedDate()));
 		view.getIssuePlaceTextField().setText(
 				employee.getIdentityCard().getIssuedPlace());
@@ -257,12 +257,12 @@ public class EmployeeController {
 
 	public void clearAllInputField() {
 		view.getFullNameTextField().setText("");
-		view.getBirthdayTextField().setText(Staff.dateFormat.toPattern());
+		view.getBirthdayTextField().setText(Staff.getDateFormat().toPattern());
 		view.getSexradioMale().setSelected(true);
 		view.getEmailAddressTextField().setText("");
 		view.getCellPhoneNumberTextField().setText("");
 		view.getNoIdentityCardTextField().setText("");
-		view.getIssueDateText().setText(Staff.dateFormat.toPattern());
+		view.getIssueDateText().setText(Staff.getDateFormat().toPattern());
 		view.getIssuePlaceTextField().setText("");
 		view.getPermanentAddressTexField().setText("");
 		view.getCurrentAddressTextField().setText("");

@@ -206,7 +206,7 @@ public class EmployeeDetailsFrame extends JFrame {
 		Employee employee = Staff.getInstance().getEmployees().get(index);
 
 		fullNameTextField.setText(employee.getFullName());
-		birthdayTextField.setText(Staff.dateFormat.format(employee
+		birthdayTextField.setText(Staff.getDateFormat().format(employee
 				.getBirthday()));
 		sexTextField.setText(employee.getSex().equals(Sex.MALE) ? "Male" : "Female");
 		
@@ -218,7 +218,7 @@ public class EmployeeDetailsFrame extends JFrame {
 		
 		NoIdentityCardTextField
 				.setText(employee.getIdentityCard().getCardNum());
-		issueDateText.setText(Staff.dateFormat.format(employee
+		issueDateText.setText(Staff.getDateFormat().format(employee
 				.getIdentityCard().getIssuedDate()));
 		issuePlaceTextField
 				.setText(employee.getIdentityCard().getIssuedPlace());

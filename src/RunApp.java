@@ -1,4 +1,4 @@
-import controller.CLoginController;
+import controller.LoginController;
 
 
 public class RunApp {
@@ -7,7 +7,7 @@ public class RunApp {
 	 * Run this class to test the application
 	 */
 	public static void main(String[] args) {
-		new CLoginController().doShow();
+		new LoginController().doShow();
 	}
 
 }

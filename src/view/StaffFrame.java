@@ -1,7 +1,9 @@
 package view;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTable;
 import javax.swing.JButton;
@@ -17,8 +19,10 @@ public class StaffFrame extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTable table_1;
+	private JTable staffTable;
+	private JButton btnCreate;
 	private JButton btnUpdate;
+	private JButton btnDelete;
 	private JButton btnViewDetails;
 
 	/**
@@ -27,24 +31,27 @@ public class StaffFrame extends JFrame {
 	public StaffFrame() {
 		setTitle("Staff Management");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 560, 410);
+		setSize(560, 410);
+		//setBounds(100, 100, 560, 410);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		setTable_1(new JTable());
-		
-		getTable_1().setBounds(12, 12, 487, 323);
-		contentPane.add(getTable_1());
+		setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+		staffTable = new JTable();
+		JScrollPane scrollPane = new JScrollPane(staffTable);
+		//scrollPane.setBounds(12, 0, 533, 335);
+		contentPane.add(scrollPane);
 
-		JButton btnCreate = new JButton("Add an Employee");
+		btnCreate = new JButton("Add an Employee");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				StaffController.singleton.create();
 			}
 		});
-		btnCreate.setBounds(12, 345, 155, 25);
-		contentPane.add(btnCreate);
+		JPanel buttonPanel = new JPanel();
+		//btnCreate.setBounds(12, 345, 155, 25);
+		//contentPane.add(btnCreate);
+		buttonPanel.add(btnCreate);
 
 		btnUpdate = new JButton("Update");
 		btnUpdate.addActionListener(new ActionListener() {
@@ -52,17 +59,19 @@ public class StaffFrame extends JFrame {
 				StaffController.singleton.update();
 			}
 		});
-		btnUpdate.setBounds(190, 345, 90, 25);
-		contentPane.add(btnUpdate);
+		//btnUpdate.setBounds(190, 345, 90, 25);
+		//contentPane.add(btnUpdate);
+		buttonPanel.add(btnUpdate);
 		
-		JButton btnDelete = new JButton("Delete");
+		btnDelete = new JButton("Delete");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				StaffController.singleton.delete();
 			}
 		});
-		btnDelete.setBounds(305, 345, 90, 25);
-		contentPane.add(btnDelete);
+		//btnDelete.setBounds(305, 345, 90, 25);
+		//contentPane.add(btnDelete);
+		buttonPanel.add(btnDelete);
 		
 		btnViewDetails = new JButton("View Details");
 		btnViewDetails.addActionListener(new ActionListener() {
@@ -70,18 +79,20 @@ public class StaffFrame extends JFrame {
 				StaffController.singleton.viewDetails();
 			}
 		});
-		btnViewDetails.setBounds(415, 345, 130, 25);
-		contentPane.add(btnViewDetails);
+		//btnViewDetails.setBounds(415, 345, 130, 25);
+		//contentPane.add(btnViewDetails);
+		buttonPanel.add(btnViewDetails);
+		contentPane.add(buttonPanel);
 		setLocationRelativeTo(null);
 	}
 
-	public void setTable_1(JTable table_1) {
-		this.table_1 = table_1;
-		table_1.setColumnSelectionAllowed(true);
-		table_1.setCellSelectionEnabled(true);
+	public void setStaffTable(JTable staffTable) {
+		this.staffTable = staffTable;
+		staffTable.setColumnSelectionAllowed(true);
+		staffTable.setCellSelectionEnabled(true);
 	}
 
-	public JTable getTable_1() {
-		return table_1;
+	public JTable getStaffTable() {
+		return staffTable;
 	}
 }

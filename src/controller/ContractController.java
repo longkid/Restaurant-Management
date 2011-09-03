@@ -15,10 +15,10 @@ import model.Employee;
 import model.Position;
 import model.PositionTitle;
 import model.Staff;
-import view.CContractFrame;
+import view.ContractFrame;
 
 public class ContractController {
-	private CContractFrame contractFrame = null;
+	private ContractFrame contractFrame = null;
 	private static List<Position> positions = Staff.getInstance().getPositions();
 	private Employee currentEmployee = null;
 	private List<Employee> employees = null;
@@ -27,7 +27,7 @@ public class ContractController {
 
 	public ContractController(String strTitle, String strCaption,
 			Employee currentEmployee, List<Employee> employees) {
-		contractFrame = new CContractFrame(strTitle, strCaption);
+		contractFrame = new ContractFrame(strTitle, strCaption);
 		contractFrame.setEmployeeName(currentEmployee.getFullName());
 		addTitleForTitleComboBox();
 		addDurationForCombobox();
@@ -63,7 +63,7 @@ public class ContractController {
 		contractFrame.getComboBoxTitle().setSelectedIndex(
 				con.getPosition().getTitle().ordinal());
 		contractFrame.getTextFieldStartDate().setText(
-				Staff.dateFormat.format(con.getStartDate()));
+				Staff.getDateFormat().format(con.getStartDate()));
 	}
 
 	private void addTitleForTitleComboBox() {
@@ -86,7 +86,7 @@ public class ContractController {
 		contract.setPosition(pos);
 		String date = contractFrame.getTextFieldStartDate().getText();
 		try {
-			contract.setStartDate(Staff.dateFormat.parse(date));
+			contract.setStartDate(Staff.getDateFormat().parse(date));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

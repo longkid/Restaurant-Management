@@ -20,7 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-public class CContractFrame extends JDialog {
+import model.Staff;
+
+public class ContractFrame extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private JComboBox cboTitle, cboDuration;
 	private JButton btnSave, btnExit;
@@ -29,7 +31,7 @@ public class CContractFrame extends JDialog {
 	private JLabel lblEmployeeName;
 	private String m_strCaption = "";
 
-	public CContractFrame(String strTitle, String strCaption) {
+	public ContractFrame(String strTitle, String strCaption) {
 		setTitle(strTitle);
 		m_strCaption = strCaption;
 		createUI();
@@ -99,7 +101,7 @@ public class CContractFrame extends JDialog {
 
 		txtStartDate = new JTextField(10);
 		pnContractDate.add(txtStartDate);
-		JLabel lblNoteDate = new JLabel("(yyyy-mm-dd)");
+		JLabel lblNoteDate = new JLabel(Staff.getDateFormat().toPattern());
 		Font fontNote = new Font("arial", Font.PLAIN, 9);
 		lblNoteDate.setForeground(Color.RED);
 		lblNoteDate.setFont(fontNote);

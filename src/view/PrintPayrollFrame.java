@@ -8,12 +8,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-public class CPrintPreview extends JFrame {
+public class PrintPayrollFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private CPrintAbleEditorPanel editorPane;
+	private PrintableEditorPanel editorPane;
 	private JButton btnClose;
 
-	public CPrintAbleEditorPanel getPrintAbleEditor() {
+	public PrintableEditorPanel getPrintAbleEditor() {
 		return editorPane;
 	}
 
@@ -21,12 +21,12 @@ public class CPrintPreview extends JFrame {
 		return btnClose;
 	}
 
-	public CPrintPreview() {
+	public PrintPayrollFrame() {
 		createEditorPane();
 	}
 
 	private void createEditorPane() {
-		editorPane = new CPrintAbleEditorPanel();
+		editorPane = new PrintableEditorPanel();
 		editorPane.setEditable(true);
 		editorPane.setContentType("text/html");
 

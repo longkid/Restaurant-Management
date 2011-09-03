@@ -309,7 +309,7 @@ public class Employee implements Serializable {
 	public Vector<String> getVector() {
 		Vector<String> vec = new Vector<String>();
 		vec.add(this.fullName);
-		vec.add(Staff.dateFormat.format(birthday));
+		vec.add(Staff.getDateFormat().format(birthday));
 		vec.add((sex == Sex.FEMALE) ? "Female" : "Male");
 		vec.add((getCurrentContract() == null) ? "No" : "Yes");
 		return vec;

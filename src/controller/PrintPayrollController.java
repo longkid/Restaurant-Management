@@ -11,21 +11,21 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
-import model.CTimeKeepingBook;
-import model.CTimeKeepingSheet;
+import model.TimeKeepingBook;
+import model.TimeKeepingSheet;
 import model.Contract;
 import model.Employee;
 import model.PositionTitle;
-import view.CPrintPreview;
+import view.PrintPayrollFrame;
 
-public class CPrintPreviewController {
-	private CPrintPreview m_printPreview;
+public class PrintPayrollController {
+	private PrintPayrollFrame m_printPreview;
 	private List<Employee> m_listEmployee;
 	private int m_nMonthSelected;
 	private int m_nYearSelected;
 
-	public CPrintPreviewController() {
-		m_printPreview = new CPrintPreview();
+	public PrintPayrollController() {
+		m_printPreview = new PrintPayrollFrame();
 		m_printPreview.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -103,11 +103,11 @@ public class CPrintPreviewController {
 				strContent += "<td>&nbsp;" + salary + "</td>";
 				strContent += "<td>&nbsp;" + otherSalary + "</td>";
 
-				CTimeKeepingBook book = suitableContract.getTimeKeeping();
-				CTimeKeepingSheet sheet = book.get(m_nMonthSelected,
+				TimeKeepingBook book = suitableContract.getTimeKeeping();
+				TimeKeepingSheet sheet = book.get(m_nMonthSelected,
 						m_nYearSelected);
 				int numberOfWorkingDays = 0;
-				int numberOfDaysInMonth = CTimeKeepingBookController.getNumberOfDaysInMonth(
+				int numberOfDaysInMonth = TimeKeepingController.getNumberOfDaysInMonth(
 						m_nMonthSelected, m_nYearSelected);
 				if (sheet != null)
 					numberOfWorkingDays = sheet.getWorkingDay();

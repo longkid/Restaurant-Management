@@ -40,7 +40,7 @@ public class StaffController {
 			objects[i][0] = employees.get(i - 1).getFullName();
 			objects[i][1] = (employees.get(i - 1).getSex() == Sex.MALE) ? "Male"
 					: "Female";
-			objects[i][2] = Staff.dateFormat.format(employees.get(i - 1)
+			objects[i][2] = Staff.getDateFormat().format(employees.get(i - 1)
 					.getBirthday());
 			objects[i][3] = employees.get(i - 1).getIdentityCard().getCardNum();
 		}
@@ -49,17 +49,17 @@ public class StaffController {
 
 	// init view and fill data to table
 	private void initView() {
-		this.view.getTable_1().setModel(
+		this.view.getStaffTable().setModel(
 				new DefaultTableModel(fill(), new String[4]));
 	}
 
 	public void refresh() {
-		this.view.getTable_1().setModel(
+		this.view.getStaffTable().setModel(
 				new DefaultTableModel(fill(), new String[4]));
 	}
 
 	public void update() {
-		int index = this.view.getTable_1().getSelectedRow();
+		int index = this.view.getStaffTable().getSelectedRow();
 		index--;
 		if (index < 0) {
 			JOptionPane.showMessageDialog(view, "You must select an employee to update");
@@ -79,7 +79,7 @@ public class StaffController {
 
 	// this function is used to delete an employee
 	public void delete() {
-		int index = this.view.getTable_1().getSelectedRow();
+		int index = this.view.getStaffTable().getSelectedRow();
 		index--;
 		if (index < 0) {
 			JOptionPane.showMessageDialog(view, "You must select an employee to delete");
@@ -100,7 +100,7 @@ public class StaffController {
 	
 	// 20110828: LH added
 	public void viewDetails() {
-		int index = this.view.getTable_1().getSelectedRow();
+		int index = this.view.getStaffTable().getSelectedRow();
 		index--;
 		if (index < 0) {
 			JOptionPane.showMessageDialog(view, "You must select an employee to view details");

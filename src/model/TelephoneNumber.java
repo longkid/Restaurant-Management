@@ -43,7 +43,7 @@ public class TelephoneNumber implements Serializable {
 
 	@Override
 	public String toString() {
-		return phoneNumber + ", " + Staff.dateFormat.format(validityDate);
+		return phoneNumber + ", " + Staff.getDateFormat().format(validityDate);
 	}
 
 }

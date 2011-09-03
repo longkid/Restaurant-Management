@@ -19,7 +19,7 @@ import java.util.Date;
  *  		stores the detail of timekeeping (example: reason of the absent, late, etc...
  *  Modified Date:
  */
-public class CTimeKeepingDetailInfor implements Serializable{
+public class TimeKeepingDetailInfo implements Serializable {
 
 	/**
 	 * 
@@ -32,8 +32,7 @@ public class CTimeKeepingDetailInfor implements Serializable{
 	/* *******************************************************************************
 	 * Description: Default Constructor	
 	 * *******************************************************************************/
-	public CTimeKeepingDetailInfor()
-	{
+	public TimeKeepingDetailInfo() {
 		this.m_bIsWorking=false;
 		this.m_dateWorking=new Date();
 		this.m_strWhoCheck="";
@@ -47,12 +46,12 @@ public class CTimeKeepingDetailInfor implements Serializable{
 	 * 		String strWhoCheck
 	 * 		String strReason
 	 * *******************************************************************************/
-	public CTimeKeepingDetailInfor(boolean bIsWorking,Date dateWorking,String strWhoCheck,String strReason)
-	{
-		this.m_bIsWorking=bIsWorking;
-		this.m_dateWorking=dateWorking;
-		this.m_strWhoCheck=strWhoCheck;
-		this.m_strReason=strReason;
+	public TimeKeepingDetailInfo(boolean bIsWorking, Date dateWorking,
+			String strWhoCheck, String strReason) {
+		this.m_bIsWorking = bIsWorking;
+		this.m_dateWorking = dateWorking;
+		this.m_strWhoCheck = strWhoCheck;
+		this.m_strReason = strReason;
 	}
 	/* *******************************************************************************
 	 * Description: set working status of employee in a particular day
@@ -60,16 +59,14 @@ public class CTimeKeepingDetailInfor implements Serializable{
 	 * 		boolean bIsWorking- true: the employee is present, otherwise he or she is absent
 	 * return type: void
 	 * *******************************************************************************/
-	public void setIsWorking(boolean bIsWorking)
-	{
+	public void setIsWorking(boolean bIsWorking) {
 		this.m_bIsWorking=bIsWorking;
 	}
 	/* *******************************************************************************
 	 * Description: check if the employee is present on that day
 	 * return type: boolean
 	 * *******************************************************************************/
-	public boolean getIsWorking()
-	{
+	public boolean getIsWorking() {
 		return this.m_bIsWorking;
 	}
 	/* *******************************************************************************
@@ -78,16 +75,14 @@ public class CTimeKeepingDetailInfor implements Serializable{
 	 * 		Date dateWorking -
 	 * return type: void
 	 * *******************************************************************************/
-	public void setDateWorking(Date dateWorking)
-	{
+	public void setDateWorking(Date dateWorking) {
 		this.m_dateWorking=dateWorking;
 	}
 	/* *******************************************************************************
 	 * Description: return working date of employee. 	
 	 * return type: Date
 	 * *******************************************************************************/
-	public Date getDateWorking()
-	{
+	public Date getDateWorking() {
 		return this.m_dateWorking;
 	}
 	/* *******************************************************************************
@@ -96,16 +91,14 @@ public class CTimeKeepingDetailInfor implements Serializable{
 	 * 		String strWhoCheck - timekeeper name
 	 * return type: void
 	 * *******************************************************************************/
-	public void setWhoCheck(String strWhoCheck)
-	{
+	public void setWhoCheck(String strWhoCheck) {
 		this.m_strWhoCheck=strWhoCheck;
 	}
 	/* *******************************************************************************
 	 * Description: return timekeeper of the date selected
 	 * return type: String
 	 * *******************************************************************************/
-	public String getWhoCheck()
-	{
+	public String getWhoCheck() {
 		return this.m_strWhoCheck;
 	}
 	/* *******************************************************************************
@@ -115,8 +108,7 @@ public class CTimeKeepingDetailInfor implements Serializable{
 	 * 		String strReason - reason
 	 * return type: void
 	 * *******************************************************************************/
-	public void setReason(String strReason)
-	{
+	public void setReason(String strReason) {
 		this.m_strReason=strReason;
 	}
 	/* *******************************************************************************
@@ -124,8 +116,7 @@ public class CTimeKeepingDetailInfor implements Serializable{
 	 * 		get reason of working day selected
 	 * return type: String
 	 * *******************************************************************************/
-	public String getReason()
-	{
+	public String getReason() {
 		return this.m_strReason;
 	}
 }

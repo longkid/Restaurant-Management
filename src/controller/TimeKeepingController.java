@@ -17,12 +17,12 @@ import javax.swing.JOptionPane;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import view.CMyTableCellEditor;
-import view.CMyTableCellRenderer;
-import view.CTimeKeepingBookFrame;
-import model.CTimeKeepingBook;
-import model.CTimeKeepingDetailInfor;
-import model.CTimeKeepingSheet;
+import view.MyTableCellRenderer;
+import view.TimekeepingFrame;
+import view.MyTableCellEditor;
+import model.TimeKeepingBook;
+import model.TimeKeepingDetailInfo;
+import model.TimeKeepingSheet;
 import model.Contract;
 import model.Employee;
 import model.Staff;
@@ -31,15 +31,15 @@ enum eSHOW {
 	NEWCONTRACT, EDITCONTRACT, DELETECONTRACT, CALCPAYROLL
 }
 
-public class CTimeKeepingBookController {
-	private CTimeKeepingBookFrame timeKeepingBookFrame = null;
+public class TimeKeepingController {
+	private TimekeepingFrame timeKeepingBookFrame = null;
 	private List<Employee> employees = Staff.getInstance().getEmployees();
 	private Employee currentEmployee = null;
 	private Contract currentContract = null;
 	private int nMonthSelected, nYearSelected, nNumberDayOfMonth;
 
-	public CTimeKeepingBookController() {
-		timeKeepingBookFrame = new CTimeKeepingBookFrame(
+	public TimeKeepingController() {
+		timeKeepingBookFrame = new TimekeepingFrame(
 				"Timekeeping & Contract Management");
 	}
 
@@ -210,7 +210,7 @@ public class CTimeKeepingBookController {
 	}
 
 	private void calcPayroll() {
-		CPrintPreviewController printPreviewController = new CPrintPreviewController();
+		PrintPayrollController printPreviewController = new PrintPayrollController();
 		printPreviewController.setTittle("Payroll Report");
 		printPreviewController.setListEmployee(employees);
 		printPreviewController.setMonth(nMonthSelected);
@@ -304,21 +304,21 @@ public class CTimeKeepingBookController {
 			/*if (currentContract != null) {
 				CTimeKeepingBook keepBook = currentContract.getTimeKeeping();*/
 			if (correctContract != null) {
-				CTimeKeepingBook keepBook = correctContract.getTimeKeeping();
+				TimeKeepingBook keepBook = correctContract.getTimeKeeping();
 				if (keepBook == null)
-					keepBook = new CTimeKeepingBook();
+					keepBook = new TimeKeepingBook();
 				if (keepBook != null) {
-					CTimeKeepingSheet keepSheet = keepBook.get(
+					TimeKeepingSheet keepSheet = keepBook.get(
 							nMonthSelected, nYearSelected);
 					if (keepSheet == null) {
-						keepSheet = new CTimeKeepingSheet();
+						keepSheet = new TimeKeepingSheet();
 						Date dateKeepSheet = new Date(nYearSelected,
 								nMonthSelected, 1);
 						keepSheet.setLastModified(dateKeepSheet);
 					}
 					keepSheet.clear();
 					for (int i = 0; i < nNumberDayOfMonth; i++) {
-						CTimeKeepingDetailInfor keepDetail = new CTimeKeepingDetailInfor();
+						TimeKeepingDetailInfo keepDetail = new TimeKeepingDetailInfo();
 						Boolean bcheck = (Boolean) ((Vector<Object>) timeKeepingBookFrame
 								.getTableModelTimeKeeping().getDataVector()
 								.elementAt(i)).elementAt(0);
@@ -352,11 +352,11 @@ public class CTimeKeepingBookController {
 			Contract correctContract = currentEmployee.searchCorrespondingContract(year, month);
 			// 20110822: LH modified
 			if (correctContract != null) {
-				CTimeKeepingBook keepBook = correctContract.getTimeKeeping();
+				TimeKeepingBook keepBook = correctContract.getTimeKeeping();
 			/*if (currentContract != null) {
 				CTimeKeepingBook keepBook = currentContract.getTimeKeeping();*/
 				if (keepBook != null) {
-					CTimeKeepingSheet keepSheet = keepBook.get(month, year);
+					TimeKeepingSheet keepSheet = keepBook.get(month, year);
 					if (keepSheet == null) {
 						for (int i = 0; i < n; i++) {
 							day = i + 1;
@@ -367,7 +367,7 @@ public class CTimeKeepingBookController {
 						}
 					} else {
 						for (int i = 0; i < keepSheet.size(); i++) {
-							CTimeKeepingDetailInfor infor = keepSheet.get(i);
+							TimeKeepingDetailInfo infor = keepSheet.get(i);
 							day = i + 1;
 							date = getStringOfDate(year, month, day);
 							Object[] objValue = new Object[] {
@@ -389,9 +389,9 @@ public class CTimeKeepingBookController {
 		timeKeepingBookFrame.getTableModelTimeKeeping().setDataVector(
 				objData, objColumn);
 		timeKeepingBookFrame.getTableTimeKeeping().getColumn("Working")
-				.setCellRenderer(new CMyTableCellRenderer());
+				.setCellRenderer(new MyTableCellRenderer());
 		timeKeepingBookFrame.getTableTimeKeeping().getColumn("Working")
-				.setCellEditor(new CMyTableCellEditor());
+				.setCellEditor(new MyTableCellEditor());
 	}
 
 	private String getStringOfDate(int year, int month, int day) {
