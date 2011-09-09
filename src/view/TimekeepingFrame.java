@@ -95,7 +95,6 @@ public class TimekeepingFrame extends JFrame {
 		java.util.Date date = cal.getTime();
 
 		int d = date.getYear() + 1900;
-		System.out.println(d + "");
 		for (; d >= 2000; d--) {
 			cboYear.addItem(d);
 		}

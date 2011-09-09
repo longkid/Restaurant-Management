@@ -1,6 +1,5 @@
 import controller.LoginController;
 
-
 public class RunApp {
 
 	/**
