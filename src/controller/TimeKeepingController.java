@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import view.MyTableCellRenderer;
 import view.TimekeepingFrame;
@@ -73,8 +71,6 @@ public class TimeKeepingController {
 	}
 
 	public void addEventforAllControl() {
-		timeKeepingBookFrame.getTreeViewContract().addTreeSelectionListener(
-				new CTreeEvent());
 		timeKeepingBookFrame.getTableEmployee().addMouseListener(
 				new CProcessMouseEvent());
 		timeKeepingBookFrame.getComboBoxMonth().addActionListener(
@@ -218,15 +214,6 @@ public class TimeKeepingController {
 		printPreviewController.setContent(printPreviewController
 				.createPayRollReport());
 		printPreviewController.doShow();
-	}
-
-	private void processTreeSelection() {
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) timeKeepingBookFrame
-				.getTreeViewContract().getLastSelectedPathComponent();
-		Object obj = node.getUserObject();
-		if (obj instanceof Contract) {
-			JOptionPane.showMessageDialog(null, obj.toString());
-		}
 	}
 
 	private void doGetListContractForEmployee(Employee currentEmployee) {
@@ -471,16 +458,6 @@ public class TimeKeepingController {
 			} else if (o.equals(timeKeepingBookFrame.getButtonShowAll())) {
 				doShowAll();
 			}
-		}
-
-	}
-
-	private class CTreeEvent implements TreeSelectionListener {
-
-		@Override
-		public void valueChanged(TreeSelectionEvent e) {
-			// TODO Auto-generated method stub
-			processTreeSelection();
 		}
 
 	}

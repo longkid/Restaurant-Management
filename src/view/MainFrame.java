@@ -52,7 +52,6 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	private JMenu mnHelp = new JMenu("Help");
 	private JMenuItem mntmHelp = new JMenuItem("Help...");
-	private JMenuItem mntmAboutRestaurant = new JMenuItem("About Restaurant...");
 	private JTextArea infoArea = new JTextArea();
 	private JMenu mnOptions = new JMenu("Options");
 	private JMenu mnDateFormat = new JMenu("Date Format");
@@ -99,8 +98,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnHelp.setMnemonic('H');
 		menuBar.add(mnHelp);
 		mnHelp.add(mntmHelp);
-		mnHelp.addSeparator();
-		mnHelp.add(mntmAboutRestaurant);
+		mntmHelp.addActionListener(this);
 
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -129,7 +127,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		} else if (source.equals(mntmManagePosition)) {
 			PositionController positionController = new PositionController();
 			positionController.doShow();
-
 		} else if (source.equals(mnTimekeepingContractManagement)) {
 			TimeKeepingController timeKeepingBookController = new TimeKeepingController();
 			timeKeepingBookController.doShow();
@@ -137,6 +134,8 @@ public class MainFrame extends JFrame implements ActionListener {
 			Staff.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
 		} else if (source.equals(mntmDdmmyyyy)) {
 			Staff.setDateFormat(new SimpleDateFormat("dd-MM-yyyy"));
+		} else if (source.equals(mntmHelp)) {
+			new HelpFrame();
 		}
 	}
 

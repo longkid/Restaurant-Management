@@ -45,7 +45,7 @@ public class ContractFrame extends JDialog {
 		pnGeneralBorder.add(pnGeneral);
 		pnGeneral.setLayout(new BorderLayout());
 
-		// create title: Postion Information
+		// create title: Position Information
 		JPanel pnTitle = new JPanel();
 		JLabel lblTitle = new JLabel(m_strCaption);
 
@@ -68,12 +68,12 @@ public class ContractFrame extends JDialog {
 				BoxLayout.Y_AXIS));
 		pnInformation.add(pnInputInformation);
 
-		// create Postion Title - use Combobox
+		// create Position Title - use Combobox
 		JPanel pnPositionTitle = new JPanel();
-		JLabel lblPostionTitle = new JLabel("Postion Title:", JLabel.RIGHT);
+		JLabel lblPositionTitle = new JLabel("Position Title:", JLabel.RIGHT);
 		cboTitle = new JComboBox();
 
-		pnPositionTitle.add(lblPostionTitle);
+		pnPositionTitle.add(lblPositionTitle);
 		pnPositionTitle.add(cboTitle); // display combobox on form
 		pnGeneral.add(pnInformation, BorderLayout.CENTER);
 		pnInputInformation.add(pnPositionTitle);
@@ -119,12 +119,12 @@ public class ContractFrame extends JDialog {
 		// set JLabels are same size
 		lblContractDate.setPreferredSize(lblCurrencyofContract
 				.getPreferredSize());
-		lblPostionTitle.setPreferredSize(lblCurrencyofContract
+		lblPositionTitle.setPreferredSize(lblCurrencyofContract
 				.getPreferredSize());
 		lblSalary.setPreferredSize(lblCurrencyofContract.getPreferredSize());
 		lblOtherSalary.setPreferredSize(lblCurrencyofContract
 				.getPreferredSize());
-		lblPostionTitle.setPreferredSize(lblCurrencyofContract
+		lblPositionTitle.setPreferredSize(lblCurrencyofContract
 				.getPreferredSize());
 
 		// create Border for each JPanel
