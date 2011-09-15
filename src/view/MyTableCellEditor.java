@@ -11,61 +11,61 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.table.TableCellEditor;
 
 public class MyTableCellEditor implements TableCellEditor {
-	DefaultCellEditor m_cellEditor;
+	DefaultCellEditor cellEditor;
 
 	public MyTableCellEditor() {
 		JCheckBox checkBox = new JCheckBox();
 		checkBox.setHorizontalAlignment(JLabel.CENTER);
-		m_cellEditor = new DefaultCellEditor(checkBox);
+		cellEditor = new DefaultCellEditor(checkBox);
 	}
 
 	public Component getTableCellEditorComponent(JTable table, Object value,
 			boolean isSelected, int row, int column) {
 		if (value instanceof Boolean) {
-			return m_cellEditor.getTableCellEditorComponent(table, value,
+			return cellEditor.getTableCellEditorComponent(table, value,
 					isSelected, row, column);
 		}
 		return null;
 	}
 
 	public Object getCellEditorValue() {
-		return m_cellEditor.getCellEditorValue();
+		return cellEditor.getCellEditorValue();
 	}
 
 	public Component getComponent() {
 
-		return m_cellEditor.getComponent();
+		return cellEditor.getComponent();
 	}
 
 	public boolean stopCellEditing() {
-		return m_cellEditor.stopCellEditing();
+		return cellEditor.stopCellEditing();
 	}
 
 	public void cancelCellEditing() {
-		m_cellEditor.cancelCellEditing();
+		cellEditor.cancelCellEditing();
 	}
 
 	public boolean isCellEditable(EventObject anEvent) {
-		return m_cellEditor.isCellEditable(anEvent);
+		return cellEditor.isCellEditable(anEvent);
 	}
 
 	public boolean shouldSelectCell(EventObject anEvent) {
-		return m_cellEditor.shouldSelectCell(anEvent);
+		return cellEditor.shouldSelectCell(anEvent);
 	}
 
 	public void addCellEditorListener(CellEditorListener listener) {
-		m_cellEditor.addCellEditorListener(listener);
+		cellEditor.addCellEditorListener(listener);
 	}
 
 	public void removeCellEditorListener(CellEditorListener listener) {
-		m_cellEditor.removeCellEditorListener(listener);
+		cellEditor.removeCellEditorListener(listener);
 	}
 
 	public void setClickCountToStart(int n) {
-		m_cellEditor.setClickCountToStart(n);
+		cellEditor.setClickCountToStart(n);
 	}
 
 	public int getClickCountToStart() {
-		return m_cellEditor.getClickCountToStart();
+		return cellEditor.getClickCountToStart();
 	}
 }

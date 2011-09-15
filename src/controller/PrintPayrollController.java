@@ -19,36 +19,35 @@ import model.PositionTitle;
 import view.PrintPayrollFrame;
 
 public class PrintPayrollController {
-	private PrintPayrollFrame m_printPreview;
-	private List<Employee> m_listEmployee;
-	private int m_nMonthSelected;
-	private int m_nYearSelected;
+	private PrintPayrollFrame printPreview;
+	private List<Employee> listEmployee;
+	private int nMonthSelected;
+	private int nYearSelected;
 
 	public PrintPayrollController() {
-		m_printPreview = new PrintPayrollFrame();
-		m_printPreview.addWindowListener(new WindowAdapter() {
+		printPreview = new PrintPayrollFrame();
+		printPreview.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				m_printPreview.dispose();
+				printPreview.dispose();
 			}
 		});
 	}
 
 	public void setTittle(String strTitle) {
-		m_printPreview.setTitle(strTitle);
+		printPreview.setTitle(strTitle);
 	}
 
 	public void setListEmployee(List<Employee> listEmployee) {
-
-		m_listEmployee = listEmployee;
+		this.listEmployee = listEmployee;
 	}
 
 	public void setMonth(int nMonthSelected) {
-		m_nMonthSelected = nMonthSelected;
+		this.nMonthSelected = nMonthSelected;
 	}
 
 	public void setYear(int nYearSelected) {
-		m_nYearSelected = nYearSelected;
+		this.nYearSelected = nYearSelected;
 	}
 
 	public String createPayRollReport() {
@@ -68,10 +67,10 @@ public class PrintPayrollController {
 		strContent += "<form id=\"form1\" name=\"form1\" method=\"post\" action=\"\">";
 		strContent += "Month: ";
 		strContent += "<font color=\"red\" style=\"font-weight:bold;\">"
-				+ m_nMonthSelected + "</font>";
+				+ nMonthSelected + "</font>";
 		strContent += " Year: ";
 		strContent += "<font color=\"red\"  style=\"font-weight:bold;\">"
-				+ m_nYearSelected + "</font>";
+				+ nYearSelected + "</font>";
 		strContent += "</form></center>";
 		strContent += "<table width=\"100%\" border=\"1\" cellpadding=\"0\" cellspacing=\"0\">";
 		strContent += "<tr>";
@@ -83,11 +82,11 @@ public class PrintPayrollController {
 		strContent += "<th width=\"24%\">Final Salary (USD)</th>";
 		strContent += "</tr>";
 		int nSumSalary = 0;
-		if (m_listEmployee != null) {
-			for (int i = 0; i < m_listEmployee.size(); i++) {
-				Employee emp = m_listEmployee.get(i);
+		if (listEmployee != null) {
+			for (int i = 0; i < listEmployee.size(); i++) {
+				Employee emp = listEmployee.get(i);
 				Contract suitableContract = emp.searchCorrespondingContract(
-						m_nYearSelected, m_nMonthSelected);
+						nYearSelected, nMonthSelected);
 				if (suitableContract == null)
 					continue; // skip this employee
 
@@ -104,11 +103,11 @@ public class PrintPayrollController {
 				strContent += "<td>&nbsp;" + otherSalary + "</td>";
 
 				TimeKeepingBook book = suitableContract.getTimeKeeping();
-				TimeKeepingSheet sheet = book.get(m_nMonthSelected,
-						m_nYearSelected);
+				TimeKeepingSheet sheet = book.get(nMonthSelected,
+						nYearSelected);
 				int numberOfWorkingDays = 0;
 				int numberOfDaysInMonth = TimeKeepingController.getNumberOfDaysInMonth(
-						m_nMonthSelected, m_nYearSelected);
+						nMonthSelected, nYearSelected);
 				if (sheet != null)
 					numberOfWorkingDays = sheet.getWorkingDay();
 				strContent += "<td>&nbsp;" + numberOfWorkingDays + "</td>";
@@ -139,18 +138,18 @@ public class PrintPayrollController {
 	}
 
 	public void addEventforAllControl() {
-		m_printPreview.getButtonClose().addActionListener(new CMyButtonEvent());
+		printPreview.getButtonClose().addActionListener(new CMyButtonEvent());
 	}
 
 	public void setContent(String strContent) {
-		m_printPreview.getPrintAbleEditor().setText(strContent);
+		printPreview.getPrintAbleEditor().setText(strContent);
 	}
 
 	public void doShow() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		m_printPreview.setSize(screenSize.width / 2, screenSize.height / 2);
-		m_printPreview.setLocationRelativeTo(null);
-		m_printPreview.setVisible(true);
+		printPreview.setSize(screenSize.width / 2, screenSize.height / 2);
+		printPreview.setLocationRelativeTo(null);
+		printPreview.setVisible(true);
 		addEventforAllControl();
 	}
 
@@ -159,8 +158,8 @@ public class PrintPayrollController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Object o = e.getSource();
-			if (o.equals(m_printPreview.getButtonClose())) {
-				m_printPreview.dispose();
+			if (o.equals(printPreview.getButtonClose())) {
+				printPreview.dispose();
 			}
 		}
 

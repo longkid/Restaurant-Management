@@ -87,6 +87,15 @@ public class HelpFrame extends JFrame implements TreeSelectionListener {
 		HelpInfo hInfo = null;
 		String info = null;
 
+		hInfo = new HelpInfo("How to login the system?");
+		info = "The user can create a username and a password to login the system. The password may be empty or contain any characters with non-zero length. " +
+				"Then you click the button <em><strong>Login</em></strong> to use the application. You can also ask the system to remember your password by " +
+				"checking the corresponding checkbox. Later on, you need to provide your username and password whenever you want to use the application. " +
+				"If your login information is different from the information you provided, an error message &quot;Login Failed&quot; will be appeared.";
+		hInfo.setInfo(info);
+		category = new DefaultMutableTreeNode(hInfo);
+		top.add(category);
+		
 		hInfo = new HelpInfo("How to manage staff?");
 		info = "To use this functionality, you choose <em><strong>Manage Staff</em></strong> item in <em><strong>Manage</em></strong> menu.";
 		hInfo.setInfo(info);

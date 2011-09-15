@@ -8,14 +8,14 @@ import java.util.Date;
  *  	this class is used to store the information of a working day of each employee
  *  	this object will be stored in the CTimeKeepingSheet
  * Attributes:
- *  	boolean m_bIsWorking
- *  		if m_bIsWorking=true then the employee is present
- *  		if m_bIsWorking=false then the employee is absent
- *  	Date m_dateWorking
+ *  	boolean bIsWorking
+ *  		if bIsWorking=true then the employee is present
+ *  		if bIsWorking=false then the employee is absent
+ *  	Date dateWorking
  *  		stores the working date(example: 08/07/2011)
- *  	String m_strWhoCheck
+ *  	String strWhoCheck
  *  		Stores the name of the timekeeper (name of the login user)
- *  	String m_strReason
+ *  	String strReason
  *  		stores the detail of timekeeping (example: reason of the absent, late, etc...
  *  Modified Date:
  */
@@ -25,18 +25,18 @@ public class TimeKeepingDetailInfo implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private boolean m_bIsWorking;
-	private Date m_dateWorking;
-	private String m_strWhoCheck;
-	private String m_strReason;
+	private boolean bIsWorking;
+	private Date dateWorking;
+	private String strWhoCheck;
+	private String strReason;
 	/* *******************************************************************************
 	 * Description: Default Constructor	
 	 * *******************************************************************************/
 	public TimeKeepingDetailInfo() {
-		this.m_bIsWorking=false;
-		this.m_dateWorking=new Date();
-		this.m_strWhoCheck="";
-		this.m_strReason="";
+		this.bIsWorking=false;
+		this.dateWorking=new Date();
+		this.strWhoCheck="";
+		this.strReason="";
 	}
 	/* *******************************************************************************
 	 * Description: Full Constructor
@@ -48,10 +48,10 @@ public class TimeKeepingDetailInfo implements Serializable {
 	 * *******************************************************************************/
 	public TimeKeepingDetailInfo(boolean bIsWorking, Date dateWorking,
 			String strWhoCheck, String strReason) {
-		this.m_bIsWorking = bIsWorking;
-		this.m_dateWorking = dateWorking;
-		this.m_strWhoCheck = strWhoCheck;
-		this.m_strReason = strReason;
+		this.bIsWorking = bIsWorking;
+		this.dateWorking = dateWorking;
+		this.strWhoCheck = strWhoCheck;
+		this.strReason = strReason;
 	}
 	/* *******************************************************************************
 	 * Description: set working status of employee in a particular day
@@ -60,14 +60,14 @@ public class TimeKeepingDetailInfo implements Serializable {
 	 * return type: void
 	 * *******************************************************************************/
 	public void setIsWorking(boolean bIsWorking) {
-		this.m_bIsWorking=bIsWorking;
+		this.bIsWorking=bIsWorking;
 	}
 	/* *******************************************************************************
 	 * Description: check if the employee is present on that day
 	 * return type: boolean
 	 * *******************************************************************************/
 	public boolean getIsWorking() {
-		return this.m_bIsWorking;
+		return this.bIsWorking;
 	}
 	/* *******************************************************************************
 	 * Description: set working date of the employee
@@ -76,14 +76,14 @@ public class TimeKeepingDetailInfo implements Serializable {
 	 * return type: void
 	 * *******************************************************************************/
 	public void setDateWorking(Date dateWorking) {
-		this.m_dateWorking=dateWorking;
+		this.dateWorking=dateWorking;
 	}
 	/* *******************************************************************************
 	 * Description: return working date of employee. 	
 	 * return type: Date
 	 * *******************************************************************************/
 	public Date getDateWorking() {
-		return this.m_dateWorking;
+		return this.dateWorking;
 	}
 	/* *******************************************************************************
 	 * Description: set timekeeper 
@@ -92,14 +92,14 @@ public class TimeKeepingDetailInfo implements Serializable {
 	 * return type: void
 	 * *******************************************************************************/
 	public void setWhoCheck(String strWhoCheck) {
-		this.m_strWhoCheck=strWhoCheck;
+		this.strWhoCheck=strWhoCheck;
 	}
 	/* *******************************************************************************
 	 * Description: return timekeeper of the date selected
 	 * return type: String
 	 * *******************************************************************************/
 	public String getWhoCheck() {
-		return this.m_strWhoCheck;
+		return this.strWhoCheck;
 	}
 	/* *******************************************************************************
 	 * Description: 
@@ -109,7 +109,7 @@ public class TimeKeepingDetailInfo implements Serializable {
 	 * return type: void
 	 * *******************************************************************************/
 	public void setReason(String strReason) {
-		this.m_strReason=strReason;
+		this.strReason=strReason;
 	}
 	/* *******************************************************************************
 	 * Description: 
@@ -117,6 +117,6 @@ public class TimeKeepingDetailInfo implements Serializable {
 	 * return type: String
 	 * *******************************************************************************/
 	public String getReason() {
-		return this.m_strReason;
+		return this.strReason;
 	}
 }

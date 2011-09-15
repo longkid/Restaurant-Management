@@ -29,11 +29,11 @@ public class ContractFrame extends JDialog {
 	private JTextField txtSalary, txtOtherSalary;
 	private JTextField txtStartDate;
 	private JLabel lblEmployeeName;
-	private String m_strCaption = "";
+	private String caption = "";
 
 	public ContractFrame(String strTitle, String strCaption) {
 		setTitle(strTitle);
-		m_strCaption = strCaption;
+		caption = strCaption;
 		createUI();
 	}
 
@@ -47,7 +47,7 @@ public class ContractFrame extends JDialog {
 
 		// create title: Position Information
 		JPanel pnTitle = new JPanel();
-		JLabel lblTitle = new JLabel(m_strCaption);
+		JLabel lblTitle = new JLabel(caption);
 
 		lblEmployeeName = new JLabel();
 
@@ -192,6 +192,6 @@ public class ContractFrame extends JDialog {
 	}
 
 	public String getCaption() {
-		return m_strCaption;
+		return caption;
 	}
 }

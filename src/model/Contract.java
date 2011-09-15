@@ -17,7 +17,7 @@ import java.util.GregorianCalendar;
  *		Date startDate;==> store the Starting date of the contract
  *		Duration time;==> store the Ending date of the contract
  *			TWO_MONTHS, ONE_YEAR, THREE_YEARS, NO_LIMIT
- *		TimeKeepingBook m_TimeKeeping;==> store time keeping
+ *		TimeKeepingBook tkBook;==> store time keeping
  * Modified Date: 
  */
 public class Contract implements Serializable{
@@ -29,7 +29,7 @@ public class Contract implements Serializable{
 	private WorkingTime workingTime;
 	private Date startDate;
 	private Duration time;
-	private TimeKeepingBook m_TimeKeeping;
+	private TimeKeepingBook tkBook;
 	/* *******************************************************************************
 	 * Description: 
 	 * 		Default Constructor
@@ -40,7 +40,7 @@ public class Contract implements Serializable{
 		this.workingTime = null;
 		this.startDate = new Date();
 		this.time = null;
-		m_TimeKeeping = new TimeKeepingBook();
+		tkBook = new TimeKeepingBook();
 	}
 	/* *******************************************************************************
 	 * Description: 
@@ -53,7 +53,7 @@ public class Contract implements Serializable{
 		this.workingTime = workingTime;
 		this.startDate = startDate;
 		this.time = time;
-		m_TimeKeeping=timeKeeping;
+		tkBook=timeKeeping;
 	}
 	/* *******************************************************************************
 	 * Description: 
@@ -126,7 +126,7 @@ public class Contract implements Serializable{
 	 * return type: void
 	 * *******************************************************************************/
 	public void setTimeKeeping(TimeKeepingBook TimeKeeping) {
-		this.m_TimeKeeping = TimeKeeping;
+		this.tkBook = TimeKeeping;
 	}
 	/* *******************************************************************************
 	 * Description: 
@@ -134,7 +134,7 @@ public class Contract implements Serializable{
 	 * return type: TimeKeepingBook
 	 * *******************************************************************************/
 	public TimeKeepingBook getTimeKeeping() {
-		return this.m_TimeKeeping;
+		return this.tkBook;
 	}
 	/* *******************************************************************************
 	 * Description: 

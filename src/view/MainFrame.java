@@ -84,6 +84,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnTimekeeping.add(mnTimekeepingContractManagement);
 		mnTimekeepingContractManagement.addActionListener(this);
 
+		mnOptions.setMnemonic('O');
 		menuBar.add(mnOptions);
 		mnOptions.add(mnDateFormat);
 		mnDateFormat.add(mntmYyyymmdd);

@@ -4,36 +4,36 @@ import java.io.Serializable;
 
 public class CUser implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String m_strUserName = "";
-	private String m_strPassword = "";
-	private boolean m_bIsRememberPassword = false;
+	private String userName = "";
+	private String password = "";
+	private boolean rememberPassword = false;
 
 	public CUser() {
-		this.m_strUserName = "";
-		this.m_strPassword = "";
-		this.m_bIsRememberPassword = false;
+		this.userName = "";
+		this.password = "";
+		this.rememberPassword = false;
 	}
 
 	public CUser(String strUserName, String strPassword,
 			boolean bIsRememberPassword) {
-		this.m_strUserName = strUserName;
-		this.m_strPassword = strPassword;
-		this.m_bIsRememberPassword = bIsRememberPassword;
+		this.userName = strUserName;
+		this.password = strPassword;
+		this.rememberPassword = bIsRememberPassword;
 	}
 
 	public String getUserName() {
-		return this.m_strUserName;
+		return this.userName;
 	}
 
 	public String getPassword() {
-		return this.m_strPassword;
+		return this.password;
 	}
 
 	public boolean getRememberPassword() {
-		return m_bIsRememberPassword;
+		return rememberPassword;
 	}
 
 	public void setRememeberPassword(boolean bIsRememberPassword) {
-		m_bIsRememberPassword = bIsRememberPassword;
+		rememberPassword = bIsRememberPassword;
 	}
 }

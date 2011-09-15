@@ -15,20 +15,20 @@ import java.util.Date;
  *  	the timekeeping of each month contains the timekeeping of several days  
  *  	Employee->Contract->CTimeKeepingBook->TimeKeepingSheet->CTimeKeepingDetailInfor
  * Attributes:
- * 		 ArrayList<TimeKeepingSheet> m_ListTimeKeepingSheet;
+ * 		 ArrayList<TimeKeepingSheet> listTimeKeepingSheet;
  * 		this variable is used to save timekeeping of month 
- * 		Date m_dateLastModified;this variable is used to save the last month timekeeping 			
+ * 		Date dateLastModified;this variable is used to save the last month timekeeping 			
  * Modified Date: 
  */
 @SuppressWarnings("deprecation")
 public class TimeKeepingBook implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private ArrayList<TimeKeepingSheet> m_ListTimeKeepingSheet;
-	private Date m_dateLastModified;
+	private ArrayList<TimeKeepingSheet> listTimeKeepingSheet;
+	private Date dateLastModified;
 
 	public TimeKeepingBook() {
-		m_dateLastModified = new Date();
-		m_ListTimeKeepingSheet = new ArrayList<TimeKeepingSheet>();
+		dateLastModified = new Date();
+		listTimeKeepingSheet = new ArrayList<TimeKeepingSheet>();
 	}
 	/* *******************************************************************************
 	 * Description: 
@@ -38,7 +38,7 @@ public class TimeKeepingBook implements Serializable {
 	 * 		int month - month timekeeping
 	 * 		int year - year timekeeping
 	 * Exception:
-	 * 		error if m_ListTimeKeepingSheet is not allocated memory
+	 * 		error if listTimeKeepingSheet is not allocated memory
 	 * 		or aSheet is null
 	 * return type: boolean
 	 * *******************************************************************************/
@@ -59,7 +59,7 @@ public class TimeKeepingBook implements Serializable {
 	 * 	Parameters:
 	 * 		TimeKeepingSheet aSheet - month of timekeeping
 	 * Exception:
-	 * 		error occurs if m_ListTimeKeepingSheet is not allocated with memory
+	 * 		error occurs if listTimeKeepingSheet is not allocated with memory
 	 * 		or aSheet is null
 	 * return type: int
 	 * *******************************************************************************/
@@ -75,8 +75,8 @@ public class TimeKeepingBook implements Serializable {
 	}
 
 	public TimeKeepingBook(Date dateLastModified) {
-		m_dateLastModified = dateLastModified;
-		m_ListTimeKeepingSheet = new ArrayList<TimeKeepingSheet>();
+		this.dateLastModified = dateLastModified;
+		listTimeKeepingSheet = new ArrayList<TimeKeepingSheet>();
 	}
 	/* *******************************************************************************
 	 * Description: 
@@ -86,7 +86,7 @@ public class TimeKeepingBook implements Serializable {
 	 * return type: void
 	 * *******************************************************************************/
 	public void setLastModified(Date dateLastModified) {
-		m_dateLastModified = dateLastModified;
+		this.dateLastModified = dateLastModified;
 	}
 	/* *******************************************************************************
 	 * Description:  		
@@ -94,7 +94,7 @@ public class TimeKeepingBook implements Serializable {
 	 * return type: Date
 	 * *******************************************************************************/
 	public Date getLastModified() {
-		return this.m_dateLastModified;
+		return this.dateLastModified;
 	}
 	/* *******************************************************************************
 	 * Description: 
@@ -103,50 +103,50 @@ public class TimeKeepingBook implements Serializable {
 	 * 		int n - place n
 	 * 		TimeKeepingSheet aSheet - month of timekeeping
 	 * Exception:
-	 * 		error occurs if m_ListTimeKeepingSheet is not allocated with the memory
+	 * 		error occurs if listTimeKeepingSheet is not allocated with the memory
 	 * 		or n is invalid (n<0 or n>size of the list)
 	 * return type: void
 	 * *******************************************************************************/
 	public void set(int n, TimeKeepingSheet aSheet) {
-		this.m_ListTimeKeepingSheet.set(n, aSheet);
+		this.listTimeKeepingSheet.set(n, aSheet);
 	}
 	/* *******************************************************************************
 	 * Description: 
 	 * 		this method is used to add a new month (TimeKeepingSheet) into the timekeeping tabe 
-	 * 		(m_ListTimeKeepingSheet)
+	 * 		(listTimeKeepingSheet)
 	 * Parameters:
 	 * 		TimeKeepingSheet aSheet (one any month)
 	 * Exception:
-	 * 		error occur if m_ListTimeKeepingSheet is not allocated with the memory
+	 * 		error occur if listTimeKeepingSheet is not allocated with the memory
 	 * return type: void
 	 * *******************************************************************************/
 	public void add(TimeKeepingSheet aSheet) {
 		int n = contains(aSheet);
 		if (n == -1)
-			this.m_ListTimeKeepingSheet.add(aSheet);
+			this.listTimeKeepingSheet.add(aSheet);
 		else
-			this.m_ListTimeKeepingSheet.set(n, aSheet);
+			this.listTimeKeepingSheet.set(n, aSheet);
 	}
 	/* *******************************************************************************
 	 * Description: 
 	 * 		this method return the size of timekeeping in the timekeeping tale
 	 ********************************************************************************/
 	public int size() {
-		return this.m_ListTimeKeepingSheet.size();
+		return this.listTimeKeepingSheet.size();
 	}
 	/* *******************************************************************************
 	 * Description: 
 	 * 		this method is used to get the month (TimeKeepingSheet) at  n in 
-	 * 	  	timekeeping table(m_ListTimeKeepingSheet)
+	 * 	  	timekeeping table(listTimeKeepingSheet)
 	 * Parameters:
 	 * 		int n - (n is place)
 	 * Exception:
-	 * 		error occurs if  m_ListTimeKeepingSheet is not allocated with the memory
+	 * 		error occurs if  listTimeKeepingSheet is not allocated with the memory
 	 * 		or n is invalid (n<0 or n>size of the list)
 	 * return type: TimeKeepingSheet
 	 * *******************************************************************************/
 	public TimeKeepingSheet get(int n) {
-		return this.m_ListTimeKeepingSheet.get(n);
+		return this.listTimeKeepingSheet.get(n);
 	}
 	/* *******************************************************************************
 	 * Description: 
@@ -157,7 +157,7 @@ public class TimeKeepingBook implements Serializable {
 	 * 		int month - 
 	 * 		int year - 
 	 * Exception:
-	 * 		error if  m_ListTimeKeepingSheet is not allocated the memory
+	 * 		error if  listTimeKeepingSheet is not allocated the memory
 	 * 		or n is invalid (n<0 or n>size of the list)
 	 * return type: boolean
 	 * *******************************************************************************/
@@ -173,16 +173,16 @@ public class TimeKeepingBook implements Serializable {
 	/* *******************************************************************************
 	 * Description: 
 	 * 		this method is used to delete a month (TimeKeepingSheet) at n in
-	 *  	the timekeeping m_ListTimeKeepingSheet 
+	 *  	the timekeeping listTimeKeepingSheet 
 	 * Parameters:
 	 * 		int n - any place
 	 * Exception:
-	 * 		error occurs if m_ListTimeKeepingSheet is not allocated with the memory 
+	 * 		error occurs if listTimeKeepingSheet is not allocated with the memory 
 	 * 		or n is invalid, (n<0 or n>size of the list)
 	 * return type: void
 	 * *******************************************************************************/
 	public void remove(int n) {
-		this.m_ListTimeKeepingSheet.remove(n);
+		this.listTimeKeepingSheet.remove(n);
 	}
 	/* *******************************************************************************
 	 * Description: 
@@ -190,10 +190,10 @@ public class TimeKeepingBook implements Serializable {
 	 * Parameters:
 	 * 		TimeKeepingSheet aSheet (any month)
 	 * Exception:
-	 * 		error occurs if m_ListTimeKeepingSheet is not allocated with the memory
+	 * 		error occurs if listTimeKeepingSheet is not allocated with the memory
 	 * return type: void
 	 * *******************************************************************************/
 	public void remove(TimeKeepingSheet aSheet) {
-		this.m_ListTimeKeepingSheet.remove(aSheet);
+		this.listTimeKeepingSheet.remove(aSheet);
 	}
 }

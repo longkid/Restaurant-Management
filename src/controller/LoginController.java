@@ -12,60 +12,60 @@ import view.LoginFrame;
 import view.MainFrame;
 
 public class LoginController {
-	private LoginFrame m_loginFrame = null;
-	private CUser m_userLogin = null;
+	private LoginFrame loginFrame = null;
+	private CUser userLogin = null;
 
 	public LoginController() {
-		m_loginFrame = new LoginFrame("Login Restaurant Management");
-		m_userLogin = (CUser) FileProcessing
+		loginFrame = new LoginFrame("Login Restaurant Management");
+		userLogin = (CUser) FileProcessing
 				.ReadData(FileProcessing.FILENAME_USERLOGIN);
 	}
 
 	public void doShow() {
-		m_loginFrame.setSize(450, 300);
-		m_loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		m_loginFrame.setLocationRelativeTo(null);
-		m_loginFrame.setResizable(false);
-		m_loginFrame.setVisible(true);
+		loginFrame.setSize(450, 300);
+		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		loginFrame.setLocationRelativeTo(null);
+		loginFrame.setResizable(false);
+		loginFrame.setVisible(true);
 		addEventforAllControl();
-		if (m_userLogin != null && m_userLogin.getRememberPassword() == true) {
-			m_loginFrame.getTextFieldUserName().setText(
-					m_userLogin.getUserName());
-			m_loginFrame.getPasswordField().setText(m_userLogin.getPassword());
-			m_loginFrame.getCheckBoxRememberPassword().setSelected(
-					m_userLogin.getRememberPassword());
+		if (userLogin != null && userLogin.getRememberPassword() == true) {
+			loginFrame.getTextFieldUserName().setText(
+					userLogin.getUserName());
+			loginFrame.getPasswordField().setText(userLogin.getPassword());
+			loginFrame.getCheckBoxRememberPassword().setSelected(
+					userLogin.getRememberPassword());
 		}
 	}
 
 	public void addEventforAllControl() {
-		m_loginFrame.getButtonLogin().addActionListener(new CMyButtonEvent());
-		m_loginFrame.getTextFieldUserName().addActionListener(
+		loginFrame.getButtonLogin().addActionListener(new CMyButtonEvent());
+		loginFrame.getTextFieldUserName().addActionListener(
 				new CMyButtonEvent());
-		m_loginFrame.getPasswordField().addActionListener(new CMyButtonEvent());
-		m_loginFrame.getButtonShutdown()
+		loginFrame.getPasswordField().addActionListener(new CMyButtonEvent());
+		loginFrame.getButtonShutdown()
 				.addActionListener(new CMyButtonEvent());
 	}
 
 	private void doProcessLogin() {
-		String strUserName = m_loginFrame.getTextFieldUserName().getText();
-		String strPwd = String.copyValueOf(m_loginFrame.getPasswordField()
+		String strUserName = loginFrame.getTextFieldUserName().getText();
+		String strPwd = String.copyValueOf(loginFrame.getPasswordField()
 				.getPassword());
-		boolean bRemember = m_loginFrame.getCheckBoxRememberPassword()
+		boolean bRemember = loginFrame.getCheckBoxRememberPassword()
 				.isSelected();
-		if (m_userLogin == null) {
-			m_userLogin = new CUser(strUserName, strPwd, bRemember);
+		if (userLogin == null) {
+			userLogin = new CUser(strUserName, strPwd, bRemember);
 		}
-		if (m_userLogin != null
-				&& m_userLogin.getUserName().equals(strUserName)
-				&& m_userLogin.getPassword().equals(strPwd)) {
-			m_loginFrame.dispose();
+		if (userLogin != null
+				&& userLogin.getUserName().equals(strUserName)
+				&& userLogin.getPassword().equals(strPwd)) {
+			loginFrame.dispose();
 			MainFrame frame = new MainFrame();
 			frame.setVisible(true);
-			m_userLogin.setRememeberPassword(bRemember);
-			FileProcessing.WriteData(m_userLogin, FileProcessing.FILENAME_USERLOGIN);
+			userLogin.setRememeberPassword(bRemember);
+			FileProcessing.WriteData(userLogin, FileProcessing.FILENAME_USERLOGIN);
 		} else {
 			JOptionPane.showMessageDialog(null, "Login Failed");
-			m_loginFrame.getTextFieldUserName().requestFocus();
+			loginFrame.getTextFieldUserName().requestFocus();
 		}
 	}
 
@@ -75,11 +75,11 @@ public class LoginController {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			Object o = arg0.getSource();
-			if (o.equals(m_loginFrame.getButtonShutdown())) {
-				m_loginFrame.dispose();
-			} else if (o.equals(m_loginFrame.getButtonLogin())
-					|| o.equals(m_loginFrame.getTextFieldUserName())
-					|| o.equals(m_loginFrame.getPasswordField())) {
+			if (o.equals(loginFrame.getButtonShutdown())) {
+				loginFrame.dispose();
+			} else if (o.equals(loginFrame.getButtonLogin())
+					|| o.equals(loginFrame.getTextFieldUserName())
+					|| o.equals(loginFrame.getPasswordField())) {
 
 				doProcessLogin();
 			}
