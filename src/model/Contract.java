@@ -26,120 +26,60 @@ public class Contract implements Serializable{
 	 */
 	private static final long serialVersionUID = 8231223811724698959L;
 	private Position position;
-	private WorkingTime workingTime;
 	private Date startDate;
 	private Duration time;
 	private TimeKeepingBook tkBook;
-	/* *******************************************************************************
-	 * Description: 
-	 * 		Default Constructor
-	 * 		Initialize the default value of the attributes	
-	 * *******************************************************************************/
+	
 	public Contract() {
 		this.position = new Position();
-		this.workingTime = null;
 		this.startDate = new Date();
 		this.time = null;
 		tkBook = new TimeKeepingBook();
 	}
-	/* *******************************************************************************
-	 * Description: 
-	 * 		Full Constructor
-	 * 		set the default value of the attributes	
-	 * *******************************************************************************/
-	public Contract(Position position, WorkingTime workingTime, Date startDate,
+	
+	public Contract(Position position, Date startDate,
 			Duration time,TimeKeepingBook timeKeeping) {
 		this.position = position;
-		this.workingTime = workingTime;
 		this.startDate = startDate;
 		this.time = time;
 		tkBook=timeKeeping;
 	}
-	/* *******************************************************************************
-	 * Description: 
-	 * 		return the position of employee in the contract 
-	 * return type: Position
-	 * *******************************************************************************/
+	
 	public Position getPosition() {
 		return position;
 	}
-	/* *******************************************************************************
-	 * Description: 
-	 * 		set the position of employee in contract
-	 * Parameters:
-	 * 		Position position 
-	 * return type: void
-	 * *******************************************************************************/
+	
 	public void setPosition(Position position) {
 		this.position = position;
 	}
 
-	public WorkingTime getWorkingTime() {
-		return workingTime;
-	}
-
-	public void setWorkingTime(WorkingTime workingTime) {
-		this.workingTime = workingTime;
-	}
-	/* *******************************************************************************
-	 * Description: 
-	 * 		get the start date of the contract
-	 * return type: Date
-	 * *******************************************************************************/
 	public Date getStartDate() {
 		return startDate;
 	}
-	/* *******************************************************************************
-	 * Description: 
-	 * 		set start date of the contract
-	 * Parameters:
-	 * 		Date startDate
-	 * return type: void
-	 * *******************************************************************************/
+
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-	/* *******************************************************************************
-	 * Description: 
-	 * 		get time of the contract
-	 * return type: Duration
-	 * *******************************************************************************/
+
 	public Duration getTime() {
 		return time;
 	}
-	/* *******************************************************************************
-	 * Description: 
-	 * 		set time of the contract
-	 * Parameters:
-	 * 		Duration time 
-	 * 			TWO_MONTHS, ONE_YEAR, THREE_YEARS, NO_LIMIT
-	 * return type: void
-	 * *******************************************************************************/
+
 	public void setTime(Duration time) {
 		this.time = time;
 	}
-	/* *******************************************************************************
-	 * Description: 
-	 * 		set the time keeping 
-	 * Parameters:
-	 * 		TimeKeepingBook TimeKeeping
-	 * return type: void
-	 * *******************************************************************************/
+
 	public void setTimeKeeping(TimeKeepingBook TimeKeeping) {
 		this.tkBook = TimeKeeping;
 	}
-	/* *******************************************************************************
-	 * Description: 
-	 * 		get the time keeping 
-	 * return type: TimeKeepingBook
-	 * *******************************************************************************/
+
 	public TimeKeepingBook getTimeKeeping() {
 		return this.tkBook;
 	}
 	/* *******************************************************************************
 	 * Description: 
 	 * 		get the information of the contract
-	 * 		ví dụ:
+	 * 		Ex:
 	 * 			(Accountant)-08/07/2011
 	 * 		the information is display on the Nodes of JTree
 	 * 				-Contract History

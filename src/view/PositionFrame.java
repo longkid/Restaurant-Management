@@ -66,13 +66,13 @@ public class PositionFrame extends JFrame {
 		pnInputInformation.setLayout(new BoxLayout(pnInputInformation,
 				BoxLayout.Y_AXIS));
 		pnInformation.add(pnInputInformation);
-		// Create Position Title - Use JCombobox
+
 		JPanel pnPositionTitle = new JPanel();
 		JLabel lblPositionTitle = new JLabel("Position Title");
 		cboTitle = new JComboBox();
 		addPositionTitleForCombobox();
 		pnPositionTitle.add(lblPositionTitle);
-		pnPositionTitle.add(cboTitle); // display combobox on form
+		pnPositionTitle.add(cboTitle);
 		pnGeneral.add(pnInformation, BorderLayout.CENTER);
 		pnInputInformation.add(pnPositionTitle);
 
@@ -81,7 +81,6 @@ public class PositionFrame extends JFrame {
 		txtSalary = new JTextField(15);
 		pnSalary.add(lblSalary);
 		pnSalary.add(txtSalary);
-		// txtSalary.setEditable(false);
 		pnInputInformation.add(pnSalary);
 
 		JPanel pnOtherSalary = new JPanel();
@@ -124,18 +123,15 @@ public class PositionFrame extends JFrame {
 		JPanel pnTable = new JPanel();
 		pnTable.setLayout(new BorderLayout());
 		pnInformation.add(pnTable);
-		// must be DefaultTableModel
 		tblModel = new DefaultTableModel();
 		// Add Column for TableModel
 		tblModel.addColumn("Position Title");
 		tblModel.addColumn("Salary (USD)");
 		tblModel.addColumn("Other Salary (USD)");
-		// sau do dua vao Jtable
+		
 		tblDetail = new JTable(tblModel);
-		// must be JScrollPane to see information in JTable
 		JScrollPane sc = new JScrollPane(tblDetail);
 		sc.setPreferredSize(new Dimension(500, 200));
-		// diaplay JScrollPane on interface
 		pnTable.add(sc, BorderLayout.CENTER);
 		TitledBorder borderTable = new TitledBorder(
 				BorderFactory.createLineBorder(Color.RED), "Position List:");

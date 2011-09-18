@@ -5,13 +5,13 @@ import java.io.Serializable;
 /*
  * @author Tu Thi Xuan Hien
  * Description: 
- * 		this class is used to store the position of the employee, each 
+ * 		This class is used to store the position of the employee, each 
  * 		position contains the basic salary and other salary
  * Attributes:
- * 		PositionTitle title;==> title of the position
- *		int salary; ==> basic salary depending on the position
- *		int otherSalary;==> other salary
- *Modified Date:
+ * 		title: Title of the position
+ *		salary: Basic salary depends on the position
+ *		otherSalary
+ * Modified Date:
  */
 public class Position implements Serializable {
 	/**
@@ -27,83 +27,38 @@ public class Position implements Serializable {
 	private int salary; // unit: US Dollar
 	private int otherSalary; // unit: US Dollar
 
-	/* *******************************************************************************
-	 * Description: Default Constructor
-	 * *****************************************
-	 * *************************************
-	 */
 	public Position() {
 		this.title = PositionTitle.ACCOUNTANT;
 		this.salary = ACCOUNTANT_SALARY;
 		this.otherSalary = 0;
 	}
 
-	/* *******************************************************************************
-	 * Description: Full Constructor
-	 * ********************************************
-	 * **********************************
-	 */
 	public Position(PositionTitle title, int salary, int otherSalary) {
 		this.title = title;
 		this.salary = salary;
 		this.otherSalary = otherSalary;
 	}
 
-	/* *******************************************************************************
-	 * Description: get the position of the employee return type: PositionTitle
-	 * *
-	 * *************************************************************************
-	 * ****
-	 */
 	public PositionTitle getTitle() {
 		return title;
 	}
 
-	/* *******************************************************************************
-	 * Description: set the position of the employee Parameters: PositionTitle
-	 * title - return type: void
-	 * ************************************************
-	 * ******************************
-	 */
 	public void setTitle(PositionTitle title) {
 		this.title = title;
 	}
 
-	/* *******************************************************************************
-	 * Description: get the salary of the employee base on the position return
-	 * type: PositionTitle
-	 * ******************************************************
-	 * ************************
-	 */
 	public int getSalary() {
 		return salary;
 	}
 
-	/* *******************************************************************************
-	 * Description: set the salary of the employee Parameters: int salary -
-	 * salary (unit USD) return type: void
-	 * **************************************
-	 * ****************************************
-	 */
 	public void setSalary(int salary) {
 		this.salary = salary;
 	}
 
-	/* *******************************************************************************
-	 * Description: get the other salary return type: int
-	 * ***********************
-	 * *******************************************************
-	 */
 	public int getOtherSalary() {
 		return otherSalary;
 	}
 
-	/* *******************************************************************************
-	 * Description: set the other salary of the employee Parameters: int
-	 * otherSalary - other salary (unit USD) return type: void
-	 * ******************
-	 * ************************************************************
-	 */
 	public void setOtherSalary(int otherSalary) {
 		this.otherSalary = otherSalary;
 	}

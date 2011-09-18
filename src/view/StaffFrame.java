@@ -32,14 +32,12 @@ public class StaffFrame extends JFrame {
 		setTitle("Staff Management");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setSize(560, 410);
-		//setBounds(100, 100, 560, 410);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		staffTable = new JTable();
 		JScrollPane scrollPane = new JScrollPane(staffTable);
-		//scrollPane.setBounds(12, 0, 533, 335);
 		contentPane.add(scrollPane);
 
 		btnCreate = new JButton("Add an Employee");
@@ -49,8 +47,6 @@ public class StaffFrame extends JFrame {
 			}
 		});
 		JPanel buttonPanel = new JPanel();
-		//btnCreate.setBounds(12, 345, 155, 25);
-		//contentPane.add(btnCreate);
 		buttonPanel.add(btnCreate);
 
 		btnUpdate = new JButton("Update");
@@ -59,8 +55,6 @@ public class StaffFrame extends JFrame {
 				StaffController.singleton.update();
 			}
 		});
-		//btnUpdate.setBounds(190, 345, 90, 25);
-		//contentPane.add(btnUpdate);
 		buttonPanel.add(btnUpdate);
 		
 		btnDelete = new JButton("Delete");
@@ -69,8 +63,6 @@ public class StaffFrame extends JFrame {
 				StaffController.singleton.delete();
 			}
 		});
-		//btnDelete.setBounds(305, 345, 90, 25);
-		//contentPane.add(btnDelete);
 		buttonPanel.add(btnDelete);
 		
 		btnViewDetails = new JButton("View Details");
@@ -79,8 +71,6 @@ public class StaffFrame extends JFrame {
 				StaffController.singleton.viewDetails();
 			}
 		});
-		//btnViewDetails.setBounds(415, 345, 130, 25);
-		//contentPane.add(btnViewDetails);
 		buttonPanel.add(btnViewDetails);
 		contentPane.add(buttonPanel);
 		setLocationRelativeTo(null);
